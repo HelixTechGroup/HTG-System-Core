@@ -1,0 +1,44 @@
+{
+  "FormKey": "000878:HTG-System-Core.esp",
+  "EditorID": "DataslateTerminalActivator",
+  "FormVersion": 576,
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Dataslate:DataslateTerminalActivator",
+        "Properties": [
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateTerminal",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 5
+          }
+        ]
+      }
+    ]
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Configuration Management Terminal Dataslate Binder"
+  },
+  "Archetype": {
+    "MutagenObjectType": "MagicEffectArchetype",
+    "Type": "Script"
+  },
+  "CastType": "FireAndForget",
+  "Flags": [
+    "Recover",
+    "NoDuration",
+    "NoMagnitude",
+    "NoArea"
+  ],
+  "Unknown": "0x00000000000000000000000000000000000000000000",
+  "Unknown2": "[]",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "\r\n\r\n"
+  },
+  "DATADataTypeState": [
+    "Break0"
+  ]
+}

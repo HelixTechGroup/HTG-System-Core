@@ -1,0 +1,13 @@
+{
+  "FormKey": "000819:HTG-System-Core.esp",
+  "EditorID": "ArmorTypes",
+  "FormVersion": 576,
+  "Items": [
+    "0E048B:Starfield.esm",
+    "0E048C:Starfield.esm",
+    "23C7BF:Starfield.esm",
+    "23C7C0:Starfield.esm",
+    "23C7C1:Starfield.esm"
+  ],
+  "ANAM": "Null"
+}

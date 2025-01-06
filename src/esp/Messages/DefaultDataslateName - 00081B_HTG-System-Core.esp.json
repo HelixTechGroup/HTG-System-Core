@@ -1,0 +1,16 @@
+{
+  "FormKey": "00081B:HTG-System-Core.esp",
+  "EditorID": "DefaultDataslateName",
+  "FormVersion": 576,
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Default Dataslate"
+  },
+  "OwnerQuest": "000824:HTG-System-Core.esp",
+  "DisplayTime": 2,
+  "BNAM": 4294967295
+}

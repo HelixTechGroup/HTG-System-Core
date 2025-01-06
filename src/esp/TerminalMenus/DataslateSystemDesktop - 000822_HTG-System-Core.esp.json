@@ -1,0 +1,35 @@
+{
+  "FormKey": "000822:HTG-System-Core.esp",
+  "EditorID": "DataslateSystemDesktop",
+  "FormVersion": 576,
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Dataslate:Terminals:DataslateSystemDesktop"
+      }
+    ]
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "System Desktop"
+  },
+  "ShowBodyText": "Document",
+  "MenuButtonStyle": [
+    "CanBeDesktop"
+  ],
+  "Style": "Kiosk",
+  "INAM": {
+    "TargetLanguage": "English",
+    "Value": "Home"
+  },
+  "BodyTexts": [
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "Welcome "
+      },
+      "UseTemplatedText": false
+    }
+  ],
+  "MenuItems": []
+}

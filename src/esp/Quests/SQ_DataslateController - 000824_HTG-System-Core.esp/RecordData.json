@@ -1,0 +1,249 @@
+{
+  "FormKey": "000824:HTG-System-Core.esp",
+  "EditorID": "SQ_DataslateController",
+  "FormVersion": 576,
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Dataslate:Quests:SQ_DataslateController",
+        "Properties": [
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateTerminal",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 5
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SystemUtilities",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 7
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateTracker",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 10
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateAssistant_FirstActivation",
+            "Object": "000830:HTG-System-Core.esp"
+          }
+        ]
+      }
+    ],
+    "Script": {
+      "Name": ""
+    },
+    "Aliases": [
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000824:HTG-System-Core.esp",
+          "Alias": 7
+        },
+        "Scripts": [
+          {
+            "Name": "htg:structs"
+          },
+          {
+            "Name": "htg:systemlogger",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptStringProperty",
+                "Name": "MainLogName",
+                "Data": "HTG"
+              },
+              {
+                "MutagenObjectType": "ScriptStringProperty",
+                "Name": "SubLogName",
+                "Data": "System"
+              }
+            ]
+          },
+          {
+            "Name": "htg:timerutility"
+          },
+          {
+            "Name": "htg:formutility"
+          },
+          {
+            "Name": "htg:intutility"
+          },
+          {
+            "Name": "htg:armorutility",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Backpack",
+                "Object": "23C7BF:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ArmorTypes",
+                "Object": "000819:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Spacesuit",
+                "Object": "23C7C0:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Helmet",
+                "Object": "23C7C1:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Hat",
+                "Object": "0E048B:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Clothes",
+                "Object": "0E048C:Starfield.esm"
+              }
+            ]
+          },
+          {
+            "Name": "HTG:UtilityExt"
+          },
+          {
+            "Name": "HTG:SystemUtilities"
+          }
+        ]
+      },
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000824:HTG-System-Core.esp",
+          "Alias": 10
+        },
+        "Scripts": [
+          {
+            "Name": "HTG:Dataslate:Quests:DataslateTracker",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "SystemUtilities",
+                "Object": "000824:HTG-System-Core.esp",
+                "Alias": 7
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "FirstActivation",
+                "Object": "000830:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DataSlate",
+                "Object": "000877:HTG-System-Core.esp"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Data": {
+    "Flags": [
+      "StartGameEnabled",
+      "StartsEnabled"
+    ],
+    "Priority": 20,
+    "Unused": "0x000000"
+  },
+  "QuestType": "00080F:HTG-System-Core.esp",
+  "UnusedConditions": [],
+  "Stages": [
+    {
+      "Index": 5,
+      "Flags": [
+        "RunOnStart"
+      ],
+      "Unknown": 158,
+      "LogEntries": [
+        {
+          "Flags": [],
+          "Conditions": [
+            {
+              "MutagenObjectType": "ConditionFloat",
+              "Data": {
+                "MutagenObjectType": "GetGlobalValueConditionData",
+                "FirstParameter": "000830:HTG-System-Core.esp"
+              },
+              "ComparisonValue": 1.0
+            }
+          ],
+          "Note": "Open the Dataslate Assistant",
+          "Entry": {
+            "TargetLanguage": "English",
+            "Value": "Open and configure your Dataslate Assistant"
+          },
+          "StageCompleteDatas": [
+            {
+              "QSRD": "0x00000000"
+            },
+            {
+              "QSRD": "[]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Objectives": [
+    {
+      "Index": 5,
+      "Flags": [],
+      "DisplayText": {
+        "TargetLanguage": "English",
+        "Value": "Open your new Dataslate Assistant"
+      }
+    }
+  ],
+  "Aliases": [
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 7,
+      "Name": "SystemUtilities",
+      "Flags": [
+        "AllowReuseInQuest",
+        "AllowDead",
+        "AllowDisabled"
+      ],
+      "ALFG": 0,
+      "ForcedReference": "000812:HTG-System-Core.esp",
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 5,
+      "Name": "DataslateTerminal",
+      "Flags": [
+        "AllowReuseInQuest"
+      ],
+      "ALFG": 0,
+      "ForcedReference": "000884:HTG-System-Core.esp",
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 10,
+      "Name": "DataslateTracker",
+      "Flags": [
+        "Optional",
+        "QuestObject",
+        "AllowReuseInQuest",
+        "UsesStoredText",
+        "0x80000000",
+        "0x0"
+      ],
+      "ALFG": 0,
+      "DisplayName": "00081B:HTG-System-Core.esp",
+      "VoiceTypes": "Null"
+    }
+  ],
+  "SwfFile": "skillpatches.swf"
+}

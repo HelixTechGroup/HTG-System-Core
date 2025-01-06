@@ -1,0 +1,77 @@
+{
+  "FormKey": "000816:HTG-System-Core.esp",
+  "MajorRecordFlagsRaw": 134217728,
+  "EditorID": "DataslateTerminal",
+  "FormVersion": 576,
+  "StarfieldMajorRecordFlags": [
+    "0x8000000"
+  ],
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "TerminalScript",
+        "Properties": [
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "PowerCanBePowered",
+            "Object": "000330:Starfield.esm"
+          }
+        ]
+      }
+    ]
+  },
+  "ObjectBounds": {
+    "First": "-0.1887207, -0.08190918, -0.12384033",
+    "Second": "0.18029785, 0.032989502, 0.1282959"
+  },
+  "ODTY": 0.0,
+  "Components": [
+    {
+      "MutagenObjectType": "AnimationGraphComponent"
+    }
+  ],
+  "Menu": "000822:HTG-System-Core.esp",
+  "Background": "Constellation",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Regenesis Assistant Termiinal"
+  },
+  "Model": {
+    "File": "SetDressing\\Terminals\\TerminalA02.nif",
+    "FLLD": "0x01000000"
+  },
+  "Keywords": [
+    "25E8DE:Starfield.esm",
+    "1CC206:Starfield.esm",
+    "12FD88:Starfield.esm",
+    "12F848:Starfield.esm",
+    "0B799F:Starfield.esm"
+  ],
+  "PNAM": "0xCC4C3300",
+  "FNAM": "0x0000",
+  "JNAM": "0x6801",
+  "MarkerFlags": "HasModel",
+  "GNAM": "0x6801",
+  "WorkbenchData": "0x00",
+  "FurnitureTemplate": "0FFAD2:Starfield.esm",
+  "MarkerModel": "markers/furnituremarkers\\furn_human_standingterminal.nif",
+  "MarkerParameters": [
+    {
+      "Offset": "0, -0.19999999, 0",
+      "EntryTypes": [
+        "Front",
+        "Behind",
+        "Right",
+        "Left",
+        "Other",
+        "0x20",
+        "0x40",
+        "0x80"
+      ],
+      "Unknown": "0xFFFFFFFFFFFFFF"
+    }
+  ],
+  "MajorFlags": [
+    "0x8000000"
+  ]
+}

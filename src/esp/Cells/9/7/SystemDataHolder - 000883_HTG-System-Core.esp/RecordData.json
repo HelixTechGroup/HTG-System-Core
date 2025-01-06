@@ -1,0 +1,72 @@
+{
+  "FormKey": "000883:HTG-System-Core.esp",
+  "IsCompressed": true,
+  "MajorRecordFlagsRaw": 262144,
+  "EditorID": "SystemDataHolder",
+  "FormVersion": 576,
+  "StarfieldMajorRecordFlags": [
+    "Compressed"
+  ],
+  "Flags": [
+    "IsInteriorCell",
+    "0x20000",
+    "0x80000"
+  ],
+  "Lighting": {
+    "AmbientColor": "#00000000",
+    "DirectionalColor": "#00000000",
+    "FogNearColor": "#00000000",
+    "DirectionalFade": 1.0,
+    "FogPower": 1.0,
+    "FogFarColor": "#00000000",
+    "FogMax": 1.0,
+    "Unknown1": 1951,
+    "NearHeightRange": 10000.0,
+    "ForColorHighNear": "#00000000",
+    "ForColorHighFar": "#00000000",
+    "HighDensityScale": 1.0,
+    "FogNearScale": 1.0,
+    "FogFarScale": 1.0,
+    "FogHighNearScale": 1.0,
+    "FogHighFarScale": 1.0,
+    "FarHeightRange": 10000.0,
+    "Unknown2": 290220032
+  },
+  "LightingTemplate": "Null",
+  "WaterHeight": 3.4028235E+38,
+  "XILS": 1.0,
+  "UnknownGroupData": 1,
+  "Persistent": [
+    {
+      "MutagenObjectType": "PlacedObject",
+      "FormKey": "000884:HTG-System-Core.esp",
+      "MajorRecordFlagsRaw": 1024,
+      "FormVersion": 576,
+      "StarfieldMajorRecordFlags": [
+        "0x400"
+      ],
+      "Base": "000816:HTG-System-Core.esp"
+    },
+    {
+      "MutagenObjectType": "PlacedObject",
+      "FormKey": "000812:HTG-System-Core.esp",
+      "MajorRecordFlagsRaw": 1024,
+      "FormVersion": 576,
+      "StarfieldMajorRecordFlags": [
+        "0x400"
+      ],
+      "Base": "000815:HTG-System-Core.esp",
+      "Primitive": {
+        "Bounds": "2, 2, 2",
+        "Color": "#00CC4C33",
+        "Unknown": 0.3,
+        "Type": "Box"
+      },
+      "Position": "0, 0, 5",
+      "Rotation": "-0.28033096, 0.006257267, 5.3233023"
+    }
+  ],
+  "MajorFlags": [
+    "0x40000"
+  ]
+}

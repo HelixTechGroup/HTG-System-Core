@@ -1,0 +1,12 @@
+{
+  "FormKey": "00080F:HTG-System-Core.esp",
+  "EditorID": "QuestTypeSystem",
+  "FormVersion": 576,
+  "Color": "#00FFFFFF",
+  "Type": "26",
+  "FNAM": "0x00000000",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "System Constroller"
+  }
+}

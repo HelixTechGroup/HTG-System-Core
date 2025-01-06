@@ -1,0 +1,29 @@
+{
+  "FormKey": "000815:HTG-System-Core.esp",
+  "MajorRecordFlagsRaw": 9437696,
+  "EditorID": "_SystemUtilitiesObject",
+  "FormVersion": 576,
+  "StarfieldMajorRecordFlags": [
+    "0x200",
+    "0x100000",
+    "0x800000"
+  ],
+  "ObjectBounds": {
+    "First": "-1, -1, -1",
+    "Second": "1, 1, 1"
+  },
+  "ODTY": 0.0,
+  "Model": {
+    "FLLD": "0x01000000"
+  },
+  "MarkerColor": "#00CC4C33",
+  "Flags": [
+    "IgnoredBySandbox"
+  ],
+  "ActivationAngle": 360,
+  "MajorFlags": [
+    "HiddenFromLocalMap",
+    "IgnoreObjectInteraction",
+    "IsMarker"
+  ]
+}
