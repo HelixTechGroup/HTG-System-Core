@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PapyrusProject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Output="S:\XboxGames\Starfield\Content\Data\Scripts" Flags="S:\XboxGames\Starfield\Content\Data\Scripts\Source\Starfield_Papyrus_Flags.flg" xmlns="PapyrusProject.xsd">
+  <Imports>
+    <Import>S:\XboxGames\Starfield\Content\Data\Scripts\Source</Import>
+  </Imports>
+  <Scripts>
+    <Script>HTG:ActivatorExt</Script>
+    <Script>HTG:ArmorUtility</Script>
+    <Script>HTG:FormUtility</Script>
+    <Script>HTG:IntUtility</Script>
+    <Script>HTG:KeyedObjectReference</Script>
+    <Script>HTG:QuestExt</Script>
+    <Script>HTG:RefCollectionAliasExt</Script>
+    <Script>HTG:ReferenceAliasExt</Script>
+    <Script>HTG:ScriptLogger</Script>
+    <Script>HTG:ScriptObjectExt</Script>
+    <Script>HTG:Structs</Script>
+    <Script>HTG:SystemLogger</Script>
+    <Script>HTG:SystemUtilities</Script>
+    <Script>HTG:TimerUtility</Script>
+    <Script>HTG:UtilityExt</Script>
+    <Script>HTG:ValueArrayHolder</Script>
+    <Script>HTG:ValueArrayHolderArray</Script>
+	<Script>HTG:Collections:List</Script>
+    <Script>HTG:Collections:ObjectReferenceList</Script>
+	<Script>HTG:Dataslate:DataslateTerminalActivator</Script>
+    <Script>HTG:Dataslate:Quests:DataslateTracker</Script>
+    <Script>HTG:Dataslate:Quests:SQ_DataslateController</Script>
+    <Script>HTG:Dataslate:Terminals:DataslateSystemDesktop</Script>
+    <Script>HTG:Dataslate:Terminals:DataslateTerminalMenu</Script>
+  </Scripts>
+</PapyrusProject>
