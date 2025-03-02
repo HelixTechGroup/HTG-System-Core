@@ -33,7 +33,7 @@ Bool _initializeTimerStarted
 Bool _readyTimerStarted
 Bool _mainTimerStarted
 Float _timerInterval = 0.01
-Int _maxTimerCycle = 50
+Int _maxTimerCycle = 500
 Int _currentTimerCycle = 0
 
 CustomEvent OnInitialRun
@@ -48,6 +48,10 @@ Event OnInit()
 EndEvent
 
 Event OnAliasInit()
+    WaitForInitialized()
+EndEvent
+
+Event OnAliasChanged(ObjectReference akObject, bool abRemove)
     WaitForInitialized()
 EndEvent
 

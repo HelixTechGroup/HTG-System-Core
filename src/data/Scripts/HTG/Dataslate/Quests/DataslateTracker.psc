@@ -32,6 +32,7 @@ Event Actor.OnItemEquipped(Actor akSender, Form akBaseObject, ObjectReference ak
         ObjectReference kNewRef = Game.GetPlayer().AddAliasedItemSingle(Dataslate, Self)
         ; RefillDependentAliases()
         Logger.Log("OnItemAdded Updated Dataslate Reference: " + kNewRef)
+        Logger.Log("OnItemAdded Dataslate Reference: " +  GetRef())
     EndIf
 EndEvent
 
