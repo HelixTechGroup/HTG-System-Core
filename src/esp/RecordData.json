@@ -6,9 +6,6 @@
   "ModKey": "HTG-System-Core.esp",
   "GameRelease": "Starfield",
   "ModHeader": {
-    "Flags": [
-      "Medium"
-    ],
     "FormVersion": 576,
     "Author": "HelixTechGroup",
     "Description": "This is the Core mod used by all HelixTechGroup projects.\r\nIts a set of tools common to all modules in the Regenesys Project and can be utilized by all modders",

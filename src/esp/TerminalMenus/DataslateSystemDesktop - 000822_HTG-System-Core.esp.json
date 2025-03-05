@@ -13,7 +13,7 @@
     "TargetLanguage": "English",
     "Value": "System Desktop"
   },
-  "ShowBodyText": "Document",
+  "ShowBodyText": "Folder",
   "MenuButtonStyle": [
     "CanBeDesktop"
   ],

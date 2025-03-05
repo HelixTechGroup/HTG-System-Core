@@ -1,36 +1,36 @@
-Scriptname HTG:IntUtility extends ScriptObject Hidden
+Scriptname HTG:FloatUtility extends ScriptObject Hidden
 
-Bool Function IntToBool(Int akValue) Global
-    If akValue > 0
+Bool Function FloatToBool(Float akValue) Global
+    If akValue > 0.0
         return True
     EndIf
 
     return False
 EndFunction
 
-Bool Function IntArraySort(Int[] akArray, Int aiStartingIndex = 0) Global
-    If akArray.Length == 0
+Bool Function FloatArraySort(Float[] akArray, Int aiStartingIndex = 0) Global
+    If akArray.Length == 0.0
         return True
     EndIf
 
-    Bool bFirstNoneFound = False
+    Bool bFirstOneFound = False
     Int iFirstNonePos = aiStartingIndex
-    While aiStartingIndex < akArray.Length - 1
-        If IsIntNone(akArray[aiStartingIndex])
-            If bFirstNoneFound == False
-                bFirstNoneFound = True
+    While aiStartingIndex < akArray.Length - 1.0
+        If IsFloatNone(akArray[aiStartingIndex])
+            If bFirstOneFound == False
+                bFirstOneFound = True
                 iFirstNonePos = aiStartingIndex
                 aiStartingIndex += 1
             Else
                 aiStartingIndex += 1
             EndIf
         Else
-            If bFirstNoneFound == True
-                If !IsIntNone(akArray[aiStartingIndex])
+            If bFirstOneFound == True
+                If !IsFloatNone(akArray[aiStartingIndex])
                     akArray[iFirstNonePos] = akArray[aiStartingIndex]
                     akArray[aiStartingIndex] = 0
     
-                    IntArraySort(akArray, iFirstNonePos + 1)
+                    FloatArraySort(akArray, iFirstNonePos + 1)
                     return True
                 Else
                     aiStartingIndex += 1
@@ -44,7 +44,7 @@ Bool Function IntArraySort(Int[] akArray, Int aiStartingIndex = 0) Global
     return False
 EndFunction
 
-Function IntArrayClean(Int[] akArray) Global
+Function FloatArrayClean(Float[] akArray) Global
     If akArray.Length == 0
         return
     EndIf
@@ -53,14 +53,14 @@ Function IntArrayClean(Int[] akArray) Global
     Int count = akArray.Length - 1
 
     While i < count
-        If IsIntNone(akArray[i])
+        If IsFloatNone(akArray[i])
             akArray.Remove(i)
         EndIf
     EndWhile
 
-    IntArraySort(akArray)
+    FloatArraySort(akArray)
 EndFunction
 
-Bool Function IsIntNone(Int aiInt) Global
-    return aiInt == 0
+Bool Function IsFloatNone(Float aiFloat) Global
+    return aiFloat == 0.0
 EndFunction

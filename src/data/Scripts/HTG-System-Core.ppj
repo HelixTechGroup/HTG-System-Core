@@ -6,9 +6,11 @@
   <Scripts>
     <Script>HTG:ActivatorExt</Script>
     <Script>HTG:ArmorUtility</Script>
+    <Script>HTG:FloatUtility</Script>
     <Script>HTG:FormUtility</Script>
     <Script>HTG:IntUtility</Script>
     <Script>HTG:KeyedObjectReference</Script>
+    <Script>HTG:PerkExt</Script>
     <Script>HTG:QuestExt</Script>
     <Script>HTG:RefCollectionAliasExt</Script>
     <Script>HTG:ReferenceAliasExt</Script>
@@ -17,13 +19,15 @@
     <Script>HTG:Structs</Script>
     <Script>HTG:SystemLogger</Script>
     <Script>HTG:SystemUtilities</Script>
+    <Script>HTG:TerminalMenuExt</Script>
     <Script>HTG:TimerUtility</Script>
     <Script>HTG:UtilityExt</Script>
     <Script>HTG:ValueArrayHolder</Script>
     <Script>HTG:ValueArrayHolderArray</Script>
-	<Script>HTG:Collections:List</Script>
+    <Script>HTG:Collections:FormListExt</Script>
+	  <Script>HTG:Collections:List</Script>
     <Script>HTG:Collections:ObjectReferenceList</Script>
-	<Script>HTG:Dataslate:DataslateTerminalActivator</Script>
+	  <Script>HTG:Dataslate:DataslateTerminalActivator</Script>
     <Script>HTG:Dataslate:Quests:DataslateTracker</Script>
     <Script>HTG:Dataslate:Quests:SQ_DataslateController</Script>
     <Script>HTG:Dataslate:Terminals:DataslateSystemDesktop</Script>
