@@ -1,60 +1,37 @@
-Scriptname HTG:Dataslate:Quests:DataslateTracker extends HTG:ReferenceAliasExt
-{Regenesys - System Controller Player Reference Alias that tracks the current potion item reference}
-import HTG
+ScriptName HTG:Dataslate:Quests:DataslateTracker Extends HTG:ReferenceAliasExt
+{ Regenesys - System Controller Player Reference Alias that tracks the current potion item reference }
 
-; ObjectReference Property PlayerRef Mandatory Const Auto
-Potion Property Dataslate Auto Const Mandatory
-GlobalVariable Property FirstActivation Mandatory Auto
-
+;-- Variables ---------------------------------------
 Bool _isPlayerInitialized
 
-Event OnAliasInit()
-    WaitForInitialized()
+;-- Properties --------------------------------------
+Potion Property Dataslate Auto Const mandatory
+GlobalVariable Property FirstActivation Auto mandatory
 
-    Game.GetPlayer().AddAliasedItemSingle(Dataslate, Self, abSilent = False)
-    ; RefillDependentAliases()
-    ; Debug.Notification("Dataslate Configurator has been added.")
-    RegisterForRemoteEvent(Game.GetPlayer(), "OnItemEquipped")
-    RegisterForRemoteEvent(Game.GetPlayer(), "OnItemUnequipped")
+;-- Functions ---------------------------------------
+
+Event Actor.OnItemUnequipped(Actor akSender, Form akBaseObject, ObjectReference akReference)
+  ; Empty function
+EndEvent
+
+Event OnAliasInit()
+  Self.WaitForInitialized() ; #DEBUG_LINE_NO:12
+  Game.GetPlayer().AddAliasedItemSingle(Dataslate as Form, Self as Alias, False) ; #DEBUG_LINE_NO:14
+  Self.RegisterForRemoteEvent(Game.GetPlayer() as ScriptObject, "OnItemEquipped") ; #DEBUG_LINE_NO:17
+  Self.RegisterForRemoteEvent(Game.GetPlayer() as ScriptObject, "OnItemUnequipped") ; #DEBUG_LINE_NO:18
 EndEvent
 
 Event Actor.OnItemEquipped(Actor akSender, Form akBaseObject, ObjectReference akReference)
-    If akBaseObject == Dataslate
-        If FirstActivation.GetValueInt() == 1
-            GetOwningQuest().SetObjectiveCompleted(5)
-            FirstActivation.SetValue(0)
-        EndIf
-
-        ObjectReference kLastRef = GetRef()
-        Logger.Log("OnItemAdded Current Dataslate Reference: " + kLastRef)
-        Game.GetPlayer().RemoveItem(akBaseObject)
-        ; RemoveFromRef(kLastRef)        
-        ObjectReference kNewRef = Game.GetPlayer().AddAliasedItemSingle(Dataslate, Self)
-        ; RefillDependentAliases()
-        Logger.Log("OnItemAdded Updated Dataslate Reference: " + kNewRef)
-        Logger.Log("OnItemAdded Dataslate Reference: " +  GetRef())
+  If akBaseObject == Dataslate as Form ; #DEBUG_LINE_NO:22
+    If FirstActivation.GetValueInt() == 1 ; #DEBUG_LINE_NO:23
+      Self.GetOwningQuest().SetObjectiveCompleted(5, True) ; #DEBUG_LINE_NO:24
+      FirstActivation.SetValue(0 as Float) ; #DEBUG_LINE_NO:25
     EndIf
+    ObjectReference kLastRef = Self.GetRef() ; #DEBUG_LINE_NO:28
+    Self.Logger.Log("OnItemAdded Current Dataslate Reference: " + kLastRef as String, 0) ; #DEBUG_LINE_NO:29
+    Game.GetPlayer().RemoveItem(akBaseObject, 1, False, None) ; #DEBUG_LINE_NO:30
+    ObjectReference kNewRef = Game.GetPlayer().AddAliasedItemSingle(Dataslate as Form, Self as Alias, True) ; #DEBUG_LINE_NO:32
+    Self.Logger.Log("OnItemAdded Updated Dataslate Reference: " + kNewRef as String, 0) ; #DEBUG_LINE_NO:34
+    Self.Logger.Log("OnItemAdded Dataslate Reference: " + Self.GetRef() as String, 0) ; #DEBUG_LINE_NO:35
+  EndIf
 EndEvent
-
-Event Actor.OnItemUnequipped(Actor akSender, Form akBaseObject, ObjectReference akReference)
-    ; If akBaseObject == Dataslate
-    ;     ObjectReference kLastRef = GetRef()
-    ;     Logger.Log("OnItemAdded Current Dataslate Reference: " + kLastRef)
-    ;     ; Game.GetPlayer().RemoveItem(akBaseObject)
-    ;     ; RemoveFromRef(kLastRef)        
-    ;     ObjectReference kNewRef = Game.GetPlayer().AddAliasedItemSingle(Dataslate, Self)
-    ;     RefillDependentAliases()
-    ;     Logger.Log("OnItemAdded Updated Dataslate Reference: " + kNewRef)
-    ; EndIf
-EndEvent
-
-; Event OnItemAdded(Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer, int aiTransferReason)
-;     Logger.Log("akBaseItem: " + akBaseItem)
-;     If akBaseItem == Dataslate
-;         ObjectReference kLastRef = GetRef()
-;         Logger.Log("OnItemAdded Current Dataslate Reference: " + kLastRef)
-
-;         ForceRefTo(akItemReference)
-;         Logger.Log("OnItemAdded Updated Dataslate Reference.")
-;     Endif
-; EndEvent

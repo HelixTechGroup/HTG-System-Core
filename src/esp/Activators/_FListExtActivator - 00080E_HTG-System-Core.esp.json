@@ -1,0 +1,36 @@
+{
+  "FormKey": "00080E:HTG-System-Core.esp",
+  "MajorRecordFlagsRaw": 9437696,
+  "EditorID": "_FListExtActivator",
+  "FormVersion": 576,
+  "StarfieldMajorRecordFlags": [
+    "0x200",
+    "0x100000",
+    "0x800000"
+  ],
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Collections:FormListExt"
+      }
+    ]
+  },
+  "ODTY": 0.0,
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "FirnListExt Collection Activator"
+  },
+  "Model": {
+    "FLLD": "0x01000000"
+  },
+  "MarkerColor": "#00CC4C33",
+  "Flags": [
+    "IgnoredBySandbox"
+  ],
+  "ActivationAngle": 360,
+  "MajorFlags": [
+    "HiddenFromLocalMap",
+    "IgnoreObjectInteraction",
+    "IsMarker"
+  ]
+}

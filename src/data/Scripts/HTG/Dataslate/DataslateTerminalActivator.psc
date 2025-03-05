@@ -1,13 +1,19 @@
-Scriptname HTG:Dataslate:DataslateTerminalActivator extends ActiveMagicEffect
+ScriptName HTG:Dataslate:DataslateTerminalActivator Extends ActiveMagicEffect
 
-ReferenceAlias Property DataslateTerminal Auto Mandatory
+;-- Variables ---------------------------------------
 
-Event OnEffectStart(ObjectReference akTarget, Actor akCaster, MagicEffect akBaseEffect, float afMagnitude, float afDuration)
-    DataslateTerminal.GetReference().Activate(akCaster, True)
-    InputEnableLayer iel = InputEnableLayer.Create()
-    iel.DisablePlayerControls()
-    iel.EnablePlayerControls()
+;-- Properties --------------------------------------
+ReferenceAlias Property DataslateTerminal Auto mandatory
+
+;-- Functions ---------------------------------------
+
+Event OnEffectFinish(ObjectReference akTarget, Actor akCaster, MagicEffect akBaseEffect, Float afMagnitude, Float afDuration)
+  ; Empty function
 EndEvent
 
-Event OnEffectFinish(ObjectReference akTarget, Actor akCaster, MagicEffect akBaseEffect, float afMagnitude, float afDuration)
+Event OnEffectStart(ObjectReference akTarget, Actor akCaster, MagicEffect akBaseEffect, Float afMagnitude, Float afDuration)
+  DataslateTerminal.GetReference().Activate(akCaster as ObjectReference, True) ; #DEBUG_LINE_NO:6
+  inputenablelayer iel = inputenablelayer.Create() ; #DEBUG_LINE_NO:7
+  iel.DisablePlayerControls(True, True, False, False, False, True, True, False, True, True, False) ; #DEBUG_LINE_NO:8
+  iel.EnablePlayerControls(True, True, True, True, True, True, True, True, True, True, True) ; #DEBUG_LINE_NO:9
 EndEvent

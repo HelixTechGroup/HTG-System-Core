@@ -1,1 +1,1 @@
-Scriptname HTG:Dataslate:Terminals:DataslateTerminalMenu extends TerminalMenu
+ScriptName HTG:Dataslate:Terminals:DataslateTerminalMenu Extends TerminalMenu

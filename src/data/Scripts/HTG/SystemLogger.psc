@@ -1,93 +1,97 @@
-Scriptname HTG:SystemLogger extends ReferenceAlias Hidden
+ScriptName HTG:SystemLogger Extends ReferenceAlias hidden
 
-Group LogNames
-    String Property MainLogName Mandatory Const Auto
-    String Property SubLogName Mandatory Const Auto
-EndGroup
-
-LogSeverity Property Severity Hidden
-    LogSeverity Function Get()
-        return new LogSeverity
-    EndFunction
-EndProperty
-
+;-- Structs -----------------------------------------
 Struct LogSeverity
-    Int Info = 0
-    Int Warning = 1
-    Int Error = 2
+  Int info = 0
+  Int warning = 1
+  Int error = 2
 EndStruct
 
+
+;-- Variables ---------------------------------------
 Quest _quest
 
+;-- Properties --------------------------------------
+Group LogNames
+  String Property MainLogName Auto Const mandatory
+  String Property SubLogName Auto Const mandatory
+EndGroup
+
+htg:systemlogger:logseverity Property Severity hidden
+  htg:systemlogger:logseverity Function Get()
+    Return new htg:systemlogger:logseverity ; #DEBUG_LINE_NO:10
+  EndFunction
+EndProperty
+
+;-- Functions ---------------------------------------
+
 Event OnAliasInit()
-    _quest = GetOwningQuest()
+  _quest = Self.GetOwningQuest() ; #DEBUG_LINE_NO:23
 EndEvent
 
-bool Function Trace(ScriptObject akCallingObject, String mainLogName, String subLogame, String asMessage, Int aiSeverity = 0, Bool bShowNormalTrace = False, Bool bShowWarning = False, Bool bPrefixTraceWithLogNames = True) Global DebugOnly
-    return Debug.TraceLog(akCallingObject, asMessage, mainLogName, subLogame,  aiSeverity, bShowNormalTrace, bShowWarning, bPrefixTraceWithLogNames)
-endFunction
-
-bool Function Warn(ScriptObject akCallingObject, String mainLogName, String subLogame, string asMessage, bool bShowNormalTrace = false, bool bPrefixTraceWithLogNames = true) Global BetaOnly
-    return Trace(akCallingObject, mainLogName, subLogame, asMessage, 2, bShowNormalTrace, True, bPrefixTraceWithLogNames)
+Bool Function Trace(ScriptObject akCallingObject, String MainLogName, String subLogame, String asMessage, Int aiSeverity, Bool bShowNormalTrace, Bool bShowWarning, Bool bPrefixTraceWithLogNames) Global
+  Return Debug.TraceLog(akCallingObject, asMessage, MainLogName, subLogame, aiSeverity, bShowNormalTrace, bShowWarning, bPrefixTraceWithLogNames, True) ; #DEBUG_LINE_NO:27
 EndFunction
 
-bool Function Error(ScriptObject akCallingObject, String mainLogName, String subLogame, string asMessage, bool bShowNormalTrace = false, bool bPrefixTraceWithLogNames = true) Global BetaOnly
-    bool returnVal = Trace(akCallingObject, mainLogName, subLogame, asMessage, 2, bShowNormalTrace, True, bPrefixTraceWithLogNames)
-    Game.Error(asMessage)
-
-    return returnVal
+Bool Function Warn(ScriptObject akCallingObject, String MainLogName, String subLogame, String asMessage, Bool bShowNormalTrace, Bool bPrefixTraceWithLogNames) Global
+  Return HTG:SystemLogger.Trace(akCallingObject, MainLogName, subLogame, asMessage, 2, bShowNormalTrace, True, bPrefixTraceWithLogNames) ; #DEBUG_LINE_NO:31
 EndFunction
 
-Bool Function TraceRefCollectionAlias(RefCollectionAlias akAlias, String mainLogName,  String subLogame, String asMessage) Global
-    String sAlias
-    Int i = 0
-    ObjectReference[] array = akAlias.GetArray()
-    Int count = array.Length
-    Trace(akAlias, mainLogName, subLogame, asMessage)
-    Trace(akAlias, mainLogName, subLogame, "array.Length: " + count)
-    While i < count
-        sAlias += "\takAlias[" + i + "]: " + array[i] as Form + "\n"
-        i += 1
-    EndWhile
+Bool Function error(ScriptObject akCallingObject, String MainLogName, String subLogame, String asMessage, Bool bShowNormalTrace, Bool bPrefixTraceWithLogNames) Global
+  Bool returnVal = HTG:SystemLogger.Trace(akCallingObject, MainLogName, subLogame, asMessage, 2, bShowNormalTrace, True, bPrefixTraceWithLogNames) ; #DEBUG_LINE_NO:35
+  Game.error(asMessage) ; #DEBUG_LINE_NO:36
+  Return returnVal ; #DEBUG_LINE_NO:38
+EndFunction
 
-    return Trace(akAlias, mainLogName, subLogame, sAlias)
+Bool Function TraceRefCollectionAlias(RefCollectionAlias akAlias, String MainLogName, String subLogame, String asMessage) Global
+  String sAlias = "" ; #DEBUG_LINE_NO:42
+  Int I = 0 ; #DEBUG_LINE_NO:43
+  ObjectReference[] array = akAlias.GetArray() ; #DEBUG_LINE_NO:44
+  Int count = array.Length ; #DEBUG_LINE_NO:45
+  HTG:SystemLogger.Trace(akAlias as ScriptObject, MainLogName, subLogame, asMessage, 0, False, False, True) ; #DEBUG_LINE_NO:46
+  HTG:SystemLogger.Trace(akAlias as ScriptObject, MainLogName, subLogame, "array.Length: " + count as String, 0, False, False, True) ; #DEBUG_LINE_NO:47
+  While I < count ; #DEBUG_LINE_NO:48
+    sAlias += (("\takAlias[" + I as String) + "]: " + (array[I] as Form) as String) + "\n" ; #DEBUG_LINE_NO:49
+    I += 1 ; #DEBUG_LINE_NO:50
+  EndWhile
+  Return HTG:SystemLogger.Trace(akAlias as ScriptObject, MainLogName, subLogame, sAlias, 0, False, False, True) ; #DEBUG_LINE_NO:53
 EndFunction
 
 Function LogGlobal(String asMessage) Global
-    ObjectReference player = Game.GetPlayer()
-    Trace(player, "Regenesys", "System", asMessage)
+  ObjectReference player = Game.GetPlayer() as ObjectReference ; #DEBUG_LINE_NO:57
+  HTG:SystemLogger.Trace(player as ScriptObject, "Regenesys", "System", asMessage, 0, False, False, True) ; #DEBUG_LINE_NO:58
 EndFunction
 
 Function LogObjectGlobal(ScriptObject akCallingObject, String asMessage) Global
-    Trace(akCallingObject, "Regenesys", "System", asMessage)
+  HTG:SystemLogger.Trace(akCallingObject, "Regenesys", "System", asMessage, 0, False, False, True) ; #DEBUG_LINE_NO:62
 EndFunction
 
 Function LogRefCollectionAliasGlobal(RefCollectionAlias akAlias, String asMessage) Global
-    TraceRefCollectionAlias(akAlias, "Regenesys", "System", asMessage)
+  HTG:SystemLogger.TraceRefCollectionAlias(akAlias, "Regenesys", "System", asMessage) ; #DEBUG_LINE_NO:66
 EndFunction
 
 Function LogWarnGlobal(ScriptObject akCallingObject, String asMessage) Global
-    Warn(akCallingObject, "Regenesys", "System", asMessage)
-EndFunction
-    
-Function LogErrorGlobal(ScriptObject akCallingObject, String asMessage) Global
-    Error(akCallingObject, "Regenesys", "System", asMessage)
+  HTG:SystemLogger.Warn(akCallingObject, "Regenesys", "System", asMessage, False, True) ; #DEBUG_LINE_NO:70
 EndFunction
 
-Function Log(String asMessage, Int aiSeverity = 0)
-    If aiSeverity == 0
-        Trace(_quest, MainLogName, SubLogName, asMessage)
-    ElseIf aiSeverity == 1
-        Warn(_quest, MainLogName, SubLogName,asMessage)
-    ElseIf aiSeverity == 2
-        Error(_quest, MainLogName, SubLogName,asMessage)
-    EndIf
+Function LogErrorGlobal(ScriptObject akCallingObject, String asMessage) Global
+  HTG:SystemLogger.error(akCallingObject, "Regenesys", "System", asMessage, False, True) ; #DEBUG_LINE_NO:74
+EndFunction
+
+Function Log(String asMessage, Int aiSeverity)
+  If aiSeverity == 0 ; #DEBUG_LINE_NO:78
+    HTG:SystemLogger.Trace(_quest as ScriptObject, MainLogName, SubLogName, asMessage, 0, False, False, True) ; #DEBUG_LINE_NO:79
+  ElseIf aiSeverity == 1 ; #DEBUG_LINE_NO:80
+    HTG:SystemLogger.Warn(_quest as ScriptObject, MainLogName, SubLogName, asMessage, False, True) ; #DEBUG_LINE_NO:81
+  ElseIf aiSeverity == 2 ; #DEBUG_LINE_NO:82
+    HTG:SystemLogger.error(_quest as ScriptObject, MainLogName, SubLogName, asMessage, False, True) ; #DEBUG_LINE_NO:83
+  EndIf
 EndFunction
 
 Function LogObject(ScriptObject akCallingObject, String asMessage)
-    Trace(akCallingObject, MainLogName, SubLogName, asMessage)
+  HTG:SystemLogger.Trace(akCallingObject, MainLogName, SubLogName, asMessage, 0, False, False, True) ; #DEBUG_LINE_NO:88
 EndFunction
 
 Function LogRefCollectionAlias(RefCollectionAlias akAlias, String asMessage)
-    TraceRefCollectionAlias(akAlias, MainLogName, SubLogName, asMessage)
+  HTG:SystemLogger.TraceRefCollectionAlias(akAlias, MainLogName, SubLogName, asMessage) ; #DEBUG_LINE_NO:92
 EndFunction

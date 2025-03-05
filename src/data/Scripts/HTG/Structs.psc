@@ -1,48 +1,50 @@
-Scriptname HTG:Structs
+ScriptName HTG:Structs Extends ScriptObject
 
-Struct TimerDefaults
-    Float Interval = 0.01
-    Int MaxCycles = 100
-EndStruct 
-
-Struct WaitDefaults
-    Float Time = 0.1
-    Int MaxCycles = 10
-EndStruct
-
-Struct SystemTimerIds
-    Int InitializeId = 1000
-    Int InitialRunId = 1001
-    Int MainId = 2000
-EndStruct
-
-Struct LeveledItemInjectionSet
-    LeveledItem BasicList
-    LeveledItem CalibratedList
-    LeveledItem AdvancedList
-    LeveledItem SuperiorList
-    LeveledItem RareList
-    LeveledItem EpicList
-    LeveledItem LengendaryList
-EndStruct
-
+;-- Structs -----------------------------------------
 Struct ArmorSet
-    Armor Helmet
-    Armor Backpack
-    Armor Spacesuit
+  Armor Helmet
+  Armor Spacesuit
+  Armor Backpack
 EndStruct
 
 Struct LeveledArmorSet
-    LeveledItem Helmet
-    LeveledItem Backpack
-    LeveledItem Spacesuit
+  LeveledItem Helmet
+  LeveledItem Spacesuit
+  LeveledItem Backpack
+EndStruct
+
+Struct LeveledItemInjectionSet
+  LeveledItem LengendaryList
+  LeveledItem EpicList
+  LeveledItem BasicList
+  LeveledItem RareList
+  LeveledItem SuperiorList
+  LeveledItem AdvancedList
+  LeveledItem CalibratedList
 EndStruct
 
 Struct QuestCheckInfo
-    Quest QuestObject
-    int Stage
-    Form RewardItem
-    bool CompletionCheck
-    bool UnityCheck
-    int UnityCheckTimes
+  Int UnityCheckTimes
+  Quest QuestObject
+  Bool UnityCheck
+  Bool CompletionCheck
+  Form RewardItem
+  Int Stage
 EndStruct
+
+Struct SystemTimerIds
+  Int InitializeId = 1000
+  Int MainId = 2000
+  Int InitialRunId = 1001
+EndStruct
+
+Struct TimerDefaults
+  Float Interval = 0.01
+  Int MaxCycles = 100
+EndStruct
+
+Struct WaitDefaults
+  Float Time = 0.100000001
+  Int MaxCycles = 10
+EndStruct
+

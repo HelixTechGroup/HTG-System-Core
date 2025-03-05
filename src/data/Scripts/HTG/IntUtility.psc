@@ -1,58 +1,59 @@
-Scriptname HTG:IntUtility extends ScriptObject Hidden
+ScriptName HTG:IntUtility Extends ScriptObject hidden
 
-Bool Function IArraySort(Int[] akArray, Int aiStartingIndex = 0) Global
-    If akArray.Length == 0
-        return True
-    EndIf
+;-- Functions ---------------------------------------
 
-    Bool bFirstNoneFound = False
-    Int iFirstNonePos = aiStartingIndex
-    While aiStartingIndex < akArray.Length - 1
-        If IsIntNone(akArray[aiStartingIndex])
-            If bFirstNoneFound == False
-                bFirstNoneFound = True
-                iFirstNonePos = aiStartingIndex
-                aiStartingIndex += 1
-            Else
-                aiStartingIndex += 1
-            EndIf
-        Else
-            If bFirstNoneFound == True
-                If !IsIntNone(akArray[aiStartingIndex])
-                    akArray[iFirstNonePos] = akArray[aiStartingIndex]
-                    akArray[aiStartingIndex] = 0
-    
-                    IArraySort(akArray, iFirstNonePos + 1)
-                    return True
-                Else
-                    aiStartingIndex += 1
-                EndIf
-            Else
-                aiStartingIndex += 1
-            EndIf
-        EndIf
-    EndWhile
-
-    return False
+Bool Function IntToBool(Int akValue) Global
+  If akValue > 0 ; #DEBUG_LINE_NO:4
+    Return True ; #DEBUG_LINE_NO:5
+  EndIf
+  Return False ; #DEBUG_LINE_NO:8
 EndFunction
 
-Function IArrayClean(Int[] akArray) Global
-    If akArray.Length == 0
-        return
+Bool Function IntArraySort(Int[] akArray, Int aiStartingIndex) Global
+  If akArray.Length == 0 ; #DEBUG_LINE_NO:12
+    Return True ; #DEBUG_LINE_NO:13
+  EndIf
+  Bool bFirstNoneFound = False ; #DEBUG_LINE_NO:16
+  Int iFirstNonePos = aiStartingIndex ; #DEBUG_LINE_NO:17
+  While aiStartingIndex < akArray.Length - 1 ; #DEBUG_LINE_NO:18
+    If HTG:IntUtility.IsIntNone(akArray[aiStartingIndex]) ; #DEBUG_LINE_NO:19
+      If bFirstNoneFound == False ; #DEBUG_LINE_NO:20
+        bFirstNoneFound = True ; #DEBUG_LINE_NO:21
+        iFirstNonePos = aiStartingIndex ; #DEBUG_LINE_NO:22
+        aiStartingIndex += 1 ; #DEBUG_LINE_NO:23
+      Else
+        aiStartingIndex += 1 ; #DEBUG_LINE_NO:25
+      EndIf
+    ElseIf bFirstNoneFound == True ; #DEBUG_LINE_NO:28
+      If !HTG:IntUtility.IsIntNone(akArray[aiStartingIndex]) ; #DEBUG_LINE_NO:29
+        akArray[iFirstNonePos] = akArray[aiStartingIndex] ; #DEBUG_LINE_NO:30
+        akArray[aiStartingIndex] = 0 ; #DEBUG_LINE_NO:31
+        HTG:IntUtility.IntArraySort(akArray, iFirstNonePos + 1) ; #DEBUG_LINE_NO:33
+        Return True ; #DEBUG_LINE_NO:34
+      Else
+        aiStartingIndex += 1 ; #DEBUG_LINE_NO:36
+      EndIf
+    Else
+      aiStartingIndex += 1 ; #DEBUG_LINE_NO:39
     EndIf
+  EndWhile
+  Return False ; #DEBUG_LINE_NO:44
+EndFunction
 
-    Int i = 0
-    Int count = akArray.Length - 1
-
-    While i < count
-        If IsIntNone(akArray[i])
-            akArray.Remove(i)
-        EndIf
-    EndWhile
-
-    IArraySort(akArray)
+Function IntArrayClean(Int[] akArray) Global
+  If akArray.Length == 0 ; #DEBUG_LINE_NO:48
+    Return  ; #DEBUG_LINE_NO:49
+  EndIf
+  Int I = 0 ; #DEBUG_LINE_NO:52
+  Int count = akArray.Length - 1 ; #DEBUG_LINE_NO:53
+  While I < count ; #DEBUG_LINE_NO:55
+    If HTG:IntUtility.IsIntNone(akArray[I]) ; #DEBUG_LINE_NO:56
+      akArray.remove(I, 1) ; #DEBUG_LINE_NO:57
+    EndIf
+  EndWhile
+  HTG:IntUtility.IntArraySort(akArray, 0) ; #DEBUG_LINE_NO:61
 EndFunction
 
 Bool Function IsIntNone(Int aiInt) Global
-    return aiInt == 0
+  Return aiInt == 0 ; #DEBUG_LINE_NO:65
 EndFunction
