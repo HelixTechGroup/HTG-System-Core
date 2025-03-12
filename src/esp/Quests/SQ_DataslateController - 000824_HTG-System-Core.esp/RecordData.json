@@ -15,8 +15,9 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateAssistant_FirstActivation",
-            "Object": "000830:HTG-System-Core.esp"
+            "Name": "SystemUtilities",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 7
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -26,9 +27,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SystemUtilities",
-            "Object": "000824:HTG-System-Core.esp",
-            "Alias": 7
+            "Name": "DataslateAssistant_FirstActivation",
+            "Object": "000830:HTG-System-Core.esp"
           }
         ]
       }
@@ -86,13 +86,8 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Clothes",
-                "Object": "0E048C:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Hat",
-                "Object": "0E048B:Starfield.esm"
+                "Name": "Spacesuit",
+                "Object": "23C7C0:Starfield.esm"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -101,8 +96,13 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Spacesuit",
-                "Object": "23C7C0:Starfield.esm"
+                "Name": "Hat",
+                "Object": "0E048B:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Clothes",
+                "Object": "0E048C:Starfield.esm"
               }
             ]
           },
@@ -145,6 +145,10 @@
         ]
       }
     ]
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Dataslate Assistant System Controller"
   },
   "Data": {
     "Flags": [

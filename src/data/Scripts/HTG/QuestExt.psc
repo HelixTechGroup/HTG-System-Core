@@ -33,7 +33,7 @@ Bool _initializeTimerStarted
 Bool _readyTimerStarted
 Bool _mainTimerStarted
 Float _timerInterval = 0.01
-Int _maxTimerCycle = 50
+Int _maxTimerCycle = 100
 Int _currentTimerCycle = 0
 
 CustomEvent OnInitialRun

@@ -15,21 +15,14 @@
   },
   "ShowBodyText": "Folder",
   "MenuButtonStyle": [
-    "CanBeDesktop"
+    "CanBeDesktop",
+    "UseLongKioskEntry"
   ],
-  "Style": "Kiosk",
+  "Style": "Windows",
   "INAM": {
     "TargetLanguage": "English",
     "Value": "Home"
   },
-  "BodyTexts": [
-    {
-      "Text": {
-        "TargetLanguage": "English",
-        "Value": "Welcome "
-      },
-      "UseTemplatedText": false
-    }
-  ],
+  "BodyTexts": [],
   "MenuItems": []
 }

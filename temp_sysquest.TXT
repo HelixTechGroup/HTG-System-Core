@@ -1,0 +1,2 @@
+Numeric ID	Editor ID	Form: Child Can Use	Form: Has Currents	Form: NavMesh Import Collision	Form: On Local Map	Form: Playable	Form: Used As Platform	Full Name: Full Name <<TESFullName_Component>>
+(0100080D)	SQ_RegenesysTemplate	false	false	Collision Geometry	true	true	false	Regenesys System Controller Template
