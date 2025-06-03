@@ -1,0 +1,82 @@
+{
+  "FormKey": "0008EC:HTG-System-Core.esp",
+  "EditorID": "AA_Spacesuit_BountyHunter_01_Gloves",
+  "FirstPersonFlags": "SSGloves",
+  "Race": "00347D:Starfield.esm",
+  "WorldModel": {
+    "Male": {
+      "File": "Clothes\\BaseGloves\\BaseGloves_M_Low.nif",
+      "LightLayer": 1
+    },
+    "Female": {
+      "File": "Clothes\\BaseGloves\\BaseGloves_F_Low.nif",
+      "LightLayer": 1
+    }
+  },
+  "FirstPersonModel": {
+    "Male": {
+      "File": "Clothes\\BaseGloves\\BaseGloves_M.nif",
+      "LightLayer": 1
+    },
+    "Female": {
+      "File": "Clothes\\BaseGloves\\BaseGloves_F.nif",
+      "LightLayer": 1
+    }
+  },
+  "ExtraLightLayers": [
+    1,
+    1
+  ],
+  "Morphs": {
+    "Male": {
+      "FirstPersonMorph": "05954C:Starfield.esm"
+    },
+    "Female": {
+      "FirstPersonMorph": "05BCD8:Starfield.esm"
+    }
+  },
+  "AdditionalRaces": [
+    "1EE4DA:Starfield.esm"
+  ],
+  "ActorValueModulationEntryType": "",
+  "ActorValueModulationSubType": "",
+  "ActorValueModulationEntryValue": "",
+  "BoneDataModifiers": {
+    "Male": [
+      "05954A:Starfield.esm",
+      "05954B:Starfield.esm",
+      "05B3DD:Starfield.esm",
+      "05B3DE:Starfield.esm",
+      "05B3E0:Starfield.esm",
+      "05B3E2:Starfield.esm",
+      "05B3E1:Starfield.esm",
+      "05B3DF:Starfield.esm",
+      "05B3E3:Starfield.esm",
+      "05B3E4:Starfield.esm",
+      "05B3E5:Starfield.esm",
+      "05B3E6:Starfield.esm",
+      "05B3E7:Starfield.esm",
+      "05B3E8:Starfield.esm",
+      "05B3E9:Starfield.esm",
+      "05B3EA:Starfield.esm"
+    ],
+    "Female": [
+      "05954A:Starfield.esm",
+      "05954B:Starfield.esm",
+      "05B3DD:Starfield.esm",
+      "05B3DE:Starfield.esm",
+      "05B3E0:Starfield.esm",
+      "05B3E2:Starfield.esm",
+      "05B3E1:Starfield.esm",
+      "05B3DF:Starfield.esm",
+      "05B3E3:Starfield.esm",
+      "05B3E4:Starfield.esm",
+      "05B3E5:Starfield.esm",
+      "05B3E6:Starfield.esm",
+      "05B3E7:Starfield.esm",
+      "05B3E8:Starfield.esm",
+      "05B3E9:Starfield.esm",
+      "05B3EA:Starfield.esm"
+    ]
+  }
+}

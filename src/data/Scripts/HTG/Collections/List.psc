@@ -27,42 +27,24 @@ Guard _arrayGuard ProtectsFunctionLogic
 Var[] _internalArray
 Bool _isInitialized
 Int _count = 0
+Int _trackedIndex = 0
 Int _maxSize = 128 Const
 
-List Function List(Int aiSize = 4) Global 
-    List res = HTG:Collections:List._CreateReference(_CreateForm(), aiSize) as List
-    res.Enable(False)
-    res.Initialize(aiSize)
+List Function List(Int aiSize = 0) Global 
+    List res = _CreateList(aiSize = aiSize)
+    LogObjectGlobal(res, "HTG:Collections:List.List(" + aiSize  + "): " + res)
+    return res
 EndFunction
 
-Form Function _CreateForm(Int aiFormId = 0x00000817, String modName = "HTG-System-Core") Global
-    Form aForm = Game.GetFormFromFile(aiFormId, modName + ".esp")
-    HTG:SystemLogger.LogObjectGlobal(aForm, "HTG:Collections:List._CreateForm(" + aiFormId + ", " + modName + ".esp): " + aForm)
-    If aForm == None
-        aForm = Game.GetFormFromFile(aiFormId, modName + ".esm") 
-        HTG:SystemLogger.LogObjectGlobal(aForm, "HTG:Collections:List._CreateForm(" + aiFormId + ", " + modName + ".esm): " + aForm)
-    EndIf
-
-    return aForm
-EndFunction
-
-ObjectReference Function _CreateReference(Form akForm, Int aiSize = 4) Global
-    If akForm != None ;;&& akForm is List
-        ObjectReference ref = Game.GetPlayer().PlaceAtMe(akForm, abInitiallyDisabled = True, abDeleteWhenAble = False)
-        HTG:SystemLogger.LogObjectGlobal(ref, "HTG:Collections:List._CreateReference(" + akForm + ", " + aiSize  + "): " + ref)
-        return ref
-    EndIf
-
-    return None
-EndFunction
-
-Bool Function Initialize(Int aiSize = 4)
+Bool Function Initialize(Int aiSize = 0)
     If _isInitialized
         return False
     EndIf
 
     LockGuard _arrayGuard
         _internalArray = new Var[aiSize]
+        _trackedIndex = 0
+        _count = 0
         _isInitialized = True
     EndLockGuard
 
@@ -77,6 +59,7 @@ Function Clear()
     LockGuard _arrayGuard
         _internalArray.Clear()
         _count = 0
+        _trackedIndex = 0
         _isInitialized = False
     EndLockGuard
 EndFunction
@@ -97,20 +80,95 @@ Int Function Add(Var akItem, Bool overrideExisting = False)
 
     Int i = -1
     LockGuard _arrayGuard
-        i = FindFirstEmpty()
-        If i > -1
-            _internalArray[i] = akItem
-            _count += 1
-        EndIf
-
+    i = _trackedIndex ; FindFirstEmpty()
+    If i >= 0 && _trackedIndex <= _internalArray.Length
+        _internalArray[i] = akItem
+        _trackedIndex += 1
+        _count += 1
+    Else
         If _internalArray.Length < _maxSize
             _internalArray.Add(akItem, 1)
+            _trackedIndex += 1
             _count += 1
-            i = _internalArray.Length
+            ; i = _internalArray.Length - 1
         EndIf
+    EndIf
     EndLockGuard
 
+    ; Clean()
     LogObjectGlobal(akItem as ScriptObject, "Added item with Index: " + i + " and Count: " + _count)
+    return i
+EndFunction
+
+Int Function AddList(List akList)
+    If !_isInitialized
+        return -1
+    EndIf
+
+    Int i = -1
+    Int kI = 0
+    While kI < akList.Count
+        Var kItem = akList.GetVarAt(kI)
+        If TestType(kItem) 
+            Int fI = Find(kItem)
+            If fI < 0
+                LockGuard _arrayGuard
+                i = _trackedIndex ; FindFirstEmpty()
+                If i > -1 && _trackedIndex <= _internalArray.Length
+                    _internalArray[i] = kItem
+                    _trackedIndex += 1
+                    _count += 1
+                Else
+                    If _internalArray.Length < _maxSize
+                        _internalArray.Add(kItem, 1)
+                        _trackedIndex += 1
+                        _count += 1
+                        ; i = _internalArray.Length - 1
+                    EndIf
+                EndIf
+                EndLockGuard
+            EndIf
+        EndIf
+    EndWhile
+
+    ; Clean()
+    LogObjectGlobal(akList, "Added items with last Index: " + i + " and Count: " + _count)
+    return i
+EndFunction
+
+Int Function AddArray(Var[] akArray)
+    If !_isInitialized
+        return -1
+    EndIf
+
+    Int i = -1
+    Int kI = 0
+    While kI < akArray.Length
+        Var kItem = akArray[kI]
+        If TestType(kItem) 
+            Int fI = Find(kItem)
+            If fI < 0
+                LockGuard _arrayGuard
+                i = _trackedIndex ; FindFirstEmpty()
+                If i > -1 && _trackedIndex <= _internalArray.Length
+                    _internalArray[i] = kItem
+                    _trackedIndex += 1
+                    _count += 1
+                Else
+                    If _internalArray.Length < _maxSize
+                        _internalArray.Add(kItem, 1)
+                        _trackedIndex += 1
+                        _count += 1
+                        ; i = _internalArray.Length - 1
+                    EndIf
+                EndIf
+                EndLockGuard
+            EndIf
+        EndIf
+    EndWhile
+
+    ; Clean()
+    LogObjectGlobal(Self, "Added items with last Index: " + i + " and Count: " + _count)
     return i
 EndFunction
 
@@ -124,10 +182,12 @@ Int Function Remove(Var akItem)
         i = Find(akItem)
         If i > -1
             _internalArray.Remove(i)
+            _trackedIndex -= 1
             _count -= 1
         EndIf
     EndLockGuard
 
+    Sort()
     LogObjectGlobal(akItem as ScriptObject, "Removed item with Index: " + i + " and Count: " + _count)
     return i
 EndFunction
@@ -259,6 +319,10 @@ Function Clean()
 EndFunction
 
 Bool Function IsNone(Var akItem)
+    If akItem is ScriptObject
+        return HTG:UtilityExt.IsNone(akItem as ScriptObject) 
+    EndIf
+
     return False
 EndFunction
 
@@ -314,15 +378,15 @@ String Function ToString()
     return res
 EndFunction
 
-Function WaitForInitialized()
-    If IsInitialized
-        return
+Bool Function WaitForInitialized()
+    If _isInitialized
+        return True
     EndIf
     
     Int currentCycle = 0
     Int maxCycle = 50
     Bool maxCycleHit
-    While !maxCycleHit && !IsInitialized
+    While !maxCycleHit && !_isInitialized
         Utility.Wait(0.1)
 
         If currentCycle < maxCycle
@@ -331,4 +395,14 @@ Function WaitForInitialized()
             maxCycleHit = True
         EndIf
     EndWhile
+
+    return _isInitialized
+EndFunction
+
+List Function _CreateList(Int aiFormId = 0x00000817, String asModName = "HTG-System-Core", Int aiSize = 4) Global
+    Form kForm = HTG:FormUtility.CreateForm(aiFormId, asModName)
+    List res = HTG:FormUtility.CreateReference(Game.GetPlayer(), kform) as List
+    res.Enable(False)
+    res.Initialize(aiSize)
+    return res
 EndFunction

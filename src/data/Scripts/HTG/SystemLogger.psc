@@ -38,6 +38,10 @@ bool Function Error(ScriptObject akCallingObject, String mainLogName, String sub
     return returnVal
 EndFunction
 
+Function TraceFunction()
+    Debug.TraceFunction()
+EndFunction
+
 Bool Function TraceRefCollectionAlias(RefCollectionAlias akAlias, String mainLogName,  String subLogame, String asMessage) Global
     String sAlias
     Int i = 0

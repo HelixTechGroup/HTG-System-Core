@@ -2,12 +2,17 @@ Scriptname HTG:QuestExt extends Quest
 import HTG
 import HTG:Structs
 import HTG:SystemLogger
+import HTG:UtilityExt
 
-SystemUtilities Property SystemUtilities Auto Const Mandatory
+HTG:SystemUtilities Property SystemUtilities Hidden
+    HTG:SystemUtilities Function Get()
+        return _systemUtilities
+    EndFunction
+EndProperty
 
 HTG:SystemLogger Property Logger Hidden
     HTG:SystemLogger Function Get()
-        return SystemUtilities.Logger
+        return _systemUtilities.Logger
     EndFunction
 EndProperty
 
@@ -23,10 +28,13 @@ Bool Property IsInitialRun Hidden
     EndFunction
 EndProperty
 
+Int Property UtilitiesAliasId Auto Hidden
+
 Guard _initializeTimerGuard ProtectsFunctionLogic
 Guard _readyTimerGuard ProtectsFunctionLogic
 Guard _mainTimerGuard ProtectsFunctionLogic
 SystemTimerIds _timerIds
+HTG:SystemUtilities _systemUtilities
 Bool _isInitialized
 Bool _isInitialRun
 Bool _initializeTimerStarted
@@ -54,6 +62,10 @@ EndEvent
 Event OnQuestStarted()
     WaitForInitialized()
     StartTimer(_timerInterval, _timerIds.MainId)
+
+    If _systemUtilities.DebugGlobal.GetValueInt() == 8
+        Debug.Notification( Logger.MainLogName + ":" + Logger.SubLogName + " has been started.")
+    EndIf
 EndEvent
 
 Event OnStageSet(int auiStageID, int auiItemID)
@@ -77,17 +89,17 @@ Event OnTimer(Int aiTimerID)
         Int timerId = -1
 
         LockGuard _initializeTimerGuard
-        _initializeTimerStarted = True
-        If !Initialize() &&  _currentTimerCycle < _maxTimerCycle            
-            _currentTimerCycle += 1
-            timerId = _timerIds.InitializeId
-        ElseIf !_isInitialized && _currentTimerCycle == _maxTimerCycle
-            LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
-        Else
-            Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
-            timerId = SystemUtilities.Timers.SystemTimerIds.InitialRunId
-        EndIf
-        _initializeTimerStarted = False
+            _initializeTimerStarted = True
+            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle            
+                _currentTimerCycle += 1
+                timerId = _timerIds.InitializeId
+            ElseIf !_isInitialized && _currentTimerCycle == _maxTimerCycle
+                LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
+            Else
+                Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
+                timerId = _systemUtilities.Timers.SystemTimerIds.InitialRunId
+            EndIf
+            _initializeTimerStarted = False
         EndLockGuard
 
         If timerid > -1
@@ -100,11 +112,11 @@ Event OnTimer(Int aiTimerID)
         EndIf
 
         LockGuard _readyTimerGuard
-        _readyTimerStarted = True
-        SendCustomEvent("OnInitialRun")
-        _InitialRun()
-        _isInitialRun = False
-        _readyTimerStarted = False
+            _readyTimerStarted = True
+            SendCustomEvent("OnInitialRun")
+            _InitialRun()
+            _isInitialRun = False
+            _readyTimerStarted = False
         EndLockGuard
 
         Logger.Log("ReadyTimer - Completed Initial Run.")
@@ -116,16 +128,20 @@ Event OnTimer(Int aiTimerID)
 
         Bool restartTimer
         LockGuard _mainTimerGuard
-        _mainTimerStarted = True
-        SendCustomEvent("OnMain")
-        restartTimer = _Main()
-        _mainTimerStarted = False
+            _mainTimerStarted = True
+            SendCustomEvent("OnMain")
+            restartTimer = _Main()
+            _mainTimerStarted = False
         EndLockGuard
 
         If restartTimer
             StartTimer(_timerInterval, _timerIds.MainId)
         EndIf
     EndIf
+EndEvent
+
+Event OnGameplayOptionChanged(GameplayOption[] aChangedOptions)
+    WaitForInitialized()
 EndEvent
 
 Event HTG:QuestExt.OnInitialRun(HTG:QuestExt akSender, Var[] akArgs)
@@ -142,9 +158,9 @@ Bool Function Initialize()
     return _isInitialized
 EndFunction
 
-Function WaitForInitialized()
+Bool Function WaitForInitialized()
     If _isInitialized
-        return
+        return True
     EndIf
     
     Int currentCycle = 0
@@ -153,7 +169,7 @@ Function WaitForInitialized()
 
     ; StartTimer(_timerInterval, _initializeTimerId)
     While !maxCycleHit && !_isInitialized
-        Utility.Wait(0.1)
+        Utility.WaitMenuPause(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -161,15 +177,50 @@ Function WaitForInitialized()
             maxCycleHit = True
         EndIf
     EndWhile
+
+    return _isInitialized
 EndFunction
 
 Bool Function _SetSystemUtilities()
-    SystemUtilities.WaitForInitialized()
-    return True
+    Int kMaxIndex = 100
+    Int i = 0
+    HTG:SystemUtilities kUtils
+
+    If !IsNone(_systemUtilities)
+        return _systemUtilities.IsInitialized
+    EndIf
+
+    If UtilitiesAliasId < 0
+        kUtils = GetAlias(UtilitiesAliasId) as HTG:SystemUtilities
+    EndIf
+
+    If !IsNone(kUtils)
+        _systemUtilities = kUtils
+        return _systemUtilities.IsInitialized
+    EndIf 
+
+    While i <= kMaxIndex
+        kUtils = GetAlias(i) as HTG:SystemUtilities
+        If IsNone(kUtils)
+            i += 1
+        Else
+            _systemUtilities = kUtils
+            UtilitiesAliasId = i
+            i = 101
+        EndIf
+    EndWhile
+
+    If !IsNone(_systemUtilities)
+        return _systemUtilities.IsInitialized
+    Else
+        Game.Error("Could not find SystemUtilities Alias.")
+    EndIf
+
+    return False
 EndFunction
 
 Bool Function _Init()
-    return true
+    return True
 EndFunction
 
 Function _InitialRun()

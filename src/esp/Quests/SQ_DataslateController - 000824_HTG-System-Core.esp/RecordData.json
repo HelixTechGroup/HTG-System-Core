@@ -1,11 +1,10 @@
 {
   "FormKey": "000824:HTG-System-Core.esp",
   "EditorID": "SQ_DataslateController",
-  "FormVersion": 576,
   "VirtualMachineAdapter": {
     "Scripts": [
       {
-        "Name": "HTG:Dataslate:Quests:SQ_DataslateController",
+        "Name": "HTG:Quests:SQ_DataslateController",
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -15,20 +14,14 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SystemUtilities",
-            "Object": "000824:HTG-System-Core.esp",
-            "Alias": 7
+            "Name": "DataslateAssistant_FirstActivation",
+            "Object": "000830:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "DataslateTracker",
             "Object": "000824:HTG-System-Core.esp",
             "Alias": 10
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateAssistant_FirstActivation",
-            "Object": "000830:HTG-System-Core.esp"
           }
         ]
       }
@@ -86,13 +79,8 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Spacesuit",
-                "Object": "23C7C0:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Helmet",
-                "Object": "23C7C1:Starfield.esm"
+                "Name": "Clothes",
+                "Object": "0E048C:Starfield.esm"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -101,8 +89,13 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Clothes",
-                "Object": "0E048C:Starfield.esm"
+                "Name": "Spacesuit",
+                "Object": "23C7C0:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Helmet",
+                "Object": "23C7C1:Starfield.esm"
               }
             ]
           },
@@ -110,7 +103,14 @@
             "Name": "HTG:UtilityExt"
           },
           {
-            "Name": "HTG:SystemUtilities"
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DebugGlobal",
+                "Object": "0A7D31:Starfield.esm"
+              }
+            ]
           }
         ]
       },
@@ -122,14 +122,8 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:Dataslate:Quests:DataslateTracker",
+            "Name": "HTG:Quests:DataslateTracker",
             "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "SystemUtilities",
-                "Object": "000824:HTG-System-Core.esp",
-                "Alias": 7
-              },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "FirstActivation",
@@ -158,7 +152,7 @@
     "Priority": 20,
     "Unused": "0x000000"
   },
-  "QuestType": "00080F:HTG-System-Core.esp",
+  "QuestType": "0475F8:Starfield.esm",
   "UnusedConditions": [],
   "Stages": [
     {
@@ -247,5 +241,6 @@
       "VoiceTypes": "Null"
     }
   ],
-  "SwfFile": "skillpatches.swf"
+  "SwfFile": "skillpatches.swf",
+  "Unknown": 41
 }

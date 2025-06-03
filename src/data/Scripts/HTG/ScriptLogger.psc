@@ -31,6 +31,10 @@ bool Function Error(ScriptObject CallingObject, string asMessage, bool bShowNorm
     return returnVal
 EndFunction
 
+Bool Function TraceFunction() Global
+    Debug.TraceFunction()
+EndFunction
+
 Bool Function TraceRefCollectionAliasEntries(ScriptObject CallingObject, RefCollectionAlias akAlias, String asString = "Tracing RefCollection ALias...") DebugOnly
     String sAlias
     Int i = 0

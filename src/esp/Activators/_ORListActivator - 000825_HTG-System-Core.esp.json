@@ -2,7 +2,6 @@
   "FormKey": "000825:HTG-System-Core.esp",
   "MajorRecordFlagsRaw": 9437696,
   "EditorID": "_ORListActivator",
-  "FormVersion": 576,
   "StarfieldMajorRecordFlags": [
     "0x200",
     "0x100000",
@@ -15,13 +14,12 @@
       }
     ]
   },
-  "ODTY": 0.0,
   "Name": {
     "TargetLanguage": "English",
     "Value": "ObjectReferenceList Collection Activator"
   },
   "Model": {
-    "FLLD": "0x01000000"
+    "LightLayer": 1
   },
   "MarkerColor": "#00CC4C33",
   "Flags": [

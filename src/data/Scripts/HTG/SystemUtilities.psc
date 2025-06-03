@@ -3,12 +3,15 @@ import HTG
 import HTG:Collections
 import HTG:SystemLogger
 import HTG:Structs
+import HTG:UtilityExt
 
 ; Struct Utilities
 ;     IntUtility Integers
 ;     FormUtility Forms
 ;     ArmorUtility Armors
 ; EndStruct
+
+Guard _loggerGuard ProtectsFunctionLogic
 
 HTG:SystemLogger Property Logger Hidden
     HTG:SystemLogger Function Get()
@@ -40,6 +43,8 @@ ArmorUtility Property Armors Hidden
     EndFunction
 EndProperty
 
+GlobalVariable Property DebugGlobal Mandatory Const Auto
+
 ; Utilities Property Utilities Hidden 
 ;     Utilities Function Get()
 ;         return _utilities
@@ -48,11 +53,7 @@ EndProperty
 
 Bool Property IsInitialized Hidden
     Bool Function Get()
-        return _logger != None \ 
-        && _timerUtility  != None \
-        && _intUtility != None \
-        && _formUtility != None \
-        && _armorUtility != None
+        return _isInitialized
     EndFunction
 EndProperty
 
@@ -69,7 +70,7 @@ Bool _isInitialized
 Bool _initializeTimerStarted
 Int _initializeTimerId = 1
 Float _timerInternal = 0.01
-Int _maxTimerCycle = 50
+Int _maxTimerCycle = 500
 Int _currentTimerCycle = 0
 
 Event OnInit()
@@ -77,54 +78,61 @@ Event OnInit()
 EndEvent
 
 Bool Function Initialize()
-    If IsInitialized
+    If _isInitialized
         return True
     EndIf
 
-    ; TryLockGuard _utilitiesGuard
-    ScriptObject so = Self as ScriptObject 
-    LogObjectGlobal(Self, "HTG:SystemUtilities:" + Self + "\n\t As ScriptObject:" + so)
+    TryLockGuard _utilitiesGuard
+        ScriptObject so = Self as ScriptObject 
+        LogObjectGlobal(Self, "HTG:SystemUtilities:" + Self + "\n\t As ScriptObject:" + so)
 
-    _SetSystemUtilities(so)
-    ; EndTryLockGuard
+        _isInitialized = _SetSystemUtilities(so)
+    EndTryLockGuard
 
     return _CheckSystemUtilites()
 EndFunction
 
-Function _SetSystemUtilities(ScriptObject akScriptObject)
+Bool Function _SetSystemUtilities(ScriptObject akScriptObject)
     If akScriptObject == None
         LogErrorGlobal(Self, "The object attached to  this Script is not a ScriptObject:" + Self)
-        return
+        return False
     EndIf
 
+    Bool res = True
     ; If _utilities == None
     ;     _utilities = new Utilities
     ; EndIf
     ; LogObjectGlobal(Self, "Utilities:" + _utilities)
 
-    IF _logger == None
+    IF IsNone(_logger)
         _logger = akScriptObject as HTG:SystemLogger
     EndIf
 
-    If _timerUtility == None
+    If IsNone(_timerUtility)
         _timerUtility = akScriptObject as TimerUtility
         LogObjectGlobal(Self, "Timer:" + _timerUtility)
     EndIf
 
-    If _intUtility == None
+    If IsNone(_intUtility)
         _intUtility = akScriptObject as IntUtility
         LogObjectGlobal(Self, "Integers:" + _intUtility)
     EndIf
 
-    If _formUtility == None
+    If IsNone(_formUtility)
         _formUtility = akScriptObject as FormUtility
         LogObjectGlobal(Self, "Utilities.Forms:" + _formUtility)
     EndIf
 
-    If _armorUtility == None
+    If IsNone(_armorUtility)
         _armorUtility = akScriptObject as ArmorUtility
         LogObjectGlobal(Self, "Utilities.Armors:" + _armorUtility)
     EndIf
+
+    return !IsNone(_logger) && \
+            !IsNone(_timerUtility) && \
+            !IsNone(_intUtility) && \
+            !IsNone(_formUtility) && \
+            !IsNone(_armorUtility)
 EndFunction
 
 Bool Function _CheckSystemUtilites()
@@ -134,44 +142,50 @@ Bool Function _CheckSystemUtilites()
     ;     return False
     ; EndIf
 
-    If _logger == None
+    If IsNone(_logger)
         LogWarnGlobal(Self, "Logger is None.")
-    ElseIf _timerUtility == None
+    ElseIf IsNone(_timerUtility)
         LogWarnGlobal(Self, "Timers is None.")
-    ElseIf _intUtility == None
+    ElseIf IsNone(_intUtility)
         LogWarnGlobal(Self, "Integers is None.")
-    ElseIf _formUtility == None        
+    ElseIf IsNone(_formUtility)        
         LogWarnGlobal(Self, "Forms is None.")
-    ElseIf _armorUtility == None        
+    ElseIf IsNone(_armorUtility)        
         LogWarnGlobal(Self, "Armors is None.")
     Else
         res = True
     EndIf
 
-    return IsInitialized
+    return !IsNone(_logger) && \
+            !IsNone(_timerUtility) && \
+            !IsNone(_intUtility) && \
+            !IsNone(_formUtility) && \
+            !IsNone(_armorUtility)
 EndFunction
 
 Event OnTimer(Int aiTimerID)
     If aiTimerID == _initializeTimerId
-        If !Initialize() &&  _currentTimerCycle < _maxTimerCycle            
-            _currentTimerCycle += 1
-            StartTimer(_timerInternal, _initializeTimerId)
-        ElseIf _currentTimerCycle == _maxTimerCycle
-            LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
-        EndIf
+        TryLockGuard _initializeTimerGuard, _utilitiesGuard
+            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle            
+                _currentTimerCycle += 1
+                StartTimer(_timerInternal, _initializeTimerId)
+            ElseIf _currentTimerCycle == _maxTimerCycle
+                LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
+            EndIf
+        EndTryLockGuard
     EndIf
 EndEvent
 
-Function WaitForInitialized()
-    If IsInitialized
-        return
+Bool Function WaitForInitialized()
+    If _isInitialized
+        return True
     EndIf
     
     Int currentCycle = 0
     Int maxCycle = 600
     Bool maxCycleHit
-    While !maxCycleHit && !IsInitialized
-        Utility.Wait(0.1)
+    While !maxCycleHit && !_isInitialized
+        Utility.WaitMenuPause(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -179,4 +193,6 @@ Function WaitForInitialized()
             maxCycleHit = True
         EndIf
     EndWhile
+
+    return _isInitialized
 EndFunction

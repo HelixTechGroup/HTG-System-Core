@@ -1,0 +1,34 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "0008A8:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_UC_XenoSpecialist_Spacesuit_UC08",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "UC AntiXeno Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "0E8D7B:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 28,
+      "Value2": 31
+    },
+    {
+      "MutagenObjectType": "ObjectModFormLinkIntProperty<Armor+Property>",
+      "Property": "LayeredMaterialSwap",
+      "Record": "015C33:Starfield.esm"
+    }
+  ]
+}

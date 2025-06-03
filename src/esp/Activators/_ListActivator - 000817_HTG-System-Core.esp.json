@@ -2,7 +2,6 @@
   "FormKey": "000817:HTG-System-Core.esp",
   "MajorRecordFlagsRaw": 9437696,
   "EditorID": "_ListActivator",
-  "FormVersion": 576,
   "StarfieldMajorRecordFlags": [
     "0x200",
     "0x100000",
@@ -19,13 +18,12 @@
     "First": "-1, -1, -1",
     "Second": "1, 1, 1"
   },
-  "ODTY": 0.0,
   "Name": {
     "TargetLanguage": "English",
     "Value": "List Collection Activator"
   },
   "Model": {
-    "FLLD": "0x01000000"
+    "LightLayer": 1
   },
   "MarkerColor": "#00CC4C33",
   "Flags": [

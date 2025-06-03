@@ -1,7 +1,97 @@
 {
   "FormKey": "000811:HTG-System-Core.esp",
   "EditorID": "SQ_SystemTemplate",
-  "FormVersion": 576,
+  "VirtualMachineAdapter": {
+    "Script": {
+      "Name": ""
+    },
+    "Aliases": [
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000811:HTG-System-Core.esp",
+          "Alias": 0
+        },
+        "Scripts": [
+          {
+            "Name": "htg:structs"
+          },
+          {
+            "Name": "htg:systemlogger",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptStringProperty",
+                "Name": "MainLogName",
+                "Data": "HTG"
+              },
+              {
+                "MutagenObjectType": "ScriptStringProperty",
+                "Name": "SubLogName",
+                "Data": "Template"
+              }
+            ]
+          },
+          {
+            "Name": "htg:timerutility"
+          },
+          {
+            "Name": "htg:formutility"
+          },
+          {
+            "Name": "htg:intutility"
+          },
+          {
+            "Name": "htg:armorutility",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Backpack",
+                "Object": "23C7BF:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ArmorTypes",
+                "Object": "000819:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Helmet",
+                "Object": "23C7C1:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Spacesuit",
+                "Object": "23C7C0:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Hat",
+                "Object": "0E048B:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Clothes",
+                "Object": "0E048C:Starfield.esm"
+              }
+            ]
+          },
+          {
+            "Name": "HTG:UtilityExt"
+          },
+          {
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DebugGlobal",
+                "Object": "0A7D31:Starfield.esm"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "Name": {
     "TargetLanguage": "English",
     "Value": "System Template"
@@ -9,11 +99,38 @@
   "Data": {
     "Flags": [
       "StartGameEnabled",
-      "StartsEnabled",
-      "RunOnce"
+      "StartsEnabled"
     ],
+    "Priority": 30,
     "Unused": "0x000000"
   },
+  "Summary": "HTG System Quest Template.\r\nPlease create a new script for your quest that Extends HTG:QuestExt",
   "UnusedConditions": [],
-  "Aliases": []
+  "Aliases": [
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "Name": "SystemUtilities",
+      "Flags": [
+        "AllowReuseInQuest"
+      ],
+      "ALFG": 0,
+      "ForcedReference": "000812:HTG-System-Core.esp",
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 1,
+      "Name": "DataslateTerminal",
+      "Flags": [
+        "AllowReuseInQuest",
+        "ExternalAliasLinked"
+      ],
+      "ALFG": 0,
+      "External": {
+        "Quest": "000824:HTG-System-Core.esp",
+        "AliasID": 5
+      },
+      "VoiceTypes": "Null"
+    }
+  ]
 }

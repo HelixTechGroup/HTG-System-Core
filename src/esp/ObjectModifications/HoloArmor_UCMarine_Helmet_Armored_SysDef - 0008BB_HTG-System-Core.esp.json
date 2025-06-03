@@ -1,0 +1,29 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "0008BB:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_UCMarine_Helmet_Armored_SysDef",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "SysDef Armored Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "3A0B3B:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 31,
+      "Value2": 31
+    }
+  ]
+}

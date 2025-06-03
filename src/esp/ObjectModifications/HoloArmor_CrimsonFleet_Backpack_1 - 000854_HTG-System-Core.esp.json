@@ -1,0 +1,29 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "000854:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_CrimsonFleet_Backpack_1",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Pirate Raiding Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "3E612E:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 8,
+      "Value2": 8
+    }
+  ]
+}

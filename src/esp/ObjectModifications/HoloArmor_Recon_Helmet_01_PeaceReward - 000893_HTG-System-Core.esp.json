@@ -1,0 +1,29 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "000893:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_Recon_Helmet_01_PeaceReward",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Peacemaker Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "3A0B3B:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 21,
+      "Value2": 21
+    }
+  ]
+}

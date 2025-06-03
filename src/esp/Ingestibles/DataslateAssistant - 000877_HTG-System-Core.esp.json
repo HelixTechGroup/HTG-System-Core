@@ -1,19 +1,20 @@
 {
   "FormKey": "000877:HTG-System-Core.esp",
   "EditorID": "DataslateAssistant",
-  "FormVersion": 576,
   "ObjectBounds": {
     "First": "-0.1887207, -0.08190918, -0.12384033",
     "Second": "0.18029785, 0.032989502, 0.1282959"
   },
-  "ODTY": 0.0,
   "Name": {
     "TargetLanguage": "English",
     "Value": "Configuration Dataslate"
   },
+  "Keywords": [
+    "2BE987:Starfield.esm"
+  ],
   "Model": {
     "File": "Items\\DataSlate\\DataSlate01.nif",
-    "FLLD": "0x01000000"
+    "LightLayer": 1
   },
   "Description": {
     "TargetLanguage": "English",

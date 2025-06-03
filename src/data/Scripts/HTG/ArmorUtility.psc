@@ -1,4 +1,6 @@
 Scriptname HTG:ArmorUtility extends ScriptObject Hidden
+import HTG:Structs
+import HTG:UtilityExt
 
 Keyword Property Hat Auto Const Mandatory
 Keyword Property Clothes Auto Const Mandatory
@@ -24,6 +26,8 @@ Int Property SSBackpackSlot = 0x00000025 AutoReadOnly; HeadSlot + BodySlot + Amu
 Int Property SSBodySlot = 0x00000026 AutoReadOnly; BodySlot + HairSlot + AmuletSlot AutoReadOnly; Spacesuit
 Int Property SSHeadSlot = 0x00000024 AutoReadOnly; BodySlot + AmuletSlot AutoReadOnly; Spacesuit Helmet
 
+Guard _armorCheckGuard ProtectsFunctionLogic
+
 ; Struct ArmorSlots
 ;     Int HeadSlot = 0x00000001 
 ;     Int HairSlot = 0x00000002 ; Hair 2
@@ -42,7 +46,8 @@ Int Property SSHeadSlot = 0x00000024 AutoReadOnly; BodySlot + AmuletSlot AutoRea
 ;     Int SSHead = 0x00000024 ; BodySlot + AmuletSlot ; Spacesuit Helmet
 ; EndStruct
 
-Keyword Function GetArmorType(Form akFrom)
+Keyword Function GetArmorType(Form akForm)
+    TryLockGuard _armorCheckGuard
     Bool isWearable
     Keyword resKeyword = None
     Int i = 0
@@ -50,7 +55,7 @@ Keyword Function GetArmorType(Form akFrom)
 
     While i < count && !isWearable
         Keyword kw = ArmorTypes.GetAt(i) as Keyword
-        isWearable = akFrom.HasKeyword(kw)
+        isWearable = akForm.HasKeyword(kw)
         If (isWearable)
             resKeyword = kw
         EndIf
@@ -58,6 +63,7 @@ Keyword Function GetArmorType(Form akFrom)
     EndWhile
 
     return resKeyword
+    EndTryLockGuard
 EndFunction
 
 Function UnequipAllArmor(Actor akActor)
@@ -103,6 +109,69 @@ Function UnequipArmorType(Actor akActor, Keyword akArmorType)
     ElseIf akArmorType == Spacesuit
         akActor.UnequipItemSlot(SSBodySlot) ; Spacesuit                    
     EndIf
+EndFunction
+
+Armor Function GetArmorPiece(ArmorSet akArmorSet, Keyword akArmorType)
+    If akArmorSet.Backpack.HasKeyword(akArmorType)
+        return akArmorSet.Backpack
+    ElseIf akArmorSet.Helmet.HasKeyword(akArmorType)
+        return akArmorSet.Helmet
+    ElseIf akArmorSet.Spacesuit.HasKeyword(akArmorType)
+        return akArmorSet.Spacesuit
+    EndIf
+
+    return None
+EndFunction
+
+Bool Function EquipArmorSet(Actor akActor, ArmorSet akArmorSet)
+    Bool kResult = True
+    If akActor && akArmorSet
+        If !AddItemToActor(akActor, akArmorSet.Backpack, autoequip = True)
+            kResult = false
+        EndIf
+        
+        If !AddItemToActor(akActor, akArmorSet.Helmet, autoequip = True)
+            kResult = false
+        EndIf
+
+        If !AddItemToActor(akActor, akArmorSet.Spacesuit, autoequip = True)
+            kResult = false
+        EndIf
+
+        return kResult
+    EndIf
+
+    return False
+EndFunction
+
+Bool Function UnequipArmorSet(Actor akActor, ArmorSet akArmorSet)
+    Bool kResult = True
+    If akActor && akArmorSet
+        If !RemoveItemFromActor(akActor, akArmorSet.Backpack)
+            kResult = false
+        EndIf
+        
+        If !RemoveItemFromActor(akActor, akArmorSet.Helmet)
+            kResult = false
+        EndIf
+
+        If !RemoveItemFromActor(akActor, akArmorSet.Spacesuit)
+            kResult = false
+        EndIf
+
+        return kResult
+    EndIf
+
+    return False
+EndFunction
+
+Bool Function AddModToArmor(Actor akActor, Armor akArmor, ObjectMod akMod)
+    Keyword kType = GetArmorType(akArmor)
+    If akMod && akArmor
+        return akActor.AttachModToInventoryItem(akArmor, akMod)
+    EndIf
+
+    return  False
 EndFunction
 
 ; Function Slots() Global

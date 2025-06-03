@@ -8,6 +8,10 @@ Bool Function FloatToBool(Float akValue) Global
     return False
 EndFunction
 
+Int Function FloatToInt(Float akValue) Global
+    return Math.Ceiling(akValue)
+EndFunction
+
 Bool Function FloatArraySort(Float[] akArray, Int aiStartingIndex = 0) Global
     If akArray.Length == 0.0
         return True

@@ -46,3 +46,8 @@ Struct QuestCheckInfo
     bool UnityCheck
     int UnityCheckTimes
 EndStruct
+
+Struct KeyValuePair
+    Form KeyForm
+    Form ValueForm
+EndStruct

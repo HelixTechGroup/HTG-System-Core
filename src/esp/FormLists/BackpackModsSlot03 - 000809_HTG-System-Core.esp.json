@@ -1,12 +1,11 @@
 {
   "FormKey": "000809:HTG-System-Core.esp",
   "EditorID": "BackpackModsSlot03",
-  "FormVersion": 576,
   "Items": [
     "24529A:Starfield.esm",
     "1CAC94:Starfield.esm",
     "07D4E8:Starfield.esm",
     "050AB3:Starfield.esm"
   ],
-  "ANAM": "Null"
+  "AddToList": "Null"
 }

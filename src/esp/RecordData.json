@@ -1,12 +1,11 @@
 {
   "SpriggitSource": {
-    "PackageName": "0.37.0-alpha.4",
-    "Version": ""
+    "PackageName": "Spriggit.Json.Starfield",
+    "Version": "0.38.4"
   },
   "ModKey": "HTG-System-Core.esp",
   "GameRelease": "Starfield",
   "ModHeader": {
-    "FormVersion": 576,
     "Author": "HelixTechGroup",
     "Description": "This is the Core mod used by all HelixTechGroup projects.\r\nIts a set of tools common to all modules in the Regenesys Project and can be utilized by all modders",
     "MasterReferences": [
@@ -14,6 +13,14 @@
         "Master": "Starfield.esm"
       }
     ],
-    "BNAM": "0x4D61696E00"
+    "TransientTypes": [
+      {
+        "FormType": 136,
+        "Links": [
+          "000821:HTG-System-Core.esp"
+        ]
+      }
+    ],
+    "Branch": "Main"
   }
 }

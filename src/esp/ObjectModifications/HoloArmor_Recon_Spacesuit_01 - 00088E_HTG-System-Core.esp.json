@@ -1,0 +1,34 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "00088E:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_Recon_Spacesuit_01",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Deep Recon Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "0E8D7B:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 23,
+      "Value2": 23
+    },
+    {
+      "MutagenObjectType": "ObjectModFormLinkIntProperty<Armor+Property>",
+      "Property": "LayeredMaterialSwap",
+      "Record": "1CA7CA:Starfield.esm"
+    }
+  ]
+}

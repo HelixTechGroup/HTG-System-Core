@@ -127,9 +127,9 @@ Bool Function Initialize()
     return _isInitialized
 EndFunction
 
-Function WaitForInitialized()
+Bool Function WaitForInitialized()
     If _isInitialized
-        return
+        return True
     EndIf
     
     Int currentCycle = 0
@@ -138,7 +138,7 @@ Function WaitForInitialized()
 
     ; StartTimer(_timerInterval, _initializeTimerId)
     While !maxCycleHit && !_isInitialized
-        Utility.Wait(0.1)
+        Utility.WaitMenuPause(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -146,6 +146,8 @@ Function WaitForInitialized()
             maxCycleHit = True
         EndIf
     EndWhile
+
+    return _isInitialized
 EndFunction
 
 Bool Function _SetSystemUtilities()

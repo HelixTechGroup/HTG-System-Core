@@ -1,0 +1,245 @@
+{
+  "FormKey": "000831:HTG-System-Core.esp",
+  "MajorRecordFlagsRaw": 64,
+  "EditorID": "Spacesuit_HoloArmor_Helmet",
+  "StarfieldMajorRecordFlags": [
+    "0x40"
+  ],
+  "Transforms": {
+    "InventoryIcon": "0E7EA9:Starfield.esm",
+    "Preview": "02C03C:Starfield.esm",
+    "Workbench": "266E22:Starfield.esm"
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "HoloArmor Helmet"
+  },
+  "WorldModel": {
+    "Male": {
+      "File": "SetDressing\\SpaceSuitContainer_black.nif",
+      "LightLayer": 1
+    },
+    "Female": {
+      "LightLayer": 1
+    }
+  },
+  "FirstPersonFlags": "SSHelmet",
+  "PickupSound": {
+    "Start": "fa884ae4-018b-627c-f720-9608e364b48c"
+  },
+  "DropdownSound": {
+    "Start": "26dc428f-8c56-8cdf-e6b2-17917d731a95"
+  },
+  "Race": "00347D:Starfield.esm",
+  "Keywords": [
+    "23C7C1:Starfield.esm",
+    "3A0B3B:Starfield.esm",
+    "00082D:HTG-System-Core.esp",
+    "11A47A:Starfield.esm",
+    "12EEE9:Starfield.esm"
+  ],
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Armor that mimics the appearance of any known armor"
+  },
+  "Armatures": [
+    {
+      "AddonIndex": 3,
+      "ArmorAddon": "1E2B14:Starfield.esm"
+    },
+    {
+      "AddonIndex": 28,
+      "ArmorAddon": "166411:Starfield.esm"
+    },
+    {
+      "AddonIndex": 23,
+      "ArmorAddon": "3E3DAA:Starfield.esm"
+    },
+    {
+      "AddonIndex": 24,
+      "ArmorAddon": "16E0C0:Starfield.esm"
+    },
+    {
+      "AddonIndex": 5,
+      "ArmorAddon": "3D0268:Starfield.esm"
+    },
+    {
+      "AddonIndex": 27,
+      "ArmorAddon": "398097:Starfield.esm"
+    },
+    {
+      "AddonIndex": 13,
+      "ArmorAddon": "046048:Starfield.esm"
+    },
+    {
+      "AddonIndex": 17,
+      "ArmorAddon": "047C04:Starfield.esm"
+    },
+    {
+      "AddonIndex": 27,
+      "ArmorAddon": "398098:Starfield.esm"
+    },
+    {
+      "AddonIndex": 26,
+      "ArmorAddon": "257804:Starfield.esm"
+    },
+    {
+      "AddonIndex": 26,
+      "ArmorAddon": "2577FF:Starfield.esm"
+    },
+    {
+      "AddonIndex": 25,
+      "ArmorAddon": "16E0C2:Starfield.esm"
+    },
+    {
+      "AddonIndex": 30,
+      "ArmorAddon": "169F5B:Starfield.esm"
+    },
+    {
+      "AddonIndex": 1,
+      "ArmorAddon": "1C0F39:Starfield.esm"
+    },
+    {
+      "AddonIndex": 2,
+      "ArmorAddon": "166406:Starfield.esm"
+    },
+    {
+      "ArmorAddon": "299834:Starfield.esm"
+    },
+    {
+      "AddonIndex": 29,
+      "ArmorAddon": "16D3D2:Starfield.esm"
+    },
+    {
+      "AddonIndex": 4,
+      "ArmorAddon": "06682C:Starfield.esm"
+    },
+    {
+      "AddonIndex": 5,
+      "ArmorAddon": "06682E:Starfield.esm"
+    },
+    {
+      "AddonIndex": 6,
+      "ArmorAddon": "06682F:Starfield.esm"
+    },
+    {
+      "AddonIndex": 7,
+      "ArmorAddon": "066830:Starfield.esm"
+    },
+    {
+      "AddonIndex": 8,
+      "ArmorAddon": "16D327:Starfield.esm"
+    },
+    {
+      "AddonIndex": 9,
+      "ArmorAddon": "166409:Starfield.esm"
+    },
+    {
+      "AddonIndex": 10,
+      "ArmorAddon": "169F53:Starfield.esm"
+    },
+    {
+      "AddonIndex": 11,
+      "ArmorAddon": "2392B7:Starfield.esm"
+    },
+    {
+      "AddonIndex": 12,
+      "ArmorAddon": "16640D:Starfield.esm"
+    },
+    {
+      "AddonIndex": 14,
+      "ArmorAddon": "017271:Starfield.esm"
+    },
+    {
+      "AddonIndex": 15,
+      "ArmorAddon": "16E0B7:Starfield.esm"
+    },
+    {
+      "AddonIndex": 16,
+      "ArmorAddon": "1D0F98:Starfield.esm"
+    },
+    {
+      "AddonIndex": 17,
+      "ArmorAddon": "052790:Starfield.esm"
+    },
+    {
+      "AddonIndex": 18,
+      "ArmorAddon": "1B4BE9:Starfield.esm"
+    },
+    {
+      "AddonIndex": 19,
+      "ArmorAddon": "244A43:Starfield.esm"
+    },
+    {
+      "AddonIndex": 20,
+      "ArmorAddon": "1E2B02:Starfield.esm"
+    },
+    {
+      "AddonIndex": 21,
+      "ArmorAddon": "169F57:Starfield.esm"
+    },
+    {
+      "AddonIndex": 22,
+      "ArmorAddon": "16E0BE:Starfield.esm"
+    }
+  ],
+  "Unused": "0x000000",
+  "Resistances": [
+    {
+      "DamageType": "023190:Starfield.esm"
+    },
+    {
+      "DamageType": "060A81:Starfield.esm"
+    }
+  ],
+  "AttachParentSlots": [
+    "157D41:Starfield.esm",
+    "1AEB52:Starfield.esm",
+    "088C9C:Starfield.esm"
+  ],
+  "ObjectTemplates": [
+    {
+      "Default": true,
+      "Includes": [
+        {
+          "Mod": "3A0B3C:Starfield.esm",
+          "DontUseAll": true
+        },
+        {
+          "Mod": "157D48:Starfield.esm",
+          "DontUseAll": true
+        },
+        {
+          "Mod": "03AF81:Starfield.esm",
+          "DontUseAll": true
+        },
+        {
+          "Mod": "1B049E:Starfield.esm",
+          "DontUseAll": true
+        },
+        {
+          "Mod": "1124D1:Starfield.esm",
+          "DontUseAll": true
+        },
+        {
+          "Mod": "157D48:Starfield.esm",
+          "DontUseAll": true
+        }
+      ],
+      "Properties": [
+        {
+          "MutagenObjectType": "ObjectModFormLinkIntProperty<Armor+Property>",
+          "Property": "14",
+          "Record": "1417CD:Starfield.esm"
+        }
+      ]
+    }
+  ],
+  "Voice": {
+    "Category": "f828402d-35bb-87db-b72d-890dbded3599",
+    "Variant": "d3f34434-7fbc-6fab-88b2-02a1e5dfa290"
+  },
+  "MajorFlags": [
+    "Shield"
+  ]
+}

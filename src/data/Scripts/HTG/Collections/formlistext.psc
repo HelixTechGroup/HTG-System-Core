@@ -6,12 +6,9 @@ Event OnInit()
 EndEvent
 
 FormListExt Function FormListExt(Int aiSize = 4) Global
-    Int aFormId = 0x0000080E
-    Form aForm = HTG:Collections:List._CreateForm(aFormId)
-    FormListExt res = HTG:Collections:List._CreateReference(aForm, aiSize) as FormListExt
+    Int iFormId = 0x0000080E
+    FormListExt res =  HTG:Collections:List._CreateList(iFormId, aiSize = aiSize) as FormListExt
     LogObjectGlobal(res, "HTG:Collections:FormListExt.FormListExt(" + aiSize  + "): " + res)
-    res.Enable(False)
-    res.Initialize(aiSize)
     return res
 EndFunction
 
@@ -20,7 +17,7 @@ Form Function GetAt(Int index)
 EndFunction
 
 Bool Function IsNone(Var akItem)
-    If akItem is Form
+    If akItem && akItem is Form
         Form ref = akItem as Form
         return ref == None
     EndIf

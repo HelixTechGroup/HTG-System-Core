@@ -1,0 +1,16 @@
+{
+  "FormKey": "000826:HTG-System-Core.esp",
+  "EditorID": "TempContainer",
+  "ObjectBounds": {
+    "First": "-0.203125, -0.1015625, 0",
+    "Second": "0.203125, 0.1015625, 0.11907959"
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Temporary Container"
+  },
+  "Model": {
+    "File": "SetDressing\\Container\\StorageBin_01.nif",
+    "LightLayer": 1
+  }
+}

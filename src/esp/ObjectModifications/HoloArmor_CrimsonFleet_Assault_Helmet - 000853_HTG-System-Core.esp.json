@@ -1,0 +1,34 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "000853:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_CrimsonFleet_Assault_Helmet",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Pirate Assault Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "3A0B3B:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 4,
+      "Value2": 4
+    },
+    {
+      "MutagenObjectType": "ObjectModFormLinkIntProperty<Armor+Property>",
+      "Property": "LayeredMaterialSwap",
+      "Record": "1417B8:Starfield.esm"
+    }
+  ]
+}

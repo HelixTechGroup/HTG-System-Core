@@ -1,10 +1,9 @@
 {
   "FormKey": "000807:HTG-System-Core.esp",
   "EditorID": "HelmetModsSlot05",
-  "FormVersion": 576,
   "Items": [
     "3A83D9:Starfield.esm",
     "0F77AA:Starfield.esm"
   ],
-  "ANAM": "Null"
+  "AddToList": "Null"
 }

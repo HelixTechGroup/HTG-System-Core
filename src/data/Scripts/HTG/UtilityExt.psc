@@ -13,11 +13,17 @@ Bool Function AddLeveledItemToActor(Actor akActor, LeveledItem akItem, int count
     If c > 0 && clearAllExisting
         If equip
             akActor.UnequipItem(akItem, abSilent = true)
-            Utility.Wait(0.333)
+            Utility.WaitMenuPause(0.333)
         EndIf
 
         akActor.RemoveItem(akItem, c, abSilent = true)
-        Utility.Wait(0.50)
+        Utility.WaitMenuPause(0.50)
+    ElseIf c > 0
+        If autoEquip && equip
+            akActor.EquipItem(akItem, abSilent = true)
+        EndIf
+
+        return True
     EndIf
 
     If akAlias
@@ -39,7 +45,7 @@ Bool Function AddLeveledItemToActor(Actor akActor, LeveledItem akItem, int count
     return (nc > 0)
 EndFunction
 
-Bool Function AddItemToActor(Actor actr, Form item, int count = 1, bool clearAllExisting = false, bool autoEquip = false, Alias akAlias = None) Global
+Bool Function AddItemToActor(Actor actr, Form item, int count = 1, bool clearAllExisting = false, bool autoEquip = false, Alias akAlias = None, Keyword[] akKeywords = None) Global
     Int c = actr.GetItemCount(item)
     Bool equip = False
     Armor ta = item as Armor
@@ -56,16 +62,26 @@ Bool Function AddItemToActor(Actor actr, Form item, int count = 1, bool clearAll
         EndIf
 
         actr.RemoveItem(item, c, abSilent = true)
-        Utility.Wait(0.50)
+        Utility.WaitMenuPause(0.50)
+    ElseIf c > 0
+        If autoEquip && equip
+            actr.EquipItem(item, abSilent = true)
+        EndIf
+
+        return True
     EndIf
 
     If akAlias
-        actr.AddAliasedItem(item, akAlias, count, abSilent = true)
+        ; actr.AddAliasedItem(item, akAlias, count, abSilent = true)
+        ObjectReference ref = actr.AddAliasedItemWithKeywordsSingle(item, akAlias, True, akKeywords)
+        If akKeywords
+            HTG:SystemLogger.LogObjectGlobal(item, "Has Keyword: " + akKeywords[0] + ": " + ref.HasKeyword(akKeywords[0]))
+        EndIf
     Else
         actr.AddItem(item, count, abSilent = true)
     EndIf
 
-    Utility.Wait(0.666)
+    ; Utility.WaitMenuPause(0.666)
     int nc = actr.GetItemCount(item)
     If nc > 0
         If autoEquip && equip
@@ -81,6 +97,34 @@ Bool Function AddItemToActor(Actor actr, Form item, int count = 1, bool clearAll
     ; EndIf
     ;     ;logger.Trace(Self, "Faled to add item to actor.")
     ; return False
+EndFunction
+
+Bool Function RemoveItemFromActor(Actor akActor, Form akItem, Alias akAlias = None) Global
+    Int c = akActor.GetItemCount(akItem)
+    Bool unequip 
+    Armor ta = akItem as Armor
+    Weapon w = akItem as Weapon
+
+    If ta || w
+        unequip = True
+    EndIf
+
+    If c > 0
+        If unequip
+            akActor.UnequipItem(akItem, abSilent = true)
+            Utility.Wait(0.333)
+        EndIf
+
+        ; If akAlias
+        ;     If akAlias is ReferenceAlias
+        ;         (akAlias as ReferenceAlias).GetReference() as
+        ;     ElseIf akAlias is RefCollectionAlias
+        ;         (akAlias as RefCollectionAlias).RemoveRef(akRemoveRef)
+        ;     EndIf
+        ; EndIf
+        akActor.RemoveItem(akItem, c, abSilent = true)
+        Utility.Wait(0.50)
+    EndIf
 EndFunction
 
 Bool Function EquipItemToActor(Actor actr, Form item) Global
@@ -155,22 +199,28 @@ EndFunction
 ;     return None
 ; EndFunction
 
-ObjectReference Function CreateObjectRef(Actor akActor, Form akBaseObject, Alias akAlias) Global 
-    ObjectReference itemRef = akActor.PlaceAtMe(akFormToPlace = akBaseObject, abInitiallyDisabled = true, akAliasToFill = akAlias)
-    If itemRef != None
-        itemRef.SetActorRefOwner(akActor)
-    EndIf
-    ; akAlias.Find(itemRef)
-    return itemRef
-EndFunction
+; Function ShowTextReplacedMessage(Actor MessageTextReplaceActor, Message MessageToShow, bool ShowAsHelpMessage = false, ObjectReference MessageTextReplaceRef = None, float afArg1 = 0.0, float afArg2 = 0.0)
+;     if MessageTextReplaceActor != None
+;         Alias_MessageTextReplaceActor.ForceRefTo(MessageTextReplaceActor)
+;         Alias_MessageTextReplaceRef.ForceRefTo(MessageTextReplaceRef)
 
-ObjectReference Function CreateObjectRefFromExisting(Actor akActor, Form akBaseObject, Alias akAlias) Global
-    ObjectReference itemRef = akActor.MakeAliasedRefFromInventory(akBaseObject, akAlias)
-    If itemRef != None
-        itemRef.SetActorRefOwner(akActor)
-    EndIf
-    ; akAlias.Find(itemRef)
-    return itemRef
+;         if ShowAsHelpMessage
+;             float HelpMessageDuration = 3.0
+;             float HelpMessageInterval = 3.0
+;             int HelpMessageMaxTimes = 1
+;             string HelpMessageContext = ""
+;             int HelpMessagePriority = 0
+;             MessageToShow.ShowAsHelpMessage(none, HelpMessageDuration, HelpMessageInterval, HelpMessageMaxTimes, HelpMessageContext, HelpMessagePriority)
+;         else 
+;             MessageToShow.Show(afArg1, afArg2)
+;         endif
+;         Alias_MessageTextReplaceActor.Clear()
+; 	endif
+
+; EndFunction
+
+Bool Function IsNone(ScriptObject akObject) Global
+    return !akObject || akObject == None
 EndFunction
 
 Function WaitForCombatEnd() Global

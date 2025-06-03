@@ -1,0 +1,32 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "000898:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_SpaceTrucker_Generic_Helmet",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Star Roamer"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "3A0B3B:Starfield.esm"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 22
+    },
+    {
+      "MutagenObjectType": "ObjectModFormLinkIntProperty<Armor+Property>",
+      "Property": "LayeredMaterialSwap",
+      "Record": "003E8E:Starfield.esm"
+    }
+  ]
+}

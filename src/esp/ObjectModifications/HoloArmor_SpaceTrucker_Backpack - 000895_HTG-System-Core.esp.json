@@ -1,0 +1,29 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "000895:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_SpaceTrucker_Backpack",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Space Trucker Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "3E612E:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 21,
+      "Value2": 21
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "000858:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_CrimsonFleet_Officer_Spacesuit",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Pirate Corsair Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "0E8D7B:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 9,
+      "Value2": 9
+    },
+    {
+      "MutagenObjectType": "ObjectModFormLinkIntProperty<Armor+Property>",
+      "Property": "LayeredMaterialSwap",
+      "Record": "0CC5DE:Starfield.esm"
+    }
+  ]
+}

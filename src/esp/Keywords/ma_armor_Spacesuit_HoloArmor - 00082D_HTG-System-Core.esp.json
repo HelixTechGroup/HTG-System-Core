@@ -1,0 +1,11 @@
+{
+  "FormKey": "00082D:HTG-System-Core.esp",
+  "EditorID": "ma_armor_Spacesuit_HoloArmor",
+  "Color": "#00FFFFFF",
+  "Type": "ModAssociation",
+  "FNAM": "0x00000000",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Chameleon Spacesuit Mod"
+  }
+}

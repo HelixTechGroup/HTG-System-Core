@@ -1,0 +1,29 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "00088A:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_Navigator_Helmet",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Navigator Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "3A0B3B:Starfield.esm",
+    "00082D:HTG-System-Core.esp"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 19,
+      "Value2": 19
+    }
+  ]
+}

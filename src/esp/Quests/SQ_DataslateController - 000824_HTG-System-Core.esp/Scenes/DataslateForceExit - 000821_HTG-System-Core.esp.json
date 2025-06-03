@@ -1,0 +1,16 @@
+{
+  "FormKey": "000821:HTG-System-Core.esp",
+  "EditorID": "DataslateForceExit",
+  "Flags": [],
+  "Phases": [
+    {
+      "Name": "",
+      "EditorWidth": 350
+    }
+  ],
+  "Quest": "000824:HTG-System-Core.esp",
+  "LastActionIndex": 0,
+  "VNAM": "0x0300000003000000030000000300000003000000",
+  "BOLV": "[]",
+  "Index": 0
+}

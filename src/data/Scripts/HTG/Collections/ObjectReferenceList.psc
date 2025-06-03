@@ -6,13 +6,9 @@ Event OnInit()
 EndEvent
 
 ObjectReferenceList Function ObjectReferenceList(Int aiSize = 4) Global
-    Int aFormId = 0x00000825
-    ; String aModName = "HTG-System-Core"
-    Form aForm = HTG:Collections:List._CreateForm(aFormId) ; , aModName)
-    ObjectReferenceList res = HTG:Collections:List._CreateReference(aForm, aiSize) as ObjectReferenceList
+    Int iFormId = 0x00000825
+    ObjectReferenceList res =  HTG:Collections:List._CreateList(iFormId, aiSize = aiSize) as ObjectReferenceList
     LogObjectGlobal(res, "HTG:Collections:ObjectReferenceList.ObjectReferenceList(" + aiSize  + "): " + res)
-    res.Enable(False)
-    res.Initialize(aiSize)
     return res
 EndFunction
 

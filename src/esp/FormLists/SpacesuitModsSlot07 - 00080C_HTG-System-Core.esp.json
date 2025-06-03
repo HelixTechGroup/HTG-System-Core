@@ -1,10 +1,9 @@
 {
   "FormKey": "00080C:HTG-System-Core.esp",
   "EditorID": "SpacesuitModsSlot07",
-  "FormVersion": 576,
   "Items": [
     "3A83E6:Starfield.esm",
     "3A83E7:Starfield.esm"
   ],
-  "ANAM": "Null"
+  "AddToList": "Null"
 }

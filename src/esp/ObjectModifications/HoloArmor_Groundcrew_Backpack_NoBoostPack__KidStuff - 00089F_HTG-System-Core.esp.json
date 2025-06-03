@@ -1,0 +1,28 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "00089F:HTG-System-Core.esp",
+  "EditorID": "HoloArmor_Groundcrew_Backpack_NoBoostPack__KidStuff",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "High School Backpack Core"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "AttachPoint": "157D41:Starfield.esm",
+  "TargetOmodKeywords": [
+    "3E612E:Starfield.esm"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 11,
+      "Value2": 11
+    }
+  ]
+}

@@ -3,7 +3,6 @@
   "IsCompressed": true,
   "MajorRecordFlagsRaw": 262144,
   "EditorID": "SystemDataHolder",
-  "FormVersion": 576,
   "StarfieldMajorRecordFlags": [
     "Compressed"
   ],
@@ -30,7 +29,7 @@
     "FogHighNearScale": 1.0,
     "FogHighFarScale": 1.0,
     "FarHeightRange": 10000.0,
-    "Unknown2": 290220032
+    "InteriorType": "290220032"
   },
   "LightingTemplate": "Null",
   "WaterHeight": 3.4028235E+38,
@@ -41,7 +40,6 @@
       "MutagenObjectType": "PlacedObject",
       "FormKey": "000884:HTG-System-Core.esp",
       "MajorRecordFlagsRaw": 1024,
-      "FormVersion": 576,
       "StarfieldMajorRecordFlags": [
         "0x400"
       ],
@@ -51,7 +49,6 @@
       "MutagenObjectType": "PlacedObject",
       "FormKey": "000812:HTG-System-Core.esp",
       "MajorRecordFlagsRaw": 1024,
-      "FormVersion": 576,
       "StarfieldMajorRecordFlags": [
         "0x400"
       ],
@@ -64,6 +61,16 @@
       },
       "Position": "0, 0, 5",
       "Rotation": "-0.28033096, 0.006257267, 5.3233023"
+    },
+    {
+      "MutagenObjectType": "PlacedObject",
+      "FormKey": "000823:HTG-System-Core.esp",
+      "MajorRecordFlagsRaw": 1024,
+      "StarfieldMajorRecordFlags": [
+        "0x400"
+      ],
+      "Base": "000826:HTG-System-Core.esp",
+      "Position": "-0.49703458, 0.8864644, 2.9093304"
     }
   ],
   "MajorFlags": [

@@ -1,9 +1,14 @@
 Scriptname HTG:RefCollectionAliasExt extends RefCollectionAlias
 import HTG
+import HTG:UtilityExt
 import HTG:Structs
 import HTG:SystemLogger
 
-SystemUtilities Property SystemUtilities Auto Const Mandatory
+HTG:SystemUtilities Property SystemUtilities Hidden
+    HTG:SystemUtilities Function Get()
+        return _systemUtilities
+    EndFunction
+EndProperty ; Hidden
 
 HTG:SystemLogger Property Logger Hidden
     HTG:SystemLogger Function Get()
@@ -27,6 +32,7 @@ Guard _initializeTimerGuard ProtectsFunctionLogic
 Guard _readyTimerGuard ProtectsFunctionLogic
 Guard _mainTimerGuard ProtectsFunctionLogic
 SystemTimerIds _timerIds
+HTG:SystemUtilities _systemUtilities
 Bool _isInitialized
 Bool _isInitialRun
 Bool _initializeTimerStarted
@@ -44,10 +50,10 @@ Event OnInit()
     RegisterForCustomEvent(Self, "OnMain")
     _isInitialRun = !_isInitialized
     _timerIds = new SystemTimerIds
-    StartTimer(_timerInterval, _timerIds.InitializeId)
 EndEvent
 
 Event OnAliasInit()
+    StartTimer(_timerInterval, _timerIds.InitializeId)
     WaitForInitialized()
 EndEvent
 
@@ -56,6 +62,7 @@ Event OnAliasChanged(ObjectReference akObject, bool abRemove)
 EndEvent
 
 Event OnAliasStarted()
+    WaitForInitialized()
     StartTimer(_timerInterval, _timerIds.InitialRunId)
 EndEvent
 
@@ -73,18 +80,18 @@ Event OnTimer(Int aiTimerID)
         Int timerId = -1
 
         LockGuard _initializeTimerGuard
-        _initializeTimerStarted = True
-        If !Initialize() &&  _currentTimerCycle < _maxTimerCycle            
-            _currentTimerCycle += 1
-            timerId = _timerIds.InitializeId
-        ElseIf !_isInitialized && _currentTimerCycle == _maxTimerCycle
-            LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
-            return
-        ; Else
-        ;     Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
-        ;     timerId = SystemUtilities.Timers.SystemTimerIds.InitialRunId
-        EndIf
-        _initializeTimerStarted = False
+            _initializeTimerStarted = True
+            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle            
+                _currentTimerCycle += 1
+                timerId = _timerIds.InitializeId
+            ElseIf !_isInitialized && _currentTimerCycle == _maxTimerCycle
+                LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
+                return
+            ; Else
+            ;     Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
+            ;     timerId = SystemUtilities.Timers.SystemTimerIds.InitialRunId
+            EndIf
+            _initializeTimerStarted = False
         EndLockGuard
 
         If timerid > -1
@@ -97,11 +104,11 @@ Event OnTimer(Int aiTimerID)
         EndIf
 
         LockGuard _readyTimerGuard
-        _readyTimerStarted = True
-        SendCustomEvent("OnInitialRun")
-        _InitialRun()
-        _isInitialRun = False
-        _readyTimerStarted = False
+            _readyTimerStarted = True
+            SendCustomEvent("OnInitialRun")
+            _InitialRun()
+            _isInitialRun = False
+            _readyTimerStarted = False
         EndLockGuard
 
         Logger.Log("ReadyTimer - Completed Initial Run.")
@@ -113,12 +120,12 @@ Event OnTimer(Int aiTimerID)
         EndIf
 
         Int kMaxStarWait = SystemUtilities.Timers.WaitDefaults.MaxCycles
-        Bool kShouldWait = GetOwningQuest().IsStarting() || GetOwningQuest().IsRunning()
+        Bool kShouldWait = GetOwningQuest().IsStarting() || !GetOwningQuest().IsRunning()
         While (kShouldWait)
             Utility.WaitMenuPause(SystemUtilities.Timers.WaitDefaults.Time)
             If i <= kMaxStarWait
                 i += 1
-                kShouldWait = GetOwningQuest().IsStarting() || GetOwningQuest().IsRunning()
+                kShouldWait = GetOwningQuest().IsStarting() || !GetOwningQuest().IsRunning()
             Else
                 kShouldWait = False
             EndIf
@@ -126,10 +133,10 @@ Event OnTimer(Int aiTimerID)
 
         Bool restartTimer
         LockGuard _mainTimerGuard
-        _mainTimerStarted = True
-        SendCustomEvent("OnMain")
-        restartTimer = _Main()
-        _mainTimerStarted = False
+            _mainTimerStarted = True
+            SendCustomEvent("OnMain")
+            restartTimer = _Main()
+            _mainTimerStarted = False
         EndLockGuard
 
         If restartTimer
@@ -152,9 +159,9 @@ Bool Function Initialize()
     return _isInitialized
 EndFunction
 
-Function WaitForInitialized()
+Bool Function WaitForInitialized()
     If _isInitialized
-        return
+        return True
     EndIf
     
     Int currentCycle = 0
@@ -163,7 +170,7 @@ Function WaitForInitialized()
 
     ; StartTimer(_timerInterval, _initializeTimerId)
     While !maxCycleHit && !_isInitialized
-        Utility.Wait(0.1)
+        Utility.WaitMenuPause(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -171,11 +178,22 @@ Function WaitForInitialized()
             maxCycleHit = True
         EndIf
     EndWhile
+
+    return _isInitialized
 EndFunction
 
 Bool Function _SetSystemUtilities()
-    SystemUtilities.WaitForInitialized()
-    return True
+    If IsNone(_systemUtilities)
+        QuestExt kQuest = (GetOwningQuest() as QuestExt)
+        If !IsNone(kQuest)
+            _systemUtilities = kQuest.SystemUtilities
+        Else
+            Game.Error("Could not set System Utilities on References Alias: " + Self)
+            return False
+        EndIf
+    EndIf
+
+    return _systemUtilities.IsInitialized
 EndFunction
 
 Bool Function _Init()

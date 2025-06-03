@@ -1,11 +1,10 @@
 {
   "FormKey": "000878:HTG-System-Core.esp",
   "EditorID": "DataslateTerminalActivator",
-  "FormVersion": 576,
   "VirtualMachineAdapter": {
     "Scripts": [
       {
-        "Name": "HTG:Dataslate:DataslateTerminalActivator",
+        "Name": "HTG:DataslateTerminalActivator",
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -27,7 +26,6 @@
   },
   "CastType": "FireAndForget",
   "Flags": [
-    "Recover",
     "NoDuration",
     "NoMagnitude",
     "NoArea"
