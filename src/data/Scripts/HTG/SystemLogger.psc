@@ -1,4 +1,5 @@
 Scriptname HTG:SystemLogger extends ReferenceAlias Hidden
+import HTG:Structs
 
 Group LogNames
     String Property MainLogName Mandatory Const Auto
@@ -11,27 +12,21 @@ LogSeverity Property Severity Hidden
     EndFunction
 EndProperty
 
-Struct LogSeverity
-    Int Info = 0
-    Int Warning = 1
-    Int Error = 2
-EndStruct
-
 Quest _quest
 
 Event OnAliasInit()
     _quest = GetOwningQuest()
 EndEvent
 
-bool Function Trace(ScriptObject akCallingObject, String mainLogName, String subLogame, String asMessage, Int aiSeverity = 0, Bool bShowNormalTrace = False, Bool bShowWarning = False, Bool bPrefixTraceWithLogNames = True) Global DebugOnly
+bool Function Trace(ScriptObject akCallingObject, String mainLogName, String subLogame, String asMessage, Int aiSeverity = 0, Bool bShowNormalTrace = False, Bool bShowWarning = False, Bool bPrefixTraceWithLogNames = True) Global
     return Debug.TraceLog(akCallingObject, asMessage, mainLogName, subLogame,  aiSeverity, bShowNormalTrace, bShowWarning, bPrefixTraceWithLogNames)
 endFunction
 
-bool Function Warn(ScriptObject akCallingObject, String mainLogName, String subLogame, string asMessage, bool bShowNormalTrace = false, bool bPrefixTraceWithLogNames = true) Global BetaOnly
+bool Function Warn(ScriptObject akCallingObject, String mainLogName, String subLogame, string asMessage, bool bShowNormalTrace = false, bool bPrefixTraceWithLogNames = true) Global
     return Trace(akCallingObject, mainLogName, subLogame, asMessage, 2, bShowNormalTrace, True, bPrefixTraceWithLogNames)
 EndFunction
 
-bool Function Error(ScriptObject akCallingObject, String mainLogName, String subLogame, string asMessage, bool bShowNormalTrace = false, bool bPrefixTraceWithLogNames = true) Global BetaOnly
+bool Function Error(ScriptObject akCallingObject, String mainLogName, String subLogame, string asMessage, bool bShowNormalTrace = false, bool bPrefixTraceWithLogNames = true) Global
     bool returnVal = Trace(akCallingObject, mainLogName, subLogame, asMessage, 2, bShowNormalTrace, True, bPrefixTraceWithLogNames)
     Game.Error(asMessage)
 
@@ -86,6 +81,14 @@ Function Log(String asMessage, Int aiSeverity = 0)
     ElseIf aiSeverity == 2
         Error(_quest, MainLogName, SubLogName,asMessage)
     EndIf
+EndFunction
+
+Function WarnEx(String asMessage)
+    Warn(_quest, MainLogName, SubLogName,asMessage)
+EndFunction
+
+Function ErrorEx(String asMessage)
+    Error(_quest, MainLogName, SubLogName,asMessage)
 EndFunction
 
 Function LogObject(ScriptObject akCallingObject, String asMessage)

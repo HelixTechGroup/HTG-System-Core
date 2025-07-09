@@ -45,6 +45,16 @@ EndProperty
 
 GlobalVariable Property DebugGlobal Mandatory Const Auto
 
+Form Property ModInfoForm Mandatory Const Auto
+
+ModInformation Property ModInfo Hidden
+    HTG:ModInformation Function Get()
+        return _modInfo
+    EndFunction
+EndProperty
+
+; ObjectReference Property TempContainer Mandatory Const Auto
+
 ; Utilities Property Utilities Hidden 
 ;     Utilities Function Get()
 ;         return _utilities
@@ -57,6 +67,13 @@ Bool Property IsInitialized Hidden
     EndFunction
 EndProperty
 
+Bool Property IsDebugging Hidden
+    Bool Function Get()
+        return DebugGlobal.GetValueInt() == 8    
+    EndFunction
+EndProperty
+
+ModInformation _modInfo
 SystemTimerIds _timerIds
 HTG:SystemLogger _logger
 ; Utilities _utilities
@@ -69,12 +86,36 @@ Guard _utilitiesGuard ProtectsFunctionLogic
 Bool _isInitialized
 Bool _initializeTimerStarted
 Int _initializeTimerId = 1
-Float _timerInternal = 0.01
-Int _maxTimerCycle = 500
+Float _timerInternal = 0.05
+Int _maxTimerCycle = 600
 Int _currentTimerCycle = 0
 
-Event OnInit()
+Event OnAliasInit()
     StartTimer(_timerInternal, _initializeTimerId)
+EndEvent
+
+Event OnTimer(Int aiTimerID)
+    If aiTimerID == _initializeTimerId
+        If _isInitialized || _initializeTimerStarted
+            LogObjectGlobal(Self, "InitializeTimer - Timer is already running. No need to proceed.")
+            return
+        EndIf
+
+        Bool bRestartTimer
+        TryLockGuard _initializeTimerGuard, _utilitiesGuard
+            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle    
+                WaitExt(0.1)        
+                _currentTimerCycle += 1
+                bRestartTimer = True
+            ElseIf _currentTimerCycle == _maxTimerCycle
+                LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
+            EndIf
+        EndTryLockGuard
+        
+        If bRestartTimer
+            StartTimer(_timerInternal, _initializeTimerId)
+        EndIf
+    EndIf
 EndEvent
 
 Bool Function Initialize()
@@ -82,12 +123,12 @@ Bool Function Initialize()
         return True
     EndIf
 
-    TryLockGuard _utilitiesGuard
+    ; TryLockGuard _utilitiesGuard
         ScriptObject so = Self as ScriptObject 
         LogObjectGlobal(Self, "HTG:SystemUtilities:" + Self + "\n\t As ScriptObject:" + so)
 
         _isInitialized = _SetSystemUtilities(so)
-    EndTryLockGuard
+    ; EndTryLockGuard
 
     return _CheckSystemUtilites()
 EndFunction
@@ -104,29 +145,35 @@ Bool Function _SetSystemUtilities(ScriptObject akScriptObject)
     ; EndIf
     ; LogObjectGlobal(Self, "Utilities:" + _utilities)
 
-    IF IsNone(_logger)
-        _logger = akScriptObject as HTG:SystemLogger
-    EndIf
+    TryLockGuard _utilitiesGuard
+        If IsNone(_logger)
+            _logger = akScriptObject as HTG:SystemLogger
+        EndIf
 
-    If IsNone(_timerUtility)
-        _timerUtility = akScriptObject as TimerUtility
-        LogObjectGlobal(Self, "Timer:" + _timerUtility)
-    EndIf
+        If IsNone(_timerUtility)
+            _timerUtility = akScriptObject as TimerUtility
+            LogObjectGlobal(Self, "Timer:" + _timerUtility)
+        EndIf
 
-    If IsNone(_intUtility)
-        _intUtility = akScriptObject as IntUtility
-        LogObjectGlobal(Self, "Integers:" + _intUtility)
-    EndIf
+        If IsNone(_intUtility)
+            _intUtility = akScriptObject as IntUtility
+            LogObjectGlobal(Self, "Integers:" + _intUtility)
+        EndIf
 
-    If IsNone(_formUtility)
-        _formUtility = akScriptObject as FormUtility
-        LogObjectGlobal(Self, "Utilities.Forms:" + _formUtility)
-    EndIf
+        If IsNone(_formUtility)
+            _formUtility = akScriptObject as FormUtility
+            LogObjectGlobal(Self, "Utilities.Forms:" + _formUtility)
+        EndIf
 
-    If IsNone(_armorUtility)
-        _armorUtility = akScriptObject as ArmorUtility
-        LogObjectGlobal(Self, "Utilities.Armors:" + _armorUtility)
-    EndIf
+        If IsNone(_armorUtility)
+            _armorUtility = akScriptObject as ArmorUtility
+            LogObjectGlobal(Self, "Utilities.Armors:" + _armorUtility)
+        EndIf
+
+        If IsNone(_modInfo) && ModInfoForm != None
+            _modInfo = HTG:FormUtility.CreateReference(Game.GetPlayer(), ModInfoForm) as ModInformation
+        EndIf
+    EndTryLockGuard
 
     return !IsNone(_logger) && \
             !IsNone(_timerUtility) && \
@@ -163,19 +210,6 @@ Bool Function _CheckSystemUtilites()
             !IsNone(_armorUtility)
 EndFunction
 
-Event OnTimer(Int aiTimerID)
-    If aiTimerID == _initializeTimerId
-        TryLockGuard _initializeTimerGuard, _utilitiesGuard
-            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle            
-                _currentTimerCycle += 1
-                StartTimer(_timerInternal, _initializeTimerId)
-            ElseIf _currentTimerCycle == _maxTimerCycle
-                LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
-            EndIf
-        EndTryLockGuard
-    EndIf
-EndEvent
-
 Bool Function WaitForInitialized()
     If _isInitialized
         return True
@@ -185,7 +219,7 @@ Bool Function WaitForInitialized()
     Int maxCycle = 600
     Bool maxCycleHit
     While !maxCycleHit && !_isInitialized
-        Utility.WaitMenuPause(0.1)
+        WaitExt(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -194,5 +228,9 @@ Bool Function WaitForInitialized()
         EndIf
     EndWhile
 
+    If !_isInitialized && !_initializeTimerStarted
+        StartTimer(_timerInternal, _initializeTimerId)
+    EndIf
+    
     return _isInitialized
 EndFunction

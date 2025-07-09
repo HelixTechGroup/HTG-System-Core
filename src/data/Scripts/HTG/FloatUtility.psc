@@ -60,6 +60,8 @@ Function FloatArrayClean(Float[] akArray) Global
         If IsFloatNone(akArray[i])
             akArray.Remove(i)
         EndIf
+
+        i += 1
     EndWhile
 
     FloatArraySort(akArray)

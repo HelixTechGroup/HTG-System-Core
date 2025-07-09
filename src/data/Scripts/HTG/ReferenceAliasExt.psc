@@ -54,6 +54,7 @@ EndEvent
 
 Event OnAliasInit()
     StartTimer(_timerInterval, _timerIds.InitializeId)
+    
     WaitForInitialized()
 EndEvent
 
@@ -63,7 +64,21 @@ EndEvent
 
 Event OnAliasStarted()
     WaitForInitialized()
+
     StartTimer(_timerInterval, _timerIds.InitialRunId)
+EndEvent
+
+Event OnAliasShutdown()
+    UnregisterForAllEvents()
+EndEvent
+
+Event OnAliasReset()
+    _currentInitializeTimerCycle = 0
+    _isInitialized = False
+    _isInitialRun = True
+    _initializeTimerStarted = False
+    _mainTimerStarted = False
+    _readyTimerStarted = False
 EndEvent
 
 Event OnTimer(Int aiTimerID)
@@ -79,7 +94,7 @@ Event OnTimer(Int aiTimerID)
         Float itimerInterval = _timerInterval
         Int timerId = -1
 
-        LockGuard _initializeTimerGuard
+        TryLockGuard _initializeTimerGuard
             _initializeTimerStarted = True
             If !Initialize() && _currentInitializeTimerCycle < _maxTimerCycle            
                 _currentInitializeTimerCycle += 1
@@ -92,37 +107,37 @@ Event OnTimer(Int aiTimerID)
             ;     timerId = SystemUtilities.Timers.SystemTimerIds.InitialRunId
             EndIf
             _initializeTimerStarted = False
-        EndLockGuard
+        EndTryLockGuard
 
         If timerid > -1
             StartTimer(itimerInterval, timerId)
         EndIf
     ElseIf aiTimerID == _timerIds.InitialRunId
         If !_isInitialized || !_isInitialRun || _readyTimerStarted 
-            Logger.Log("ReadyTimer - Is Not Initial Run or Timer is already running. No need to proceed.")
+            LogObjectGlobal(Self, "ReadyTimer - Is Not Initial Run or Timer is already running. No need to proceed.")
             return
         EndIf
 
-        LockGuard _readyTimerGuard
+        TryLockGuard _readyTimerGuard
             _readyTimerStarted = True
             SendCustomEvent("OnInitialRun")
             _InitialRun()
             _isInitialRun = False
             _readyTimerStarted = False
-        EndLockGuard
+        EndTryLockGuard
 
         Logger.Log("ReadyTimer - Completed Initial Run.")
         StartTimer(_timerInterval, _timerIds.MainId)
     ElseIf aiTimerID == _timerIds.MainId
         If !_isInitialized || _isInitialRun || _mainTimerStarted
-            Logger.Log("MainTimer - Is Initial Run or Timer is already running. No need to proceed.")
+            LogObjectGlobal(Self, "MainTimer - Is Initial Run or Timer is already running. No need to proceed.")
             return
         EndIf
 
         Int kMaxStarWait = SystemUtilities.Timers.WaitDefaults.MaxCycles
         Bool kShouldWait = GetOwningQuest().IsStarting() || !GetOwningQuest().IsRunning()
         While (kShouldWait)
-            Utility.WaitMenuPause(SystemUtilities.Timers.WaitDefaults.Time)
+            WaitExt(SystemUtilities.Timers.WaitDefaults.Time)
             If i <= kMaxStarWait
                 i += 1
                 kShouldWait = GetOwningQuest().IsStarting() || !GetOwningQuest().IsRunning()
@@ -132,12 +147,12 @@ Event OnTimer(Int aiTimerID)
         EndWhile
 
         Bool restartTimer
-        LockGuard _mainTimerGuard
+        TryLockGuard _mainTimerGuard
             _mainTimerStarted = True
             SendCustomEvent("OnMain")
             restartTimer = _Main()
             _mainTimerStarted = False
-        EndLockGuard
+        EndTryLockGuard
 
         If restartTimer
             StartTimer(_timerInterval, _timerIds.MainId)
@@ -153,7 +168,9 @@ EndEvent
 
 Bool Function Initialize()
     If !_isInitialized
-        _isInitialized = _SetSystemUtilities() && _Init()
+        _isInitialized = _SetSystemUtilities() \
+                        && _RegisterEvents() \
+                        && _Init()
     EndIf
 
     return _isInitialized
@@ -169,11 +186,14 @@ Bool Function WaitForInitialized()
     Bool maxCycleHit
 
     ; StartTimer(_timerInterval, _initializeTimerId)
-    While !maxCycleHit && !_isInitialized
+    QuestExt kQuest = (GetOwningQuest() as QuestExt)
+    While !maxCycleHit \
+            && !_isInitialized \
+            && kQuest.WaitForInitialized()
         If !_initializeTimerStarted
             StartTimer(_timerInterval, _timerIds.InitializeId)
         EndIf
-        Utility.WaitMenuPause(0.1)
+        WaitExt(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -189,20 +209,27 @@ Bool Function _SetSystemUtilities()
     If IsNone(_systemUtilities)
         QuestExt kQuest = (GetOwningQuest() as QuestExt)
         If !IsNone(kQuest) 
+            kQuest.WaitForInitialized()
             _systemUtilities = kQuest.SystemUtilities
         Else
-            Game.Error("Could not set System Utilities on References Alias: " + Self)
+            LogErrorGlobal(GetOwningQuest(), "Could not set System Utilities on References Alias: " + Self)
             return False
         EndIf
-    Else
-        return _systemUtilities.IsInitialized
+    EndIf
+
+    If !IsNone(_systemUtilities) 
+        return _systemUtilities.WaitForInitialized()
     EndIf
 
     return False
 EndFunction
 
+Bool Function _RegisterEvents()
+    return True
+EndFunction
+
 Bool Function _Init()
-    return true
+    return True
 EndFunction
 
 Function _InitialRun()

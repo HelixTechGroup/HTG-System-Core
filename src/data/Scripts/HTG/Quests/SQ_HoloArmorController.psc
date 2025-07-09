@@ -14,13 +14,12 @@ FormList Property KnownBackpacks Mandatory Const Auto
 FormList Property KnownHelmets Mandatory Const Auto
 FormList Property KnownSpacesuits Mandatory Const Auto
 
-ObjectReference Property TempContainer Auto Const Mandatory
-MiscObject Property CreditsObject Mandatory Const Auto
-
 ; KeyValuePair[] Property DefaultArmorMappings Mandatory Const Auto
 FormDictionary Property ArmorMappings Auto Hidden
+PlayerHoloArmorTracker Property PlayerTracker Auto Const
 
 Guard _armorMappingsGuard ProtectsFunctionLogic
+Guard _playerTrackerGuard ProtectsFunctionLogic
 Int _refreshTimerId = 1
 Bool _refreshTimerStarted
 Int _knownBackpackCount
@@ -36,11 +35,11 @@ Int _spacesuitModCount
 ;     If aiTimerID == _refreshTimerId
 ;         If !_refreshTimerStarted
 ;             ; WaitForInitialized()
-;             LockGuard _armorMappingsGuard
+;             TryLockGuard _armorMappingsGuard
 ;                 _refreshTimerStarted = True
 ;                 _UpdateArmorMappings()
 ;                 _refreshTimerStarted = False
-;             EndLockGuard
+;             EndTryLockGuard
 ;         EndIf  
 
 ;         StartTimer(1, _refreshTimerId)
@@ -48,9 +47,9 @@ Int _spacesuitModCount
 ; EndEvent
 
 ; Bool Function _Init()
-;     ; LockGuard _armorMappingsGuard
+;     ; TryLockGuard _armorMappingsGuard
 ;         return _CreateCollections()
-;     ; EndLockGuard
+;     ; EndTryLockGuard
 ; EndFunction
 
 ; Function _InitialRun()
@@ -59,11 +58,11 @@ Int _spacesuitModCount
 
 Bool Function _CreateCollections()
     If IsNone(ArmorMappings)
-        ArmorMappings = HTG:Collections:FormDictionary.FormDictionary()
+        ArmorMappings = HTG:Collections:FormDictionary.FormDictionaryIntegrated(SystemUtilities.ModInfo)
         ; ArmorMappings.AddArray(DefaultArmorMappings)
 
         If IsNone(ArmorMappings)
-            Game.Error("Unable to create collection: " + ArmorMappings)
+            Logger.ErrorEx("Unable to create collection: " + ArmorMappings)
             return False
         EndIf
     EndIf
@@ -77,6 +76,7 @@ EndFunction
 
 ObjectMod Function GetArmorMod(Armor akArmor)
     WaitForInitialized()
+
     ObjectMod res
     Int i
     HTG:ArmorUtility kArmorUtil = SystemUtilities.Armors
@@ -178,12 +178,27 @@ EndFunction
 
 Bool Function EquipArmorToPlayer()
     WaitForInitialized()
-    PlayerHoloArmorTracker kTracker = GetAlias(2) as PlayerHoloArmorTracker
-    return kTracker.EquipHoloArmor()
+
+    TryLockGuard _playerTrackerGuard
+        ; PlayerHoloArmorTracker kTracker = GetAlias(2) as PlayerHoloArmorTracker
+        return PlayerTracker.EquipHoloArmor()
+    EndTryLockGuard
+EndFunction
+
+Bool Function UnequipArmorToPlayer()
+    WaitForInitialized()
+
+    TryLockGuard _playerTrackerGuard
+        ; PlayerHoloArmorTracker kTracker = GetAlias(2) as PlayerHoloArmorTracker
+        return PlayerTracker.UnequipHoloArmor()
+    EndTryLockGuard
 EndFunction
 
 Bool Function ChangePlayerArmorAppearance(Armor akArmor)
     WaitForInitialized()
-    PlayerHoloArmorTracker kTracker = GetAlias(2) as PlayerHoloArmorTracker
-    return kTracker.ChangeArmorPieceAppearance(akArmor)
+
+    TryLockGuard _playerTrackerGuard
+        ; PlayerHoloArmorTracker kTracker = GetAlias(2) as PlayerHoloArmorTracker
+        return PlayerTracker.ChangeArmorPieceAppearance(akArmor)
+    EndTryLockGuard
 EndFunction

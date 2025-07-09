@@ -22,7 +22,7 @@
       "LightLayer": 1
     }
   },
-  "FirstPersonFlags": "SSBackpack",
+  "FirstPersonFlags": "4611686018427387904",
   "PickupSound": {
     "Start": "de17433a-89a8-16f1-86d6-7114a3b197bb"
   },
@@ -35,7 +35,8 @@
     "3E612E:Starfield.esm",
     "11A479:Starfield.esm",
     "00082D:HTG-System-Core.esp",
-    "03ED75:Starfield.esm"
+    "03ED75:Starfield.esm",
+    "0E55E3:Starfield.esm"
   ],
   "Description": {
     "TargetLanguage": "English",
@@ -76,7 +77,8 @@
       "ArmorAddon": "166405:Starfield.esm"
     },
     {
-      "ArmorAddon": "1E027E:Starfield.esm"
+      "AddonIndex": 28,
+      "ArmorAddon": "16D3D6:Starfield.esm"
     },
     {
       "AddonIndex": 9,
@@ -153,10 +155,6 @@
     {
       "AddonIndex": 27,
       "ArmorAddon": "166412:Starfield.esm"
-    },
-    {
-      "AddonIndex": 28,
-      "ArmorAddon": "16D3D6:Starfield.esm"
     }
   ],
   "Unused": "0x000000",
@@ -194,17 +192,6 @@
         },
         {
           "Mod": "157D48:Starfield.esm"
-        },
-        {
-          "Mod": "3E612F:Starfield.esm"
-        }
-      ],
-      "Properties": [
-        {
-          "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
-          "Property": "7",
-          "Value": 1,
-          "Value2": 1
         }
       ]
     },

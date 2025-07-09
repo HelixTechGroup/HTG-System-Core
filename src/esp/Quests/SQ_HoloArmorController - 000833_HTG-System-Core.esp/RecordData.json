@@ -8,23 +8,8 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "TempContainer",
-            "Object": "000823:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "HelmetMods",
-            "Object": "0008D4:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SpacesuitMods",
-            "Object": "000842:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "KnownBackpacks",
-            "Object": "00082A:HTG-System-Core.esp"
+            "Name": "KnownHelmets",
+            "Object": "000829:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -33,13 +18,29 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "KnownHelmets",
-            "Object": "000829:HTG-System-Core.esp"
+            "Name": "PlayerTracker",
+            "Object": "000833:HTG-System-Core.esp",
+            "Alias": 2
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "BackpackMods",
             "Object": "0008D3:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SpacesuitMods",
+            "Object": "000842:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "HelmetMods",
+            "Object": "0008D4:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "KnownBackpacks",
+            "Object": "00082A:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptStructProperty",
@@ -66,11 +67,6 @@
                 ]
               }
             ]
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "CreditsObject",
-            "Object": "00000A:Starfield.esm"
           }
         ]
       }
@@ -128,13 +124,8 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Helmet",
-                "Object": "23C7C1:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Spacesuit",
-                "Object": "23C7C0:Starfield.esm"
+                "Name": "Clothes",
+                "Object": "0E048C:Starfield.esm"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -143,8 +134,18 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Clothes",
-                "Object": "0E048C:Starfield.esm"
+                "Name": "Spacesuit",
+                "Object": "23C7C0:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Helmet",
+                "Object": "23C7C1:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DontShowInUI",
+                "Object": "374EFA:Starfield.esm"
               }
             ]
           },
@@ -158,6 +159,11 @@
                 "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "DebugGlobal",
                 "Object": "0A7D31:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoForm",
+                "Object": "000820:HTG-System-Core.esp"
               }
             ]
           }
@@ -171,7 +177,25 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:Quests:PlayerHoloArmorTracker"
+            "Name": "HTG:Quests:PlayerHoloArmorTracker",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ForceHideSpacesuit",
+                "Object": "0A73F8:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "IsHoloArmorEquipped",
+                "Object": "00082E:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "PlayerTracker",
+                "Object": "000801:HTG-System-Core.esp",
+                "Alias": 3
+              }
+            ]
           }
         ]
       }
@@ -183,11 +207,9 @@
   },
   "Data": {
     "Flags": [
-      "StartGameEnabled",
-      "AllowRepeatedStages",
-      "StartsEnabled"
+      "AllowRepeatedStages"
     ],
-    "Priority": 30,
+    "Priority": 20,
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
@@ -268,10 +290,15 @@
       "MutagenObjectType": "QuestReferenceAlias",
       "Name": "SystemUtilities",
       "Flags": [
-        "AllowReuseInQuest"
+        "AllowReuseInQuest",
+        "AllowReserved",
+        "ExternalAliasLinked"
       ],
       "ALFG": 0,
-      "ForcedReference": "000812:HTG-System-Core.esp",
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 0
+      },
       "VoiceTypes": "Null"
     },
     {
@@ -300,5 +327,6 @@
       "UniqueActor": "000007:Starfield.esm",
       "VoiceTypes": "Null"
     }
-  ]
+  ],
+  "QuestGroup": "000803:HTG-System-Core.esp"
 }

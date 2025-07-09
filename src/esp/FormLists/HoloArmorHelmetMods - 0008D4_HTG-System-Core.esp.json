@@ -10,7 +10,7 @@
     "000849:HTG-System-Core.esp",
     "00084E:HTG-System-Core.esp",
     "000851:HTG-System-Core.esp",
-    "000814:HTG-System-Core.esp",
+    "000800:HTG-System-Core.esp",
     "000853:HTG-System-Core.esp",
     "000857:HTG-System-Core.esp",
     "000859:HTG-System-Core.esp",
@@ -48,8 +48,7 @@
     "00089E:HTG-System-Core.esp",
     "0008C5:HTG-System-Core.esp",
     "0008C7:HTG-System-Core.esp",
-    "0008CB:HTG-System-Core.esp",
-    "000800:HTG-System-Core.esp"
+    "0008CB:HTG-System-Core.esp"
   ],
   "AddToList": "Null"
 }

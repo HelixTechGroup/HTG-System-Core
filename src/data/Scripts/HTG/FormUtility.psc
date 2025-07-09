@@ -1,4 +1,5 @@
 Scriptname HTG:FormUtility extends ScriptObject Hidden
+import HTG:SystemLogger
 
 Bool Function FormArraySort(Form[] akArray, Int aiStartingIndex = 0) Global
     If akArray.Length == 0
@@ -66,12 +67,11 @@ Form Function CreateForm(Int aiFormId, String modName = "HTG-System-Core") Globa
     EndIf
 
     If kForm != None
-        HTG:SystemLogger.LogObjectGlobal(kForm, "HTG:FormUtility.CreateForm(" + aiFormId + ")")
+        LogObjectGlobal(kForm, "HTG:FormUtility.CreateForm(" + aiFormId + ")")
         return kForm
     EndIf
 
-    HTG:SystemLogger.LogObjectGlobal(kForm, "HTG:FormUtility.CreateForm: Unable to create Form: " + aiFormId)
-    Game.Error("Unable to create Form: " + aiFormId)
+    LogObjectGlobal(kForm, "HTG:FormUtility.CreateForm: Unable to create Form: " + aiFormId)
     return None
 EndFunction
 
@@ -83,14 +83,12 @@ ObjectReference Function CreateReference(Actor akActor, Form akForm, Bool abPers
             ;     ref.SetActorRefOwner(akActor)
             ; EndIf
 
-            HTG:SystemLogger.LogObjectGlobal(ref, "HTG:FormUtility.CreateReference(" + akForm + ")")
+            LogObjectGlobal(ref, "HTG:FormUtility.CreateReference(" + akForm + ")")
             return ref
         EndIf
     EndIf
 
-    HTG:SystemLogger.LogObjectGlobal(akActor, "HTG:FormUtility.CreateReference: Unable to create Form: " + akForm)
-    Game.Error("Unable to create Form: " + akForm)
-
+    LogErrorGlobal(akActor, "HTG:FormUtility.CreateReference: Unable to create Form: " + akForm)
     return None
 EndFunction
 
@@ -102,13 +100,11 @@ ObjectReference Function CreateReferenceFromExisting(Actor akActor, Form akForm,
                 ref.SetActorRefOwner(akActor)
             EndIf
 
-            HTG:SystemLogger.LogObjectGlobal(ref, "HTG:FormUtility.CreateReferenceFromExisting(" + akForm + ")")
+            LogObjectGlobal(ref, "HTG:FormUtility.CreateReferenceFromExisting(" + akForm + ")")
             return ref
         EndIf        
     EndIf
 
-    HTG:SystemLogger.LogObjectGlobal(akActor, "HTG:FormUtility.CreateReferenceFromExisting: Unable to create Form: " + akForm)
-    Game.Error("Unable to create Form: " + akForm)
-
+    LogErrorGlobal(akActor, "HTG:FormUtility.CreateReferenceFromExisting: Unable to create Form: " + akForm)
     return None
 EndFunction

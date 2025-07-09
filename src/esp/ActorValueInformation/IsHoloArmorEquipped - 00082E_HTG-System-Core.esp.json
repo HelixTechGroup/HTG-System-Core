@@ -1,0 +1,17 @@
+{
+  "FormKey": "00082E:HTG-System-Core.esp",
+  "EditorID": "IsHoloArmorEquipped",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Is HoloArmor Equipped"
+  },
+  "ContextNotes": "Determines if the HoloArmor is Equipped.",
+  "DefaultValue": 0.0,
+  "Flags": [
+    "DefaultToZero",
+    "ValueLessThanOne"
+  ],
+  "Type": "Variable",
+  "Min": 0.0,
+  "Max": 1.0
+}

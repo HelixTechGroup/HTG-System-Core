@@ -4,6 +4,8 @@ import HTG
 import HTG:Structs
 import HTG:SystemLogger
 import HTG:IntUtility
+import HTG:UtilityExt
+import HTG:FormUtility
 
 String Property KeyType = "Form" Auto Hidden
 String Property ValueType = "Form" Auto Hidden
@@ -33,9 +35,20 @@ Int _count = 0
 Int _trackedIndex = 0
 Int _maxSize = 128 Const
 
-FormDictionary Function FormDictionary(Int aiSize = 4) Global 
+FormDictionary Function FormDictionary(Int aiSize = 0) Global 
     FormDictionary res = _CreateDictionary(aiSize = aiSize)
-    LogObjectGlobal(res, "HTG:Collections:Dictionary.Dictionary(" + aiSize  + "): " + res)
+    LogObjectGlobal(res, "HTG:Collections:FormDictionary.FormDictionary(" + aiSize  + "): " + res)
+    return res
+EndFunction
+
+FormDictionary Function FormDictionaryIntegrated(ModInformation akMod, Int aiSize = 0) Global 
+    If !akMod.IsCoreIntegrated
+        return FormDictionary(aiSize)
+    EndIf
+
+    FormDictionary res
+    res = _CreatedRegisteredDictionary(akMod, "HTG:Collections:FormDictionary", aiSize) as FormDictionary
+    LogObjectGlobal(res, "HTG:Collections:FormDictionary.FormDictionary(" + aiSize  + "): " + res)
     return res
 EndFunction
 
@@ -44,12 +57,12 @@ Bool Function Initialize(Int aiSize = 0)
         return False
     EndIf
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         _internalArray = new KeyValuePair[aiSize]
         _trackedIndex = 0
         _count = 0
         _isInitialized = True
-    EndLockGuard
+    EndTryLockGuard
 
     return True
 EndFunction
@@ -59,12 +72,12 @@ Function Clear()
         return
     EndIf
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         _internalArray.Clear()
         _count = 0
         _trackedIndex = 0
         _isInitialized = False
-    EndLockGuard
+    EndTryLockGuard
 EndFunction
 
 Var Function GetKeyValue(Form akKey)
@@ -84,23 +97,38 @@ KeyValuePair Function GetPair(Form akKey)
 EndFunction
 
 KeyValuePair Function GetAt(Int index)
-    return _internalArray[index]
+    If index < Count
+        return _internalArray[index]
+    EndIf
+
+    return None
 EndFunction
 
 Int Function Add(Form akKey, Form akValue, Bool overrideExisting = False)
-    If !_isInitialized || !TestValue(akKey) || !TestValue(akValue)
+    If !_isInitialized || !TestKey(akKey) || !TestValue(akValue)
         return -1
     EndIf
 
+    Int i = -1
     Int fI = Find(akKey)
-    If !overrideExisting && fI > -1
-        return fI
+    If fI > -1
+        If !overrideExisting
+            return fI
+        EndIf
+
+        i = fI
     EndIf
 
     KeyValuePair kPair = new KeyValuePair
     kPair.KeyForm = akKey
     kPair.ValueForm = akValue
-    Int i =_Add(kPair)
+
+    If i > -1
+        _internalArray[i] = kPair
+    Else
+        i = _Add(kPair)
+    EndIf
+
     LogObjectGlobal(akValue as ScriptObject, "Added item with Index: " + i + " and Count: " + _count)
     return i
 EndFunction
@@ -154,14 +182,14 @@ Int Function Remove(Form akKey)
     EndIf
 
     Int i = -1
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         i = Find(akKey)
         If i > -1
             _internalArray.Remove(i)
             _trackedIndex -= 1
             _count -= 1
         EndIf
-    EndLockGuard
+    EndTryLockGuard
 
     Sort()
     LogObjectGlobal(akKey as ScriptObject, "Removed item with Index: " + i + " and Count: " + _count)
@@ -221,10 +249,10 @@ Bool Function Sort(Int aiStartingIndex = 0)
         Else
             If bFirstNoneFound == True
                 If !IsNone(_internalArray[aiStartingIndex])
-                    LockGuard _arrayGuard
+                    TryLockGuard _arrayGuard
                         _internalArray[iFirstNonePos] = _internalArray[aiStartingIndex]
                         _internalArray[aiStartingIndex] = None
-                    EndLockGuard
+                    EndTryLockGuard
 
                     Sort(iFirstNonePos + 1)
                     return True
@@ -244,13 +272,13 @@ Function Clean()
     Int i = 0
     ; Sort()
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         While i < _internalArray.Length
             If IsNone(_internalArray[i])
                 _internalArray.Remove(i)
             EndIf
         EndWhile
-    EndLockGuard
+    EndTryLockGuard
 
     Sort()
 EndFunction
@@ -318,7 +346,7 @@ Bool Function WaitForInitialized()
     Int maxCycle = 50
     Bool maxCycleHit
     While !maxCycleHit && !_isInitialized
-        Utility.WaitMenuPause(0.1)
+        WaitExt(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -330,17 +358,9 @@ Bool Function WaitForInitialized()
     return _isInitialized
 EndFunction
 
-FormDictionary Function _CreateDictionary(Int aiFormId = 0x00000835, String asModName = "HTG-System-Core", Int aiSize = 4) Global
-    Form kForm = HTG:FormUtility.CreateForm(aiFormId, asModName)
-    FormDictionary res = HTG:FormUtility.CreateReference(Game.GetPlayer(), kform) as FormDictionary
-    res.Enable(False)
-    res.Initialize(aiSize)
-    return res
-EndFunction
-
 Int Function _Add(KeyValuePair akPair)
     Int i = _internalArray.Length ; FindFirstEmpty()
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         If _trackedIndex > -1 && _trackedIndex < _internalArray.Length
             _internalArray[_trackedIndex] = akPair
         Else
@@ -349,7 +369,7 @@ Int Function _Add(KeyValuePair akPair)
                 ; i = _internalArray.Length - 1
             EndIf
         EndIf
-    EndLockGuard
+    EndTryLockGuard
 
     If _internalArray.Length > i
         _trackedIndex += 1
@@ -358,4 +378,43 @@ Int Function _Add(KeyValuePair akPair)
     EndIf
 
     return -1
+EndFunction
+
+FormDictionary Function _CreateDictionary(Int aiFormId = 0x00000834, String asModName = "HTG-System-Core", Int aiSize = 0) Global
+    Form kForm = CreateForm(aiFormId, asModName)
+    If !HTG:UtilityExt.IsNone(kForm)
+        FormDictionary kList = CreateReference(Game.GetPlayer(), kform) as FormDictionary
+        If !HTG:UtilityExt.IsNone(kList)
+            kList.Enable(False)
+            kList.Initialize(aiSize)
+            return kList
+        EndIf
+    EndIf
+
+    return None
+EndFunction
+
+FormDictionary Function _CreatedRegisteredDictionary(ModInformation akMod, String asListType, Int aiSize = 0) Global
+    FormList kRegistry = akMod.CollectionRegistry
+    Form kForm
+    Int i 
+    While i < kRegistry.GetSize()
+        kForm = kRegistry.GetAt(i).CastAs(asListType) as Form
+        If !HTG:UtilityExt.IsNone(kForm)
+            i = kRegistry.GetSize()
+        EndIf
+
+        i += 1
+    EndWhile
+
+    If !HTG:UtilityExt.IsNone(kForm)
+        FormDictionary kList = CreateReference(Game.GetPlayer(), kform) as FormDictionary
+        If !HTG:UtilityExt.IsNone(kList)
+            kList.Enable(False)
+            kList.Initialize(aiSize)
+            return kList
+        EndIf
+    EndIf
+
+    return None
 EndFunction

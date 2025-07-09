@@ -56,6 +56,8 @@ Function IntArrayClean(Int[] akArray) Global
         If IsIntNone(akArray[i])
             akArray.Remove(i)
         EndIf
+
+        i += 1
     EndWhile
 
     IntArraySort(akArray)

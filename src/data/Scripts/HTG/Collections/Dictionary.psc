@@ -3,6 +3,8 @@ import HTG
 import HTG:Structs
 import HTG:SystemLogger
 import HTG:IntUtility
+import HTG:UtilityExt
+import HTG:FormUtility
 
 String Property KeyType = "Var" Auto Hidden
 String Property ValueType = "Var" Auto Hidden
@@ -39,8 +41,19 @@ Int _count = 0
 Int _trackedIndex = 0
 Int _maxSize = 128 Const
 
-Dictionary Function Dictionary(Int aiSize = 4) Global 
+Dictionary Function Dictionary(Int aiSize = 0) Global 
     Dictionary res = _CreateDictionary(aiSize = aiSize)
+    LogObjectGlobal(res, "HTG:Collections:Dictionary.Dictionary(" + aiSize  + "): " + res)
+    return res
+EndFunction
+
+Dictionary Function DictionaryIntegrated(ModInformation akMod, Int aiSize = 0) Global 
+    If !akMod.IsCoreIntegrated
+        return Dictionary(aiSize)
+    EndIf
+
+    Dictionary res
+    res = _CreatedRegisteredDictionary(akMod, "HTG:Collections:Dictionary", aiSize)
     LogObjectGlobal(res, "HTG:Collections:Dictionary.Dictionary(" + aiSize  + "): " + res)
     return res
 EndFunction
@@ -50,13 +63,13 @@ Bool Function Initialize(Int aiSize = 0)
         return False
     EndIf
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         _keyArray = new Var[aiSize]
         _valueArray = new Var[aiSize]
         _trackedIndex = 0
         _count = 0
         _isInitialized = True
-    EndLockGuard
+    EndTryLockGuard
 
     return True
 EndFunction
@@ -66,13 +79,13 @@ Function Clear()
         return
     EndIf
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         _keyArray.Clear()
         _valueArray.Clear()
         _count = 0
         _trackedIndex = 0
         _isInitialized = False
-    EndLockGuard
+    EndTryLockGuard
 EndFunction
 
 Var Function GetKeyValue(Var akKey)
@@ -80,45 +93,48 @@ Var Function GetKeyValue(Var akKey)
     If i > -1
         return _valueArray[i]
     EndIf
+
+    return None
 EndFunction
 
 Var[] Function GetAt(Int index)
     Var[] kArray = new Var[0]
 
-    kArray.Add(_keyArray[index], 1)
-    kArray.Add(_valueArray[index], 1)
+    If index < Count
+        kArray.Add(_keyArray[index], 1)
+        kArray.Add(_valueArray[index], 1)
+    EndIf
 
     return kArray
 EndFunction
 
-Int Function Add(Var akKey, Var akValue, Bool overrideExisting = False)
-    If !_isInitialized || !TestValue(akKey) || !TestValue(akValue)
+Int Function Add(Var akKey, Var akValue)
+    If !_isInitialized || !TestKey(akKey) || !TestValue(akValue)
         return -1
     EndIf
 
+    Int i =  -1
     Int fI = Find(akKey)
-    If !overrideExisting && fI > -1
-        return fI
+    If fI > -1
+        return Update(akKey, akValue)
     EndIf
 
-    Int i = -1
-    LockGuard _arrayGuard
-    i = _trackedIndex ; FindFirstEmpty()
-    If i >= 0 && _trackedIndex <= _keyArray.Length
-        _keyArray[i] = akKey
-        _valueArray[i] = akValue
-        _trackedIndex += 1
-        _count += 1
-    Else
-        If _keyArray.Length < _maxSize
-            _keyArray.Add(akKey, 1)
-            _valueArray.Add(akValue, 1)
+    TryLockGuard _arrayGuard
+        i =  _trackedIndex ; FindFirstEmpty()
+        Int kKeyCount = _keyArray.Length
+        If i >= 0  && i < _keyArray.Length
+            _keyArray[i] = akKey
+            _valueArray[i] = akValue
+            _trackedIndex = kKeyCount
+            ; _count += 1
+        ElseIf i >= kKeyCount && kKeyCount < _maxSize
+            _keyArray.Add(akKey)
+            _valueArray.Add(akValue)
             _trackedIndex += 1
             _count += 1
             ; i = _internalArray.Length - 1
         EndIf
-    EndIf
-    EndLockGuard
+    EndTryLockGuard
 
     ; Clean()
     LogObjectGlobal(akValue as ScriptObject, "Added item with Index: " + i + " and Count: " + _count)
@@ -137,9 +153,9 @@ Int Function AddDictionary(Dictionary akDictionary)
         If TestPair(kPair[0], kPair[1]) 
             Int fI = Find(kPair[0])
             If fI < 0
-                LockGuard _arrayGuard
+                TryLockGuard _arrayGuard
                 i = _trackedIndex ; FindFirstEmpty()
-                If i > -1 && _trackedIndex <= _keyArray.Length
+                If i > -1 && _trackedIndex < _keyArray.Length
                     _keyArray[i] = kPair[0]
                     _valueArray[i] = kPair[1]
                     _trackedIndex += 1
@@ -153,7 +169,7 @@ Int Function AddDictionary(Dictionary akDictionary)
                         ; i = _internalArray.Length - 1
                     EndIf
                 EndIf
-                EndLockGuard
+                EndTryLockGuard
             EndIf
         EndIf
     EndWhile
@@ -176,9 +192,9 @@ Int Function AddArray(Var[] akKeyArray, Var[] akValueArray)
         If TestKey(kKey) && TestValue(kValue)
             Int fI = Find(kKey)
             If fI < 0
-                LockGuard _arrayGuard
+                TryLockGuard _arrayGuard
                 i = _trackedIndex ; FindFirstEmpty()
-                If i > -1 && _trackedIndex <= _keyArray.Length
+                If i > -1 && _trackedIndex < _keyArray.Length
                     _keyArray[i] = kKey
                     _valueArray[i] = kValue
                     _trackedIndex += 1
@@ -192,7 +208,7 @@ Int Function AddArray(Var[] akKeyArray, Var[] akValueArray)
                         ; i = _internalArray.Length - 1
                     EndIf
                 EndIf
-                EndLockGuard
+                EndTryLockGuard
             EndIf
         EndIf
     EndWhile
@@ -202,13 +218,27 @@ Int Function AddArray(Var[] akKeyArray, Var[] akValueArray)
     return i
 EndFunction
 
+Int Function Update(Var akKey, Var akValue)
+    Int fI = Find(akKey)
+    If fI < 0
+        return Add(akKey, akValue)
+    EndIf
+
+    TryLockGuard _arrayGuard
+        _keyArray[fI] = akKey
+        _valueArray[fI] = akValue
+    EndTryLockGuard
+
+    return fI
+EndFunction
+
 Int Function Remove(Var akKey)
     If !_isInitialized || !TestKey(akKey)
         return -1
     EndIf
 
     Int i = -1
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         i = Find(akKey)
         If i > -1
             _keyArray.Remove(i)
@@ -216,9 +246,9 @@ Int Function Remove(Var akKey)
             _trackedIndex -= 1
             _count -= 1
         EndIf
-    EndLockGuard
+    EndTryLockGuard
 
-    Sort()
+    ; Sort()
     LogObjectGlobal(akKey as ScriptObject, "Removed item with Index: " + i + " and Count: " + _count)
     return i
 EndFunction
@@ -275,13 +305,13 @@ Bool Function Sort(Int aiStartingIndex = 0)
         Else
             If bFirstNoneFound == True
                 If !IsNone(_keyArray[aiStartingIndex])
-                    LockGuard _arrayGuard
+                    TryLockGuard _arrayGuard
                         _keyArray[iFirstNonePos] = _keyArray[aiStartingIndex]
                         _keyArray[aiStartingIndex] = None
 
                         _valueArray[iFirstNonePos] = _valueArray[aiStartingIndex]
                         _valueArray[aiStartingIndex] = None
-                    EndLockGuard
+                    EndTryLockGuard
 
                     Sort(iFirstNonePos + 1)
                     return True
@@ -301,14 +331,14 @@ Function Clean()
     Int i = 0
     ; Sort()
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         While i < _keyArray.Length
             If IsNone(_keyArray[i])
                 _keyArray.Remove(i)
                 _valueArray.Remove(i)
             EndIf
         EndWhile
-    EndLockGuard
+    EndTryLockGuard
 
     Sort()
 EndFunction
@@ -334,7 +364,7 @@ Bool Function TestType(Var akType1, Var akType2)
 EndFunction
 
 Bool Function TestValue(Var akValue)
-    If _valueArray.Length == 0
+    If _valueArray.Length == 0 || _count == 0
         return True
     EndIf
 
@@ -420,7 +450,7 @@ Bool Function WaitForInitialized()
     Int maxCycle = 50
     Bool maxCycleHit
     While !maxCycleHit && !_isInitialized
-        Utility.Wait(0.1)
+        WaitExt(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -432,10 +462,41 @@ Bool Function WaitForInitialized()
     return _isInitialized
 EndFunction
 
-Dictionary Function _CreateDictionary(Int aiFormId = 0x00000834, String asModName = "HTG-System-Core", Int aiSize = 4) Global
-    Form kForm = HTG:FormUtility.CreateForm(aiFormId, asModName)
-    Dictionary res = HTG:FormUtility.CreateReference(Game.GetPlayer(), kform) as Dictionary
-    res.Enable(False)
-    res.Initialize(aiSize)
-    return res
+Dictionary Function _CreateDictionary(Int aiFormId = 0x00000834, String asModName = "HTG-System-Core", Int aiSize = 0) Global
+    Form kForm = CreateForm(aiFormId, asModName)
+    If !HTG:UtilityExt.IsNone(kForm)
+        Dictionary kList = CreateReference(Game.GetPlayer(), kform) as Dictionary
+        If !HTG:UtilityExt.IsNone(kList)
+            kList.Enable(False)
+            kList.Initialize(aiSize)
+            return kList
+        EndIf
+    EndIf
+
+    return None
+EndFunction
+
+Dictionary Function _CreatedRegisteredDictionary(ModInformation akMod, String asListType, Int aiSize = 0) Global
+    FormList kRegistry = akMod.CollectionRegistry
+    Form kForm
+    Int i 
+    While i < kRegistry.GetSize()
+        kForm = kRegistry.GetAt(i).CastAs(asListType) as Form
+        If !HTG:UtilityExt.IsNone(kForm)
+            i = kRegistry.GetSize()
+        EndIf
+
+        i += 1
+    EndWhile
+
+    If !HTG:UtilityExt.IsNone(kForm)
+        Dictionary kList = CreateReference(Game.GetPlayer(), kform) as Dictionary
+        If !HTG:UtilityExt.IsNone(kList)
+            kList.Enable(False)
+            kList.Initialize(aiSize)
+            return kList
+        EndIf
+    EndIf
+
+    return None
 EndFunction

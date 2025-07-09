@@ -51,7 +51,7 @@
               {
                 "MutagenObjectType": "ScriptStringProperty",
                 "Name": "SubLogName",
-                "Data": "System"
+                "Data": "DataSlate"
               }
             ]
           },
@@ -84,8 +84,8 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Hat",
-                "Object": "0E048B:Starfield.esm"
+                "Name": "Helmet",
+                "Object": "23C7C1:Starfield.esm"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -94,8 +94,13 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Helmet",
-                "Object": "23C7C1:Starfield.esm"
+                "Name": "Hat",
+                "Object": "0E048B:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DontShowInUI",
+                "Object": "374EFA:Starfield.esm"
               }
             ]
           },
@@ -109,6 +114,11 @@
                 "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "DebugGlobal",
                 "Object": "0A7D31:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoForm",
+                "Object": "000820:HTG-System-Core.esp"
               }
             ]
           }
@@ -126,13 +136,13 @@
             "Properties": [
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "FirstActivation",
-                "Object": "000830:HTG-System-Core.esp"
+                "Name": "DataSlate",
+                "Object": "000877:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DataSlate",
-                "Object": "000877:HTG-System-Core.esp"
+                "Name": "FirstActivation",
+                "Object": "000830:HTG-System-Core.esp"
               }
             ]
           }
@@ -209,10 +219,15 @@
       "Flags": [
         "AllowReuseInQuest",
         "AllowDead",
-        "AllowDisabled"
+        "AllowDisabled",
+        "AllowReserved",
+        "ExternalAliasLinked"
       ],
       "ALFG": 0,
-      "ForcedReference": "000812:HTG-System-Core.esp",
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 0
+      },
       "VoiceTypes": "Null"
     },
     {
@@ -241,6 +256,7 @@
       "VoiceTypes": "Null"
     }
   ],
+  "QuestGroup": "000803:HTG-System-Core.esp",
   "SwfFile": "skillpatches.swf",
   "Unknown": 41
 }

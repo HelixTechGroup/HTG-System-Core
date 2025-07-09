@@ -3,6 +3,7 @@ Scriptname HTG:PerkExt extends Perk
 import HTG
 import HTG:Structs
 import HTG:SystemLogger
+import HTG:UtilityExt
 
 SystemUtilities Property SystemUtilities Auto Const Mandatory
 
@@ -35,7 +36,7 @@ Bool _readyTimerStarted
 Bool _mainTimerStarted
 Float _timerInterval = 0.01
 Int _maxTimerCycle = 50
-Int _currentTimerCycle = 0
+Int _currentInitializeTimerCycle = 0
 
 CustomEvent OnInitialRun
 CustomEvent OnMain
@@ -68,36 +69,36 @@ Event OnTimer(Int aiTimerID)
         Float itimerInterval = _timerInterval
         Int timerId = -1
 
-        LockGuard _initializeTimerGuard
+        TryLockGuard _initializeTimerGuard
         _initializeTimerStarted = True
-        If !Initialize() &&  _currentTimerCycle < _maxTimerCycle            
-            _currentTimerCycle += 1
+        If !Initialize() &&  _currentInitializeTimerCycle < _maxTimerCycle            
+            _currentInitializeTimerCycle += 1
             timerId = _timerIds.InitializeId
-        ElseIf !_isInitialized && _currentTimerCycle == _maxTimerCycle
+        ElseIf !_isInitialized && _currentInitializeTimerCycle == _maxTimerCycle
             LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
         Else
             Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
             timerId = SystemUtilities.Timers.SystemTimerIds.InitialRunId
         EndIf
         _initializeTimerStarted = False
-        EndLockGuard
+        EndTryLockGuard
 
         If timerid > -1
             StartTimer(itimerInterval, timerId)
         EndIf
     ElseIf aiTimerID == _timerIds.InitialRunId
-        If !_isInitialRun || _readyTimerStarted 
-            Logger.Log("ReadyTimer - Is Not Initial Run or Timer is already running. No need to proceed.")
+        If !_isInitialized || !_isInitialRun || _readyTimerStarted 
+            LogObjectGlobal(Self, "ReadyTimer - Is Not Initial Run or Timer is already running. No need to proceed.")
             return
         EndIf
 
-        LockGuard _readyTimerGuard
+        TryLockGuard _readyTimerGuard
         _readyTimerStarted = True
         ; SendCustomEvent("OnInitialRun")
         _InitialRun()
         _isInitialRun = False
         _readyTimerStarted = False
-        EndLockGuard
+        EndTryLockGuard
 
         Logger.Log("ReadyTimer - Completed Initial Run.")
         StartTimer(_timerInterval, _timerIds.MainId)
@@ -108,12 +109,12 @@ Event OnTimer(Int aiTimerID)
         EndIf
 
         Bool restartTimer
-        LockGuard _mainTimerGuard
+        TryLockGuard _mainTimerGuard
         _mainTimerStarted = True
         ; SendCustomEvent("OnMain")
         restartTimer = _Main()
         _mainTimerStarted = False
-        EndLockGuard
+        EndTryLockGuard
 
         If restartTimer
             StartTimer(_timerInterval, _timerIds.MainId)
@@ -129,7 +130,9 @@ EndEvent
 
 Bool Function Initialize()
     If !_isInitialized
-        _isInitialized = _SetSystemUtilities() && _Init()
+        _isInitialized = _SetSystemUtilities() \
+                        && _RegisterEvents() \
+                        && _Init()
     EndIf
 
     return _isInitialized
@@ -146,7 +149,7 @@ Bool Function WaitForInitialized()
 
     ; StartTimer(_timerInterval, _initializeTimerId)
     While !maxCycleHit && !_isInitialized
-        Utility.Wait(0.1)
+        WaitExt(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -159,7 +162,10 @@ Bool Function WaitForInitialized()
 EndFunction
 
 Bool Function _SetSystemUtilities()
-    SystemUtilities.WaitForInitialized()
+    return SystemUtilities.WaitForInitialized()
+EndFunction
+
+Bool Function _RegisterEvents()
     return True
 EndFunction
 

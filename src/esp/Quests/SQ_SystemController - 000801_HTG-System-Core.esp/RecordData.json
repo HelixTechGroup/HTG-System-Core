@@ -1,7 +1,12 @@
 {
-  "FormKey": "000811:HTG-System-Core.esp",
-  "EditorID": "SQ_SystemTemplate",
+  "FormKey": "000801:HTG-System-Core.esp",
+  "EditorID": "SQ_SystemController",
   "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Quests:SQ_SystemController"
+      }
+    ],
     "Script": {
       "Name": ""
     },
@@ -9,7 +14,7 @@
       {
         "Property": {
           "Name": "",
-          "Object": "000811:HTG-System-Core.esp",
+          "Object": "000801:HTG-System-Core.esp",
           "Alias": 0
         },
         "Scripts": [
@@ -27,7 +32,7 @@
               {
                 "MutagenObjectType": "ScriptStringProperty",
                 "Name": "SubLogName",
-                "Data": "Template"
+                "Data": "System"
               }
             ]
           },
@@ -55,13 +60,8 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Clothes",
-                "Object": "0E048C:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Hat",
-                "Object": "0E048B:Starfield.esm"
+                "Name": "Helmet",
+                "Object": "23C7C1:Starfield.esm"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -70,8 +70,13 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Helmet",
-                "Object": "23C7C1:Starfield.esm"
+                "Name": "Hat",
+                "Object": "0E048B:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Clothes",
+                "Object": "0E048C:Starfield.esm"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -90,8 +95,25 @@
                 "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "DebugGlobal",
                 "Object": "0A7D31:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoForm",
+                "Object": "000820:HTG-System-Core.esp"
               }
             ]
+          }
+        ]
+      },
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000801:HTG-System-Core.esp",
+          "Alias": 3
+        },
+        "Scripts": [
+          {
+            "Name": "htg:quests:playerequipmenttracker"
           }
         ]
       }
@@ -99,53 +121,47 @@
   },
   "Name": {
     "TargetLanguage": "English",
-    "Value": "System Template"
+    "Value": "HTG Systems Controller"
   },
   "Data": {
-    "Priority": 30,
+    "Flags": [
+      "StartGameEnabled",
+      "AllowRepeatedStages",
+      "StartsEnabled",
+      "WarnOnAliasFillFailure"
+    ],
+    "Priority": 10,
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
-  "Summary": "HTG System Quest Template.\r\nPlease create a new script for your quest that Extends HTG:QuestExt",
+  "Summary": "HTG Systems Controller.\r\n",
   "UnusedConditions": [],
-  "Objectives": [
-    {
-      "Flags": [],
-      "DisplayText": {
-        "TargetLanguage": "English",
-        "Value": ""
-      }
-    }
+  "Stages": [
+    {}
   ],
   "Aliases": [
     {
       "MutagenObjectType": "QuestReferenceAlias",
       "Name": "SystemUtilities",
       "Flags": [
+        "ReservesLocationOrReference",
         "AllowReuseInQuest",
-        "AllowReserved",
-        "ExternalAliasLinked"
+        "AllowReserved"
       ],
       "ALFG": 0,
-      "External": {
-        "Quest": "000801:HTG-System-Core.esp",
-        "AliasID": 0
-      },
+      "ForcedReference": "000812:HTG-System-Core.esp",
       "VoiceTypes": "Null"
     },
     {
       "MutagenObjectType": "QuestReferenceAlias",
       "ID": 3,
-      "Name": "DataslateTerminal",
+      "Name": "PlayerEquipmentTracker",
       "Flags": [
-        "AllowReuseInQuest",
-        "ExternalAliasLinked"
+        "Optional",
+        "AllowReuseInQuest"
       ],
       "ALFG": 0,
-      "External": {
-        "Quest": "000824:HTG-System-Core.esp",
-        "AliasID": 5
-      },
+      "UniqueActor": "000007:Starfield.esm",
       "VoiceTypes": "Null"
     }
   ],

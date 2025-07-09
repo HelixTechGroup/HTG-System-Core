@@ -1,5 +1,11 @@
 Scriptname HTG:Structs
 
+Struct LogSeverity
+    Int Info = 0
+    Int Warning = 1
+    Int Error = 2
+EndStruct
+
 Struct TimerDefaults
     Float Interval = 0.01
     Int MaxCycles = 100
@@ -32,6 +38,12 @@ Struct ArmorSet
     Armor Spacesuit
 EndStruct
 
+Struct ClothingSet
+    Armor Hat
+    Armor NeuroAmp
+    Armor Clothes
+EndStruct
+
 Struct LeveledArmorSet
     LeveledItem Helmet
     LeveledItem Backpack
@@ -50,4 +62,11 @@ EndStruct
 Struct KeyValuePair
     Form KeyForm
     Form ValueForm
+EndStruct
+
+Struct VersionInfomation
+    Int Major
+    Int Minor
+    Int Revision
+    Int Patch
 EndStruct

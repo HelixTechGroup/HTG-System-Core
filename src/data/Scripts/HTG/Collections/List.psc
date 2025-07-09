@@ -2,6 +2,9 @@ Scriptname HTG:Collections:List extends ObjectReference
 import HTG
 import HTG:SystemLogger
 import HTG:IntUtility
+import HTG:UtilityExt
+import HTG:FormUtility
+import HTG:Structs
 
 String Property ArrayType = "Var" Auto Hidden
 
@@ -36,17 +39,28 @@ List Function List(Int aiSize = 0) Global
     return res
 EndFunction
 
+List Function ListIntegrated(ModInformation akMod, Int aiSize = 0) Global 
+    If !akMod.IsCoreIntegrated
+        return List(aiSize)
+    EndIf
+
+    List res
+    res = _CreatedRegisteredList(akMod, res, aiSize)
+    LogObjectGlobal(res, "HTG:Collections:List.List(" + aiSize  + "): " + res)
+    return res
+EndFunction
+
 Bool Function Initialize(Int aiSize = 0)
     If _isInitialized
         return False
     EndIf
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         _internalArray = new Var[aiSize]
         _trackedIndex = 0
         _count = 0
         _isInitialized = True
-    EndLockGuard
+    EndTryLockGuard
 
     return True
 EndFunction
@@ -56,44 +70,54 @@ Function Clear()
         return
     EndIf
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         _internalArray.Clear()
         _count = 0
         _trackedIndex = 0
         _isInitialized = False
-    EndLockGuard
+    EndTryLockGuard
 EndFunction
 
 Var Function GetVarAt(Int index)
-    return _internalArray[index]
+    If index < Count
+        return _internalArray[index]
+    EndIf
+    
+    return None
 EndFunction
 
-Int Function Add(Var akItem, Bool overrideExisting = False)
+Int Function Add(Var akItem)
     If !_isInitialized || !TestType(akItem)
         return -1
     EndIf
 
+    ; If _internalArray == None || !_isInitialized
+    ;     Initialize()
+    ; EndIf
+
     Int fI = Find(akItem)
-    If !overrideExisting && fI > -1
-        return fI
+    If fI > -1
+        return fI; Update(akItem)
     EndIf
 
+
     Int i = -1
-    LockGuard _arrayGuard
-    i = _trackedIndex ; FindFirstEmpty()
-    If i >= 0 && _trackedIndex <= _internalArray.Length
-        _internalArray[i] = akItem
-        _trackedIndex += 1
-        _count += 1
-    Else
-        If _internalArray.Length < _maxSize
-            _internalArray.Add(akItem, 1)
+    TryLockGuard _arrayGuard
+        i = _trackedIndex ; FindFirstEmpty()
+        Int kCount = _internalArray.Length
+        If _trackedIndex >= 0 && _trackedIndex < kCount
+            _internalArray[_trackedIndex] = akItem
             _trackedIndex += 1
             _count += 1
-            ; i = _internalArray.Length - 1
+        Else
+            If _internalArray.Length < _maxSize
+                _internalArray.Add(akItem)
+                _trackedIndex += 1
+                _count += 1
+                i = _internalArray.Length - 1
+            EndIf
         EndIf
-    EndIf
-    EndLockGuard
+    EndTryLockGuard
 
     ; Clean()
     LogObjectGlobal(akItem as ScriptObject, "Added item with Index: " + i + " and Count: " + _count)
@@ -112,21 +136,21 @@ Int Function AddList(List akList)
         If TestType(kItem) 
             Int fI = Find(kItem)
             If fI < 0
-                LockGuard _arrayGuard
-                i = _trackedIndex ; FindFirstEmpty()
-                If i > -1 && _trackedIndex <= _internalArray.Length
-                    _internalArray[i] = kItem
-                    _trackedIndex += 1
-                    _count += 1
-                Else
-                    If _internalArray.Length < _maxSize
-                        _internalArray.Add(kItem, 1)
+                TryLockGuard _arrayGuard
+                    i = _trackedIndex ; FindFirstEmpty()
+                    If i > -1 && _trackedIndex <= _internalArray.Length
+                        _internalArray[i] = kItem
                         _trackedIndex += 1
                         _count += 1
-                        ; i = _internalArray.Length - 1
+                    Else
+                        If _internalArray.Length < _maxSize
+                            _internalArray.Add(kItem, 1)
+                            _trackedIndex += 1
+                            _count += 1
+                            ; i = _internalArray.Length - 1
+                        EndIf
                     EndIf
-                EndIf
-                EndLockGuard
+                EndTryLockGuard
             EndIf
         EndIf
     EndWhile
@@ -148,21 +172,21 @@ Int Function AddArray(Var[] akArray)
         If TestType(kItem) 
             Int fI = Find(kItem)
             If fI < 0
-                LockGuard _arrayGuard
-                i = _trackedIndex ; FindFirstEmpty()
-                If i > -1 && _trackedIndex <= _internalArray.Length
-                    _internalArray[i] = kItem
-                    _trackedIndex += 1
-                    _count += 1
-                Else
-                    If _internalArray.Length < _maxSize
-                        _internalArray.Add(kItem, 1)
+                TryLockGuard _arrayGuard
+                    i = _trackedIndex ; FindFirstEmpty()
+                    If i > -1 && _trackedIndex <= _internalArray.Length
+                        _internalArray[i] = kItem
                         _trackedIndex += 1
                         _count += 1
-                        ; i = _internalArray.Length - 1
+                    Else
+                        If _internalArray.Length < _maxSize
+                            _internalArray.Add(kItem, 1)
+                            _trackedIndex += 1
+                            _count += 1
+                            ; i = _internalArray.Length - 1
+                        EndIf
                     EndIf
-                EndIf
-                EndLockGuard
+                EndTryLockGuard
             EndIf
         EndIf
     EndWhile
@@ -172,22 +196,36 @@ Int Function AddArray(Var[] akArray)
     return i
 EndFunction
 
+Int Function Update(Var akItem)
+    Int fI = Find(akItem)
+    If fI < 0
+        return Add(akItem)
+    EndIf
+
+    Int i = -1
+    TryLockGuard _arrayGuard
+        _internalArray[fI] = akItem
+    EndTryLockGuard
+
+    return fI
+EndFunction
+
 Int Function Remove(Var akItem)
     If !_isInitialized || !TestType(akItem)
         return -1
     EndIf
 
     Int i = -1
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         i = Find(akItem)
         If i > -1
             _internalArray.Remove(i)
             _trackedIndex -= 1
             _count -= 1
         EndIf
-    EndLockGuard
+    EndTryLockGuard
 
-    Sort()
+    ; Sort()
     LogObjectGlobal(akItem as ScriptObject, "Removed item with Index: " + i + " and Count: " + _count)
     return i
 EndFunction
@@ -265,10 +303,10 @@ Bool Function Sort(Int aiStartingIndex = 0)
         Else
             If bFirstNoneFound == True
                 If !IsNone(_internalArray[aiStartingIndex])
-                    LockGuard _arrayGuard
+                    TryLockGuard _arrayGuard
                         _internalArray[iFirstNonePos] = _internalArray[aiStartingIndex]
                         _internalArray[aiStartingIndex] = None
-                    EndLockGuard
+                    EndTryLockGuard
 
                     Sort(iFirstNonePos + 1)
                     return True
@@ -298,22 +336,22 @@ EndFunction
 ;         resArray[i] = array[i]
 ;     EndWhile
 
-;     LockGuard _arrayGuard
+;     TryLockGuard _arrayGuard
 ;         resArray = array
-;     EndLockGuard
+;     EndTryLockGuard
 ; EndFunction
 
 Function Clean()
     Int i = 0
     ; Sort()
 
-    LockGuard _arrayGuard
+    TryLockGuard _arrayGuard
         While i < _internalArray.Length
             If IsNone(_internalArray[i])
                 _internalArray.Remove(i)
             EndIf
         EndWhile
-    EndLockGuard
+    EndTryLockGuard
 
     Sort()
 EndFunction
@@ -327,7 +365,7 @@ Bool Function IsNone(Var akItem)
 EndFunction
 
 Bool Function TestType(Var akItem)
-    If _internalArray.Length == 0
+    If _internalArray.Length == 0 || _count == 0
         return True
     EndIf
 
@@ -387,7 +425,7 @@ Bool Function WaitForInitialized()
     Int maxCycle = 50
     Bool maxCycleHit
     While !maxCycleHit && !_isInitialized
-        Utility.Wait(0.1)
+        WaitExt(0.1)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -399,10 +437,38 @@ Bool Function WaitForInitialized()
     return _isInitialized
 EndFunction
 
-List Function _CreateList(Int aiFormId = 0x00000817, String asModName = "HTG-System-Core", Int aiSize = 4) Global
-    Form kForm = HTG:FormUtility.CreateForm(aiFormId, asModName)
-    List res = HTG:FormUtility.CreateReference(Game.GetPlayer(), kform) as List
-    res.Enable(False)
-    res.Initialize(aiSize)
-    return res
+List Function _CreateList(Int aiFormId = 0x00000817, String asModName = "HTG-System-Core", Int aiSize = 0) Global
+    Form kForm = CreateForm(aiFormId, asModName)
+    If !HTG:UtilityExt.IsNone(kForm)
+        List kList = CreateReference(Game.GetPlayer(), kform) as List
+        If !HTG:UtilityExt.IsNone(kList)
+            kList.Enable(False)
+            kList.Initialize(aiSize)
+            return kList
+        EndIf
+    EndIf
+
+    return None
+EndFunction
+
+List Function _CreatedRegisteredList(ModInformation akMod, String asListType, Int aiSize = 0) Global
+    FormList kRegistry = akMod.CollectionRegistry
+    Form kForm
+    Int i 
+    While i < kRegistry.GetSize()
+        kForm = kRegistry.GetAt(i)
+        If !HTG:UtilityExt.IsNone(kForm)
+            ScriptObject so = CreateReference(Game.GetPlayer(), kform).CastAs(asListType)
+            List kList = so as List
+            If !HTG:UtilityExt.IsNone(kList)
+                kList.Enable(False)
+                kList.Initialize(aiSize)
+                return kList
+            EndIf
+        EndIf
+
+        i += 1
+    EndWhile
+
+    return None
 EndFunction

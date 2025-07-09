@@ -13,11 +13,11 @@ Bool Function AddLeveledItemToActor(Actor akActor, LeveledItem akItem, int count
     If c > 0 && clearAllExisting
         If equip
             akActor.UnequipItem(akItem, abSilent = true)
-            Utility.WaitMenuPause(0.333)
+            WaitExt(0.333)
         EndIf
 
         akActor.RemoveItem(akItem, c, abSilent = true)
-        Utility.WaitMenuPause(0.50)
+        WaitExt(0.50)
     ElseIf c > 0
         If autoEquip && equip
             akActor.EquipItem(akItem, abSilent = true)
@@ -33,14 +33,14 @@ Bool Function AddLeveledItemToActor(Actor akActor, LeveledItem akItem, int count
     EndIf
 
 
-    Utility.Wait(0.666)
+    WaitExt(0.666)
     int nc = akActor.GetItemCount(akItem)
     If nc > 0
         If autoEquip && equip
             akActor.EquipItem(akItem, abSilent = true)
         EndIf
     EndIf
-    ;Utility.Wait(0.25)
+    ;WaitExt(0.25)
 
     return (nc > 0)
 EndFunction
@@ -58,11 +58,11 @@ Bool Function AddItemToActor(Actor actr, Form item, int count = 1, bool clearAll
     If c > 0 && clearAllExisting
         If equip
             actr.UnequipItem(item, abSilent = true)
-            Utility.Wait(0.333)
+            WaitExt(0.333)
         EndIf
 
         actr.RemoveItem(item, c, abSilent = true)
-        Utility.WaitMenuPause(0.50)
+        WaitExt(0.50)
     ElseIf c > 0
         If autoEquip && equip
             actr.EquipItem(item, abSilent = true)
@@ -81,14 +81,14 @@ Bool Function AddItemToActor(Actor actr, Form item, int count = 1, bool clearAll
         actr.AddItem(item, count, abSilent = true)
     EndIf
 
-    ; Utility.WaitMenuPause(0.666)
+    ; WaitExt(0.666)
     int nc = actr.GetItemCount(item)
     If nc > 0
         If autoEquip && equip
             actr.EquipItem(item, abSilent = true)
         EndIf
     EndIf
-    ;Utility.Wait(0.25)
+    ;WaitExt(0.25)
 
     return (nc > 0)
     ; If npc.GetItemCount(item) > 0
@@ -112,7 +112,7 @@ Bool Function RemoveItemFromActor(Actor akActor, Form akItem, Alias akAlias = No
     If c > 0
         If unequip
             akActor.UnequipItem(akItem, abSilent = true)
-            Utility.Wait(0.333)
+            WaitExt(0.333)
         EndIf
 
         ; If akAlias
@@ -123,8 +123,11 @@ Bool Function RemoveItemFromActor(Actor akActor, Form akItem, Alias akAlias = No
         ;     EndIf
         ; EndIf
         akActor.RemoveItem(akItem, c, abSilent = true)
-        Utility.Wait(0.50)
+        WaitExt(0.50)
+        return True
     EndIf
+
+    return False
 EndFunction
 
 Bool Function EquipItemToActor(Actor actr, Form item) Global
@@ -140,7 +143,7 @@ Bool Function EquipItemToActor(Actor actr, Form item) Global
     If c > 0
         If equip
             actr.EquipItem(item, abSilent = true)
-            Utility.Wait(0.666)
+            WaitExt(0.666)
             return actr.IsEquipped(item)
         EndIf
     EndIf
@@ -199,32 +202,84 @@ EndFunction
 ;     return None
 ; EndFunction
 
-; Function ShowTextReplacedMessage(Actor MessageTextReplaceActor, Message MessageToShow, bool ShowAsHelpMessage = false, ObjectReference MessageTextReplaceRef = None, float afArg1 = 0.0, float afArg2 = 0.0)
-;     if MessageTextReplaceActor != None
-;         Alias_MessageTextReplaceActor.ForceRefTo(MessageTextReplaceActor)
-;         Alias_MessageTextReplaceRef.ForceRefTo(MessageTextReplaceRef)
-
-;         if ShowAsHelpMessage
-;             float HelpMessageDuration = 3.0
-;             float HelpMessageInterval = 3.0
-;             int HelpMessageMaxTimes = 1
-;             string HelpMessageContext = ""
-;             int HelpMessagePriority = 0
-;             MessageToShow.ShowAsHelpMessage(none, HelpMessageDuration, HelpMessageInterval, HelpMessageMaxTimes, HelpMessageContext, HelpMessagePriority)
-;         else 
-;             MessageToShow.Show(afArg1, afArg2)
-;         endif
-;         Alias_MessageTextReplaceActor.Clear()
-; 	endif
-
-; EndFunction
-
 Bool Function IsNone(ScriptObject akObject) Global
-    return !akObject || akObject == None
+    return !akObject || akObject == None || !akObject.IsBoundGameObjectAvailable()
 EndFunction
 
 Function WaitForCombatEnd() Global
     While Game.GetPlayer().GetCombatState() == 1
-        Utility.Wait(3.0)
+        WaitExt(3.0)
     EndWhile
+EndFunction
+
+Function RefreshInventoryItem(ObjectReference akContainer, ObjectReference akItem) Global
+    If akContainer.GetItemCount(akItem) > 0
+        akItem.Drop(True)
+        akContainer.AddItem(akItem)
+        akContainer.AddItem(Game.GetCredits(), 1, True)
+        akContainer.RemoveItem(Game.GetCredits(), 1, True)
+    EndIf
+EndFunction
+
+Function WaitExt(Float afInterval) Global
+    ; Int i
+    ; afInterval *= 10.0
+    ; Int iIterations = Math.Ceiling(afInterval) * 100
+    Float fTime = Utility.GetCurrentRealTime()
+    Bool bKeepRunning = True
+    Float fDiff
+
+    While fDiff < afInterval
+        Float fNewTime = Utility.GetCurrentRealTime()
+        fDiff = fNewTime - fTime
+    EndWhile
+EndFunction
+
+Function ShowMessage(Message akMessage, \
+                    ObjectReference[] akTextHolder = None, \
+                    ReferenceAlias[] akTextHolderAlias = None, \
+                    Bool abShowAsHelpMessage = false, \
+                    Float afArg1 = 0.0, \
+                    Float afArg2 = 0.0, \
+                    Float afArg3 = 0.0, \
+                    Float afArg4 = 0.0, \
+                    Float afArg5 = 0.0, \
+                    Float afArg6 = 0.0, \
+                    Float afArg7 = 0.0, \
+                    Float afArg8 = 0.0, \
+                     Float afArg9 = 0.0) Global
+    Int i = 0
+    Bool bUseAlias = (akTextHolder != None && akTextHolder.Length > 0) \
+                    && (akTextHolderAlias != None && akTextHolderAlias.Length > 0)
+    If bUseAlias
+        While i > akTextHolderAlias.Length
+            ReferenceAlias kAlias = akTextHolderAlias[i]
+            ObjectReference kReference = akTextHolder[i]
+            kAlias.ForceRefTo(kReference)
+        EndWhile
+    EndIf
+
+    If abShowAsHelpMessage
+        float HelpMessageDuration = 3.0
+        float HelpMessageInterval = 3.0
+        int HelpMessageMaxTimes = 1
+        string HelpMessageContext = ""
+        int HelpMessagePriority = 0
+        akMessage.ShowAsHelpMessage(none, \
+                                    HelpMessageDuration, \
+                                    HelpMessageInterval, \
+                                    HelpMessageMaxTimes, \
+                                    HelpMessageContext, \
+                                    HelpMessagePriority)
+    Else 
+        akMessage.Show(afArg1, afArg2, afArg3, afArg4, afArg5, afArg6, afArg7, afArg8, afArg9)
+    EndIf
+
+    If bUseAlias
+        i = 0
+        While i > akTextHolderAlias.Length
+            ReferenceAlias kAlias = akTextHolderAlias[i]          
+            kAlias.Clear()
+        EndWhile
+    EndIf
 EndFunction
