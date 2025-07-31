@@ -1,0 +1,11 @@
+{
+  "FormKey": "0008CC:HTG-System-Core.esp",
+  "EditorID": "SQ_PlayerController_DetectedEquipment",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "<Alias=EquipmentTextHolder> was detected on <Alias=SystemPlayerRef>"
+  },
+  "OwnerQuest": "000836:HTG-System-Core.esp",
+  "DisplayTime": 2,
+  "BNAM": 4294967295
+}

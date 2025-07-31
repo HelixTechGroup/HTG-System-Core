@@ -41,7 +41,11 @@ FormDictionary Function FormDictionary(Int aiSize = 0) Global
     return res
 EndFunction
 
-FormDictionary Function FormDictionaryIntegrated(ModInformation akMod, Int aiSize = 0) Global 
+FormDictionary Function FormDictionaryIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+    If HTG:UtilityExt.IsNone(akMod)
+        return None
+    EndIf
+
     If !akMod.IsCoreIntegrated
         return FormDictionary(aiSize)
     EndIf
@@ -394,7 +398,7 @@ FormDictionary Function _CreateDictionary(Int aiFormId = 0x00000834, String asMo
     return None
 EndFunction
 
-FormDictionary Function _CreatedRegisteredDictionary(ModInformation akMod, String asListType, Int aiSize = 0) Global
+FormDictionary Function _CreatedRegisteredDictionary(SystemModuleInformation akMod, String asListType, Int aiSize = 0) Global
     FormList kRegistry = akMod.CollectionRegistry
     Form kForm
     Int i 

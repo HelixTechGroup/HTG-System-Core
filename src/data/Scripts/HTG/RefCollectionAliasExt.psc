@@ -1,10 +1,12 @@
 Scriptname HTG:RefCollectionAliasExt extends RefCollectionAlias
+{Extended RefCollectionAlias}
 import HTG
 import HTG:UtilityExt
 import HTG:Structs
 import HTG:SystemLogger
+import HTG:Quests
 
-HTG:SystemUtilities Property SystemUtilities Hidden
+HTG:SystemUtilities Property Utilities Hidden
     HTG:SystemUtilities Function Get()
         return _systemUtilities
     EndFunction
@@ -12,7 +14,7 @@ EndProperty ; Hidden
 
 HTG:SystemLogger Property Logger Hidden
     HTG:SystemLogger Function Get()
-        return SystemUtilities.Logger
+        return Utilities.Logger
     EndFunction
 EndProperty
 
@@ -38,8 +40,8 @@ Bool _isInitialRun
 Bool _initializeTimerStarted
 Bool _readyTimerStarted
 Bool _mainTimerStarted
-Float _timerInterval = 0.01
-Int _maxTimerCycle = 50
+Float _timerInterval = 0.1
+Int _maxTimerCycle = 1000
 Int _currentInitializeTimerCycle = 0
 
 CustomEvent OnInitialRun
@@ -102,7 +104,7 @@ Event OnTimer(Int aiTimerID)
                 return
             ; Else
             ;     Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
-            ;     timerId = SystemUtilities.Timers.SystemTimerIds.InitialRunId
+            ;     timerId = Utilities.Timers.SystemTimerIds.InitialRunId
             EndIf
             _initializeTimerStarted = False
         EndTryLockGuard
@@ -132,10 +134,10 @@ Event OnTimer(Int aiTimerID)
             return
         EndIf
 
-        Int kMaxStarWait = SystemUtilities.Timers.WaitDefaults.MaxCycles
+        Int kMaxStarWait = Utilities.Timers.WaitDefaults.MaxCycles
         Bool kShouldWait = GetOwningQuest().IsStarting() || !GetOwningQuest().IsRunning()
         While (kShouldWait)
-            WaitExt(SystemUtilities.Timers.WaitDefaults.Time)
+            WaitExt(Utilities.Timers.WaitDefaults.Time)
             If i <= kMaxStarWait
                 i += 1
                 kShouldWait = GetOwningQuest().IsStarting() || !GetOwningQuest().IsRunning()
@@ -166,9 +168,11 @@ EndEvent
 
 Bool Function Initialize()
     If !_isInitialized
-        _isInitialized = _SetSystemUtilities() \
-                        && _RegisterEvents() \
-                        && _Init()
+        If _SetSystemUtilities()
+            _isInitialized = _RegisterEvents() \
+                            && _CreateCollections() \
+                            && _Init()
+        EndIf
     EndIf
 
     return _isInitialized
@@ -188,18 +192,26 @@ Bool Function WaitForInitialized()
     EndIf
     
     Int currentCycle = 0
-    Int maxCycle = 600
+    Int maxCycle = 300
     Bool maxCycleHit
 
     ; StartTimer(_timerInterval, _initializeTimerId)
     QuestExt kQuest = (GetOwningQuest() as QuestExt)
+
     While !maxCycleHit \
-            && !_isInitialized \
-            && kQuest.WaitForInitialized()
-        If !_initializeTimerStarted
-            StartTimer(_timerInterval, _timerIds.InitializeId)
+            && !_isInitialized ; \
+                ; || (!IsNone(kQuest) \
+                ; || !kQuest.Utilities.WaitForInitialized()))
+        Bool kUtilitInit
+        If !IsNone(kQuest)  && !IsNone(kQuest.Utilities)
+            kUtilitInit = kQuest.Utilities.WaitForInitialized()
         EndIf
-        WaitExt(0.1)
+
+        If !_initializeTimerStarted && kUtilitInit
+            ; StartTimer(_timerInterval, _timerIds.InitializeId)
+            Initialize()
+        EndIf
+        WaitExt(0.05)
 
         If currentCycle < maxCycle
             currentCycle += 1
@@ -215,8 +227,8 @@ Bool Function _SetSystemUtilities()
     If IsNone(_systemUtilities)
         QuestExt kQuest = (GetOwningQuest() as QuestExt)
         If !IsNone(kQuest)
-            kQuest.WaitForInitialized() 
-            _systemUtilities = kQuest.SystemUtilities
+            ; kQuest.WaitForInitialized() 
+            _systemUtilities = kQuest.Utilities
         Else
             LogErrorGlobal(GetOwningQuest(), "Could not set System Utilities on References Alias: " + Self)
             return False
@@ -224,13 +236,17 @@ Bool Function _SetSystemUtilities()
     EndIf
 
     If !IsNone(_systemUtilities) 
-        return _systemUtilities.WaitForInitialized()
+        return _systemUtilities.IsInitialized
     EndIf
 
     return False
 EndFunction
 
 Bool Function _RegisterEvents()
+    return True
+EndFunction
+
+Bool Function _CreateCollections()
     return True
 EndFunction
 

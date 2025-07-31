@@ -13,7 +13,11 @@ FormListExt Function FormListExt(Int aiSize = 0) Global
     return res
 EndFunction
 
-FormListExt Function FormListExtIntegrated(ModInformation akMod, Int aiSize = 0) Global 
+FormListExt Function FormListExtIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+    If HTG:UtilityExt.IsNone(akMod)
+        return None
+    EndIf
+
     If !akMod.IsCoreIntegrated
         return FormListExt(aiSize)
     EndIf

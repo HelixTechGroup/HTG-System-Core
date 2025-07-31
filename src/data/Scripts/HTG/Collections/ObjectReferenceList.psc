@@ -13,7 +13,11 @@ ObjectReferenceList Function ObjectReferenceList(Int aiSize = 0) Global
     return res
 EndFunction
 
-ObjectReferenceList Function ObjectReferenceListIntegrated(ModInformation akMod, Int aiSize = 0) Global 
+ObjectReferenceList Function ObjectReferenceListIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+    If HTG:UtilityExt.IsNone(akMod)
+        return None
+    EndIf
+
     If !akMod.IsCoreIntegrated
         return ObjectReferenceList(aiSize)
     EndIf

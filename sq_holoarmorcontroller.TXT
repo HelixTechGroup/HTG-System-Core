@@ -1,0 +1,2 @@
+Numeric ID	Editor ID	Form: Child Can Use	Form: Has Currents	Form: NavMesh Import Collision	Form: On Local Map	Form: Playable	Form: Used As Platform	Full Name: Full Name <<TESFullName_Component>>
+(01000833)	SQ_HoloArmorController	false	false	Collision Geometry	true	true	false	HoloArmor System Controller

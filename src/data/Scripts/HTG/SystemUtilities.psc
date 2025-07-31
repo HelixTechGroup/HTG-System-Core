@@ -4,14 +4,7 @@ import HTG:Collections
 import HTG:SystemLogger
 import HTG:Structs
 import HTG:UtilityExt
-
-; Struct Utilities
-;     IntUtility Integers
-;     FormUtility Forms
-;     ArmorUtility Armors
-; EndStruct
-
-Guard _loggerGuard ProtectsFunctionLogic
+import HTG:Quests
 
 HTG:SystemLogger Property Logger Hidden
     HTG:SystemLogger Function Get()
@@ -21,34 +14,52 @@ EndProperty
 
 TimerUtility Property Timers Hidden
     TimerUtility Function Get()
-        return _timerUtility
+        If IsFilled()
+            return (GetReference() as SystemUtilitiesObject).Timers
+        EndIf
+
+        return None
     EndFunction
 EndProperty
 
 IntUtility Property Integers Hidden
     IntUtility Function Get()
-        return _intUtility
+        If IsFilled()
+            return (GetReference() as SystemUtilitiesObject).Integers
+        EndIf
+
+        return None
     EndFunction
 EndProperty
 
 FormUtility Property Forms Hidden
     FormUtility Function Get()
-        return _formUtility
+        If IsFilled()
+            return (GetReference() as SystemUtilitiesObject).Forms
+        EndIf
+
+        return None
     EndFunction
 EndProperty
 
 ArmorUtility Property Armors Hidden
     ArmorUtility Function Get()
-        return _armorUtility
+        If IsFilled()
+            return (GetReference() as SystemUtilitiesObject).Armors
+        EndIf
+
+        return None
     EndFunction
 EndProperty
 
-GlobalVariable Property DebugGlobal Mandatory Const Auto
+; GlobalVariable Property DebugGlobal Mandatory Const Auto
 
-Form Property ModInfoForm Mandatory Const Auto
+; Form Property ModInfoForm Const Auto
 
-ModInformation Property ModInfo Hidden
-    HTG:ModInformation Function Get()
+Int Property ModInfoAliasId Auto Hidden
+
+SystemModuleInformation Property ModInfo Hidden
+    SystemModuleInformation Function Get()
         return _modInfo
     EndFunction
 EndProperty
@@ -63,24 +74,24 @@ EndProperty
 
 Bool Property IsInitialized Hidden
     Bool Function Get()
-        return _isInitialized
+        return IsFilled() && (GetReference() as SystemUtilitiesObject).IsInitialized
     EndFunction
 EndProperty
 
 Bool Property IsDebugging Hidden
     Bool Function Get()
-        return DebugGlobal.GetValueInt() == 8    
+        return IsFilled() && (GetReference() as SystemUtilitiesObject).IsDebugging   
     EndFunction
 EndProperty
 
-ModInformation _modInfo
-SystemTimerIds _timerIds
+SystemModuleInformation _modInfo
+; SystemTimerIds _timerIds
 HTG:SystemLogger _logger
 ; Utilities _utilities
-TimerUtility _timerUtility
-IntUtility _intUtility
-FormUtility _formUtility
-ArmorUtility _armorUtility
+; TimerUtility _timerUtility
+; IntUtility _intUtility
+; FormUtility _formUtility
+; ArmorUtility _armorUtility
 Guard _initializeTimerGuard ProtectsFunctionLogic
 Guard _utilitiesGuard ProtectsFunctionLogic
 Bool _isInitialized
@@ -91,7 +102,8 @@ Int _maxTimerCycle = 600
 Int _currentTimerCycle = 0
 
 Event OnAliasInit()
-    StartTimer(_timerInternal, _initializeTimerId)
+    (GetReference() as SystemUtilitiesObject).WaitForInitialized()
+    _SetSystemUtilities()    
 EndEvent
 
 Event OnTimer(Int aiTimerID)
@@ -123,91 +135,99 @@ Bool Function Initialize()
         return True
     EndIf
 
+    ; TODO: Change self to GetReference() and attach scripts to _systemUtilitiesObject
     ; TryLockGuard _utilitiesGuard
         ScriptObject so = Self as ScriptObject 
         LogObjectGlobal(Self, "HTG:SystemUtilities:" + Self + "\n\t As ScriptObject:" + so)
 
-        _isInitialized = _SetSystemUtilities(so)
+        _isInitialized = _SetSystemUtilities()
     ; EndTryLockGuard
 
     return _CheckSystemUtilites()
 EndFunction
 
-Bool Function _SetSystemUtilities(ScriptObject akScriptObject)
-    If akScriptObject == None
-        LogErrorGlobal(Self, "The object attached to  this Script is not a ScriptObject:" + Self)
-        return False
-    EndIf
-
+Bool Function _SetSystemUtilities()
     Bool res = True
-    ; If _utilities == None
-    ;     _utilities = new Utilities
-    ; EndIf
-    ; LogObjectGlobal(Self, "Utilities:" + _utilities)
-
     TryLockGuard _utilitiesGuard
+        If IsFilled()
+            res = (GetReference() as SystemUtilitiesObject).WaitForInitialized()
+        EndIf
+
         If IsNone(_logger)
-            _logger = akScriptObject as HTG:SystemLogger
+            HTG:SystemLogger kLogger = (Self as ReferenceAlias) as HTG:SystemLogger
+            If IsNone(kLogger)
+                ; kLogger = (GetReference() as SystemUtilitiesObject).Logger
+                ; If IsNone(kLogger)
+                    LogErrorGlobal(Self, "Unable to get System Logger.")
+                ; EndIf
+            EndIf
+            _logger = kLogger
         EndIf
 
-        If IsNone(_timerUtility)
-            _timerUtility = akScriptObject as TimerUtility
-            LogObjectGlobal(Self, "Timer:" + _timerUtility)
-        EndIf
+        If IsNone(_modInfo)
+            SystemModuleInformation kMod
+            If ModInfoAliasId < 0
+                HTG:Quests:ModuleInformation kAlias = GetOwningQuest().GetAlias(ModInfoAliasId) as HTG:Quests:ModuleInformation
+                If !IsNone(kAlias) 
+                    If kAlias.IsFilled()
+                        kMod = kAlias.GetReference() as HTG:SystemModuleInformation
+                        If !IsNone(kMod)
+                            _modInfo = kMod
+                        EndIf
+                    ; Else
+                    ;     kAlias.RefillAlias()
+                    EndIf
+                EndIf
+            EndIf
 
-        If IsNone(_intUtility)
-            _intUtility = akScriptObject as IntUtility
-            LogObjectGlobal(Self, "Integers:" + _intUtility)
-        EndIf
+            If IsNone(_modInfo)
+                Int i
+                Int kMaxIndex = 100
+                While i <= kMaxIndex
+                    ReferenceAlias kRefAlias = GetOwningQuest().GetAlias(i) as ReferenceAlias
+                    If !IsNone(kRefAlias) \
+                        && kRefAlias is HTG:Quests:ModuleInformation
+                        ModInfoAliasId = i     
+                        i = kMaxIndex + 1
 
-        If IsNone(_formUtility)
-            _formUtility = akScriptObject as FormUtility
-            LogObjectGlobal(Self, "Utilities.Forms:" + _formUtility)
-        EndIf
+                        HTG:Quests:ModuleInformation kAlias = kRefAlias as HTG:Quests:ModuleInformation
+                        If kAlias.IsFilled()
+                            kMod = kAlias.GetReference() as SystemModuleInformation
+                            If !IsNone(kMod)
+                                _modInfo = kMod                            
+                            EndIf
+                        EndIf
+                    Else
+                        i += 1
+                    EndIf
+                EndWhile
 
-        If IsNone(_armorUtility)
-            _armorUtility = akScriptObject as ArmorUtility
-            LogObjectGlobal(Self, "Utilities.Armors:" + _armorUtility)
-        EndIf
-
-        If IsNone(_modInfo) && ModInfoForm != None
-            _modInfo = HTG:FormUtility.CreateReference(Game.GetPlayer(), ModInfoForm) as ModInformation
+                ; If IsNone(_modInfo) ; && ModInfoForm != None
+                ;     ; _modInfo = HTG:FormUtility.CreateReference(Game.GetPlayer(), ModInfoForm) as SystemModuleInformation
+                ;     _modInfo = (GetReference() as SystemUtilitiesObject).ModInfo
+                ; EndIf
+            EndIf
         EndIf
     EndTryLockGuard
 
-    return !IsNone(_logger) && \
-            !IsNone(_timerUtility) && \
-            !IsNone(_intUtility) && \
-            !IsNone(_formUtility) && \
-            !IsNone(_armorUtility)
+    return !IsNone(_logger) \
+            && !IsNone(_modInfo) \
+            && (IsFilled() && (GetReference() as SystemUtilitiesObject).IsInitialized)
 EndFunction
 
 Bool Function _CheckSystemUtilites()
     Bool res
-    ; If _utilities == None
-    ;     LogErrorGlobal(Self, "Utilities is None.")
-    ;     return False
-    ; EndIf
-
     If IsNone(_logger)
         LogWarnGlobal(Self, "Logger is None.")
-    ElseIf IsNone(_timerUtility)
-        LogWarnGlobal(Self, "Timers is None.")
-    ElseIf IsNone(_intUtility)
-        LogWarnGlobal(Self, "Integers is None.")
-    ElseIf IsNone(_formUtility)        
-        LogWarnGlobal(Self, "Forms is None.")
-    ElseIf IsNone(_armorUtility)        
-        LogWarnGlobal(Self, "Armors is None.")
+    ElseIf IsNone(_modInfo)        
+        LogWarnGlobal(Self, "ModuleInformation is None.")
     Else
         res = True
     EndIf
 
-    return !IsNone(_logger) && \
-            !IsNone(_timerUtility) && \
-            !IsNone(_intUtility) && \
-            !IsNone(_formUtility) && \
-            !IsNone(_armorUtility)
+    return !IsNone(_logger) \
+            && !IsNone(_modInfo) \
+            && (IsFilled() && (GetReference() as SystemUtilitiesObject).IsInitialized)
 EndFunction
 
 Bool Function WaitForInitialized()
@@ -215,10 +235,15 @@ Bool Function WaitForInitialized()
         return True
     EndIf
     
+    If (!IsFilled() \
+        || !(GetReference() as SystemUtilitiesObject).WaitForInitialized())
+        return False
+    EndIf
+
     Int currentCycle = 0
-    Int maxCycle = 600
+    Int maxCycle = 150
     Bool maxCycleHit
-    While !maxCycleHit && !_isInitialized
+    While !maxCycleHit && !_isInitialized                        
         WaitExt(0.1)
 
         If currentCycle < maxCycle

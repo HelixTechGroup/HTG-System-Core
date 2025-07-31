@@ -1,0 +1,18 @@
+{
+  "FormKey": "0008DE:HTG-System-Core.esp",
+  "EditorID": "ModInfoMessageBox",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "<Alias.Name=ModInfoTextHolder>"
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "<Alias.Name=ModInfoTextHolder>"
+  },
+  "OwnerQuest": "000801:HTG-System-Core.esp",
+  "Flags": [
+    "MessageBox",
+    "0x4"
+  ],
+  "BNAM": 4294967295
+}

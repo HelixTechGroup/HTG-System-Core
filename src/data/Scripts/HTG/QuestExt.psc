@@ -4,7 +4,7 @@ import HTG:Structs
 import HTG:SystemLogger
 import HTG:UtilityExt
 
-HTG:SystemUtilities Property SystemUtilities Hidden
+SystemUtilities Property Utilities Hidden
     HTG:SystemUtilities Function Get()
         return _systemUtilities
     EndFunction
@@ -65,13 +65,14 @@ Event OnQuestStarted()
     WaitForInitialized()
     StartTimer(_timerInterval, _timerIds.MainId)
 
-    If _systemUtilities.DebugGlobal.GetValueInt() == 8
+    If _systemUtilities.IsDebugging
         Debug.Notification( Logger.MainLogName + ":" + Logger.SubLogName + " has been started.")
     EndIf
 EndEvent
 
 Event OnQuestShutdown()
-    UnregisterForAllEvents()
+    ; UnregisterForAllEvents()
+    _UnregisterEvents()
 EndEvent
 
 Event OnReset()
@@ -167,9 +168,11 @@ EndEvent
 
 Bool Function Initialize()
     If !_isInitialized
-        _isInitialized = _SetSystemUtilities() \
-                        && _RegisterEvents() \
-                        && _Init()
+        If _SetSystemUtilities()
+            _isInitialized = _RegisterEvents() \
+                            && _CreateCollections() \
+                            && _Init()
+        EndIf
     EndIf
 
     return _isInitialized
@@ -181,11 +184,12 @@ Bool Function WaitForInitialized()
     EndIf
     
     Int currentCycle = 0
-    Int maxCycle = 600
+    Int maxCycle = 150
     Bool maxCycleHit
 
     ; StartTimer(_timerInterval, _initializeTimerId)
-    While !maxCycleHit && !_isInitialized
+    While !maxCycleHit && !_isInitialized \
+            && (IsNone(_systemUtilities) || !_systemUtilities.IsInitialized)
         WaitExt(0.1)
 
         If currentCycle < maxCycle
@@ -226,7 +230,7 @@ Bool Function _SetSystemUtilities()
     EndIf
 
     If !IsNone(_systemUtilities)
-        return _systemUtilities.WaitForInitialized()
+        return _systemUtilities.IsInitialized
     EndIf
 
     Game.Error("Could not find SystemUtilities Alias.")
@@ -234,6 +238,14 @@ Bool Function _SetSystemUtilities()
 EndFunction
 
 Bool Function _RegisterEvents()
+    return True
+EndFunction
+
+Bool Function _UnregisterEvents()
+    return True
+EndFunction
+
+Bool Function _CreateCollections()
     return True
 EndFunction
 

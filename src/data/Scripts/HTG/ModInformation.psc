@@ -1,4 +1,4 @@
-Scriptname HTG:ModInformation Extends ObjectReference
+Scriptname HTG:ModuleInformation Extends ObjectReference
 import HTG
 import HTG:Structs
 

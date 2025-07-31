@@ -1,0 +1,171 @@
+{
+  "FormKey": "000836:HTG-System-Core.esp",
+  "EditorID": "SQ_PlayerController",
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Quests:SQ_PlayerController"
+      }
+    ],
+    "Script": {
+      "Name": ""
+    },
+    "Aliases": [
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000836:HTG-System-Core.esp",
+          "Alias": 3
+        },
+        "Scripts": [
+          {
+            "Name": "HTG:Quests:ModuleInformation"
+          }
+        ]
+      },
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000836:HTG-System-Core.esp",
+          "Alias": 2
+        },
+        "Scripts": [
+          {
+            "Name": "htg:systemlogger",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptStringProperty",
+                "Name": "MainLogName",
+                "Data": "HTG"
+              },
+              {
+                "MutagenObjectType": "ScriptStringProperty",
+                "Name": "SubLogName",
+                "Data": "Player"
+              }
+            ]
+          },
+          {
+            "Name": "HTG:SystemUtilities"
+          }
+        ]
+      },
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000836:HTG-System-Core.esp",
+          "Alias": 0
+        },
+        "Scripts": [
+          {
+            "Name": "HTG:Quests:PlayerEquipmentTracker",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ExcludedItems",
+                "Object": "000843:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DetectedEquipmentMessage",
+                "Object": "0008CC:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "EquipmentTextHolder",
+                "Object": "000836:HTG-System-Core.esp",
+                "Alias": 5
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Player System Controller"
+  },
+  "Data": {
+    "Flags": [
+      "StartGameEnabled",
+      "AllowRepeatedStages",
+      "StartsEnabled"
+    ],
+    "Priority": 20,
+    "Unused": "0x000000"
+  },
+  "QuestType": "00080F:HTG-System-Core.esp",
+  "UnusedConditions": [],
+  "Aliases": [
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 3,
+      "Name": "ModuleInformation",
+      "Flags": [
+        "Optional",
+        "AllowReuseInQuest",
+        "AllowReserved",
+        "ExternalAliasLinked"
+      ],
+      "ALFG": 0,
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 5
+      },
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 2,
+      "Name": "SystemUtilities",
+      "Flags": [
+        "AllowReuseInQuest",
+        "AllowReserved",
+        "ExternalAliasLinked"
+      ],
+      "ALFG": 0,
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 0
+      },
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 4,
+      "Name": "SystemPlayerRef",
+      "Flags": [
+        "AllowReuseInQuest",
+        "StoresText"
+      ],
+      "ALFG": 0,
+      "AliasIDToForceIntoWhenFilled": 0,
+      "UniqueActor": "000007:Starfield.esm",
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "Name": "PlayerEquipmentTracker",
+      "Flags": [
+        "AllowReuseInQuest",
+        "ForcedByAliases"
+      ],
+      "ALFG": 0,
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 5,
+      "Name": "EquipmentTextHolder",
+      "Flags": [
+        "Optional",
+        "AllowReuseInQuest",
+        "StoresText"
+      ],
+      "ALFG": 0,
+      "VoiceTypes": "Null"
+    }
+  ],
+  "QuestGroup": "000803:HTG-System-Core.esp"
+}

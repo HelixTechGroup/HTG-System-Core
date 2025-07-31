@@ -51,6 +51,7 @@ Struct LeveledArmorSet
 EndStruct
 
 Struct QuestCheckInfo
+    String QuestName
     Quest QuestObject
     int Stage
     Form RewardItem
@@ -68,5 +69,11 @@ Struct VersionInfomation
     Int Major
     Int Minor
     Int Revision
-    Int Patch
+    Int Patch = 152160
+EndStruct
+
+
+Struct HoloArmorMap
+    Armor ArmorPiece
+    ObjectMod ArmorMod
 EndStruct

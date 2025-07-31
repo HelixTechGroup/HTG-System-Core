@@ -10,6 +10,8 @@ Bool Property IsTrackingDisabled Hidden
     EndFunction
 EndProperty
 
+FormList Property ExcludedItems Const Auto
+
 Guard _equipGuard ProtectsFunctionLogic
 Guard _unequipGuard ProtectsFunctionLogic
 Guard _addedGuard ProtectsFunctionLogic
@@ -35,7 +37,8 @@ EndEvent
 Event OnItemAdded(Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer, int aiTransferReason)
     WaitForInitialized()
 
-    If DisableTracking ; _addHandled
+    If DisableTracking \
+        || (!IsNone(ExcludedItems) && ExcludedItems.Find(akBaseItem) > -1); _addHandled
         return
     EndIf
 
@@ -53,7 +56,8 @@ EndEvent
 Event OnItemRemoved(Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer, int aiTransferReason)
     WaitForInitialized()
 
-    If DisableTracking ; _removeHandled
+    If DisableTracking \
+        || (!IsNone(ExcludedItems) && ExcludedItems.Find(akBaseItem) > -1); _removeHandled
         return
     EndIf
 
@@ -71,7 +75,8 @@ EndEvent
 Event OnItemEquipped(Form akBaseObject, ObjectReference akReference)
     WaitForInitialized()        
 
-    If DisableTracking ; If _equipHandled
+    If DisableTracking \
+        || (!IsNone(ExcludedItems) && ExcludedItems.Find(akBaseObject) > -1); If _equipHandled
         return
     EndIf
 
@@ -89,7 +94,8 @@ EndEvent
 Event OnItemUnequipped(Form akBaseObject, ObjectReference akReference)
     WaitForInitialized()
 
-    If DisableTracking ; _unequipHandled
+    If DisableTracking \
+        || (!IsNone(ExcludedItems) && ExcludedItems.Find(akBaseObject) > -1); _unequipHandled
         return
     EndIf
 

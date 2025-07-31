@@ -11,6 +11,8 @@ Keyword Property Spacesuit Auto Const Mandatory
 
 FormList Property ArmorTypes Auto Const Mandatory
 
+; ReferenceAlias Property TempRef Mandatory Const Auto
+
 Int Property HeadSlot = 0x00000001 AutoReadOnly
 Int Property HairSlot = 0x00000002 AutoReadOnly; Hair 2
 Int Property BodySlot = 0x00000004 AutoReadOnly; BODY 4
@@ -22,7 +24,7 @@ Int Property FeetSlot = 0x00000080 AutoReadOnly; Feet
 Int Property CalvesSlot = 0x00000100 AutoReadOnly; Calves
 Int Property ShieldSlot = 0x00000200 AutoReadOnly; SHIELD;
 
-Int Property ClothesSLot = 0x00000003 AutoReadOnly; HairSlot + HeadSlot; Clothing
+Int Property ClothesSlot = 0x00000003 AutoReadOnly; HairSlot + HeadSlot; Clothing
 Int Property SSBackpackSlot = 0x00000025 AutoReadOnly; HeadSlot + BodySlot + AmuletSlot AutoReadOnly; Spacesuit Backpack
 Int Property SSBodySlot = 0x00000026 AutoReadOnly; BodySlot + HairSlot + AmuletSlot AutoReadOnly; Spacesuit
 Int Property SSHeadSlot = 0x00000024 AutoReadOnly; BodySlot + AmuletSlot AutoReadOnly; Spacesuit Helmet
@@ -203,12 +205,17 @@ EndFunction
 Function HideArmorPiece(Actor akActor, Armor akArmor)
     If !IsNone(akArmor)
         ; akActor.UnequipItem(akArmor, True)
-        ObjectReference kRef = akActor.DropObject(akArmor)
+        ObjectReference kRef ; = akActor.MakeAliasedRefFromInventory(akArmor, TempRef)
+        ; ObjectReference kRef = akActor.DropObject(akArmor)
+        If IsNone(kRef)
+            return
+        Endif
+
         kRef.AddKeyword(DontShowInUI)
         ; WaitExt(0.25)
-        akActor.AddItem(kRef, abSilent = True)
+        ; akActor.AddItem(kRef, abSilent = True)
         ; WaitExt(0.25)
-        akActor.EquipItem(akArmor, abSilent = True)
+        ; akActor.EquipItem(akArmor, abSilent = True)
     EndIf
 EndFunction
 
@@ -221,12 +228,17 @@ EndFunction
 Function ShowArmorPiece(Actor akActor, Armor akArmor)
     If !IsNone(akArmor)
         ; akActor.UnequipItem(akArmor, True)
-        ObjectReference kRef = akActor.DropObject(akArmor)
+        ObjectReference kRef ; = akActor.MakeAliasedRefFromInventory(akActor, TempRef)
+        ; ObjectReference kRef = akActor.DropObject(akArmor)
+        If IsNone(kRef)
+            return
+        Endif
+
         kRef.RemoveKeyword(DontShowInUI)
         ; WaitExt(0.25)
-        akActor.AddItem(kRef, abSilent = True)
+        ; akActor.AddItem(kRef, abSilent = True)
         ; WaitExt(0.25)
-        akActor.EquipItem(akArmor, abSilent = True)
+        ; akActor.EquipItem(akArmor, abSilent = True)
     EndIf
 EndFunction
 

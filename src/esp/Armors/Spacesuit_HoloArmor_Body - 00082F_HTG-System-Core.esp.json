@@ -35,9 +35,8 @@
     "23C7C0:Starfield.esm",
     "0E8D7B:Starfield.esm",
     "00082D:HTG-System-Core.esp",
-    "03ED74:Starfield.esm",
-    "157D41:Starfield.esm",
-    "0E55E3:Starfield.esm"
+    "0E55E3:Starfield.esm",
+    "2BE987:Starfield.esm"
   ],
   "Description": {
     "TargetLanguage": "English",
@@ -582,8 +581,8 @@
       "ArmorAddon": "16D3D5:Starfield.esm"
     },
     {
-      "AddonIndex": 1,
-      "ArmorAddon": "169F5A:Starfield.esm"
+      "AddonIndex": 17,
+      "ArmorAddon": "000907:HTG-System-Core.esp"
     },
     {
       "AddonIndex": 2,
@@ -648,10 +647,6 @@
     {
       "AddonIndex": 16,
       "ArmorAddon": "0008F7:HTG-System-Core.esp"
-    },
-    {
-      "AddonIndex": 17,
-      "ArmorAddon": "000907:HTG-System-Core.esp"
     }
   ],
   "Unused": "0x000000",

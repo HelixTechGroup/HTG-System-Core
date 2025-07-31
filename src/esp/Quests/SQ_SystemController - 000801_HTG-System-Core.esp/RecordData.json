@@ -15,12 +15,28 @@
         "Property": {
           "Name": "",
           "Object": "000801:HTG-System-Core.esp",
-          "Alias": 0
+          "Alias": 5
         },
         "Scripts": [
           {
-            "Name": "htg:structs"
-          },
+            "Name": "HTG:Quests:ModuleInformation",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoForm",
+                "Object": "000820:HTG-System-Core.esp"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000801:HTG-System-Core.esp",
+          "Alias": 0
+        },
+        "Scripts": [
           {
             "Name": "htg:systemlogger",
             "Properties": [
@@ -37,71 +53,10 @@
             ]
           },
           {
-            "Name": "htg:timerutility"
+            "Name": "htg:structs"
           },
           {
-            "Name": "htg:formutility"
-          },
-          {
-            "Name": "htg:intutility"
-          },
-          {
-            "Name": "htg:armorutility",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Backpack",
-                "Object": "23C7BF:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ArmorTypes",
-                "Object": "000819:HTG-System-Core.esp"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Helmet",
-                "Object": "23C7C1:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Spacesuit",
-                "Object": "23C7C0:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Hat",
-                "Object": "0E048B:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Clothes",
-                "Object": "0E048C:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DontShowInUI",
-                "Object": "374EFA:Starfield.esm"
-              }
-            ]
-          },
-          {
-            "Name": "HTG:UtilityExt"
-          },
-          {
-            "Name": "HTG:SystemUtilities",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DebugGlobal",
-                "Object": "0A7D31:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModInfoForm",
-                "Object": "000820:HTG-System-Core.esp"
-              }
-            ]
+            "Name": "HTG:SystemUtilities"
           }
         ]
       },
@@ -109,11 +64,23 @@
         "Property": {
           "Name": "",
           "Object": "000801:HTG-System-Core.esp",
-          "Alias": 3
+          "Alias": 4
         },
         "Scripts": [
           {
-            "Name": "htg:quests:playerequipmenttracker"
+            "Name": "HTG:Quests:LoadedModules",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "SystemModuleInformationKeyword",
+                "Object": "000839:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModuleRegistry",
+                "Object": "000832:HTG-System-Core.esp"
+              }
+            ]
           }
         ]
       }
@@ -142,6 +109,20 @@
   "Aliases": [
     {
       "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 5,
+      "Name": "ModuleInformation",
+      "Flags": [
+        "ReservesLocationOrReference",
+        "Optional",
+        "AllowReuseInQuest",
+        "StoresText",
+        "AllowReserved"
+      ],
+      "ALFG": 0,
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
       "Name": "SystemUtilities",
       "Flags": [
         "ReservesLocationOrReference",
@@ -150,18 +131,71 @@
       ],
       "ALFG": 0,
       "ForcedReference": "000812:HTG-System-Core.esp",
+      "LinkedAliases": [
+        {
+          "Keyword": "000839:HTG-System-Core.esp",
+          "AliasID": 5
+        }
+      ],
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestCollectionAlias",
+      "Collection": [
+        {
+          "ID": 4,
+          "ALAM": 0,
+          "ReferenceAlias": {
+            "ID": 4,
+            "Name": "LoadedModules",
+            "Flags": [
+              "Optional",
+              "AllowReuseInQuest",
+              "MatchingRefInLoadedArea",
+              "AllowReserved",
+              "MatchingRefClosest"
+            ],
+            "ALFG": 0,
+            "Conditions": [
+              {
+                "MutagenObjectType": "ConditionFloat",
+                "Unknown2": 28213,
+                "Data": {
+                  "MutagenObjectType": "HasKeywordConditionData",
+                  "FirstParameter": "000839:HTG-System-Core.esp"
+                },
+                "ComparisonValue": 1.0
+              }
+            ],
+            "Keywords": [
+              "000863:HTG-System-Core.esp"
+            ],
+            "VoiceTypes": "Null"
+          }
+        }
+      ]
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 6,
+      "Name": "ModInfoTextHolder",
+      "Flags": [
+        "Optional",
+        "AllowReuseInQuest",
+        "StoresText"
+      ],
+      "ALFG": 0,
       "VoiceTypes": "Null"
     },
     {
       "MutagenObjectType": "QuestReferenceAlias",
-      "ID": 3,
-      "Name": "PlayerEquipmentTracker",
+      "ID": 8,
+      "Name": "ArmorUtilitiesTemp",
       "Flags": [
         "Optional",
         "AllowReuseInQuest"
       ],
       "ALFG": 0,
-      "UniqueActor": "000007:Starfield.esm",
       "VoiceTypes": "Null"
     }
   ],

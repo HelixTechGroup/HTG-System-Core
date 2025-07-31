@@ -1,9 +1,10 @@
 Scriptname HTG:TerminalMenuExt extends TerminalMenu
-{Extended TerminalMenu Script}
+{Extended TerminalMenu}
 import HTG
 import HTG:Structs
 import HTG:SystemLogger
 import HTG:UtilityExt
+import HTG:Quests
 
 SystemUtilities Property SystemUtilities Auto Const Mandatory
 
@@ -82,7 +83,7 @@ Event OnTimer(Int aiTimerID)
             timerId = _timerIds.InitializeId
         ElseIf !_isInitialized && _currentInitializeTimerCycle == _maxTimerCycle
             LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
-        Else
+        ElseIf _isInitialized
             Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
             timerId = SystemUtilities.Timers.SystemTimerIds.InitialRunId
         EndIf
@@ -136,9 +137,11 @@ EndEvent
 
 Bool Function Initialize()
     If !_isInitialized
-        _isInitialized = _SetSystemUtilities() \
-                        && _RegisterEvents() \
-                        && _Init()
+        If _SetSystemUtilities()
+            _isInitialized = _RegisterEvents() \
+                            && _CreateCollections() \
+                            && _Init()
+        EndIf
     EndIf
 
     return _isInitialized
@@ -154,7 +157,7 @@ Bool Function WaitForInitialized()
     Bool maxCycleHit
 
     ; StartTimer(_timerInterval, _initializeTimerId)
-    While !maxCycleHit && !_isInitialized
+    While !maxCycleHit && !_isInitialized && !SystemUtilities.IsInitialized
         WaitExt(0.1)
 
         If currentCycle < maxCycle
@@ -175,8 +178,12 @@ Bool Function _RegisterEvents()
     return True
 EndFunction
 
+Bool Function _CreateCollections()
+    return True
+EndFunction
+
 Bool Function _Init()
-    return true
+    return True
 EndFunction
 
 Function _InitialRun()

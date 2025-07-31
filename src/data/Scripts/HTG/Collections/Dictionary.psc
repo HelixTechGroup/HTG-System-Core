@@ -47,7 +47,11 @@ Dictionary Function Dictionary(Int aiSize = 0) Global
     return res
 EndFunction
 
-Dictionary Function DictionaryIntegrated(ModInformation akMod, Int aiSize = 0) Global 
+Dictionary Function DictionaryIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+    If HTG:UtilityExt.IsNone(akMod)
+        return None
+    EndIf
+
     If !akMod.IsCoreIntegrated
         return Dictionary(aiSize)
     EndIf
@@ -84,7 +88,7 @@ Function Clear()
         _valueArray.Clear()
         _count = 0
         _trackedIndex = 0
-        _isInitialized = False
+        ; _isInitialized = False
     EndTryLockGuard
 EndFunction
 
@@ -476,7 +480,7 @@ Dictionary Function _CreateDictionary(Int aiFormId = 0x00000834, String asModNam
     return None
 EndFunction
 
-Dictionary Function _CreatedRegisteredDictionary(ModInformation akMod, String asListType, Int aiSize = 0) Global
+Dictionary Function _CreatedRegisteredDictionary(SystemModuleInformation akMod, String asListType, Int aiSize = 0) Global
     FormList kRegistry = akMod.CollectionRegistry
     Form kForm
     Int i 

@@ -22,7 +22,7 @@
     {
       "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
       "Property": "AddonIndex",
-      "Step": 6.0,
+      "Step": 1.0,
       "Value": 5,
       "Value2": 6
     },

@@ -1,0 +1,58 @@
+{
+  "FormKey": "000843:HTG-System-Core.esp",
+  "EditorID": "InventoryTrackerExcludedItems",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Excluded Items from Inventory Tracking"
+  },
+  "Items": [
+    "000827:HTG-System-Core.esp",
+    "00082F:HTG-System-Core.esp",
+    "000831:HTG-System-Core.esp"
+  ],
+  "ConditionalEntries": [
+    {
+      "Index": 0,
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetQuestRunningConditionData",
+            "FirstParameter": "000833:HTG-System-Core.esp"
+          },
+          "ComparisonValue": 1.0
+        }
+      ]
+    },
+    {
+      "Index": 2,
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetQuestRunningConditionData",
+            "FirstParameter": "000833:HTG-System-Core.esp"
+          },
+          "ComparisonValue": 1.0
+        }
+      ]
+    },
+    {
+      "Index": 1,
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetQuestRunningConditionData",
+            "FirstParameter": "000833:HTG-System-Core.esp"
+          },
+          "ComparisonValue": 1.0
+        }
+      ]
+    }
+  ],
+  "AddToList": "Null"
+}

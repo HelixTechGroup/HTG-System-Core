@@ -25,6 +25,9 @@
   "Model": {
     "LightLayer": 1
   },
+  "Keywords": [
+    "00081E:HTG-System-Core.esp"
+  ],
   "MarkerColor": "#00CC4C33",
   "Flags": [
     "IgnoredBySandbox"

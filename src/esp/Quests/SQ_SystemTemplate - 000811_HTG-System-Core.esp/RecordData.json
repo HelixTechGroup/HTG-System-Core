@@ -10,88 +10,26 @@
         "Property": {
           "Name": "",
           "Object": "000811:HTG-System-Core.esp",
+          "Alias": 5
+        },
+        "Scripts": [
+          {
+            "Name": "HTG:Quests:ModuleInformation"
+          }
+        ]
+      },
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000811:HTG-System-Core.esp",
           "Alias": 0
         },
         "Scripts": [
           {
-            "Name": "htg:structs"
+            "Name": "htg:systemlogger"
           },
           {
-            "Name": "htg:systemlogger",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptStringProperty",
-                "Name": "MainLogName",
-                "Data": "HTG"
-              },
-              {
-                "MutagenObjectType": "ScriptStringProperty",
-                "Name": "SubLogName",
-                "Data": "Template"
-              }
-            ]
-          },
-          {
-            "Name": "htg:timerutility"
-          },
-          {
-            "Name": "htg:formutility"
-          },
-          {
-            "Name": "htg:intutility"
-          },
-          {
-            "Name": "htg:armorutility",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Backpack",
-                "Object": "23C7BF:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ArmorTypes",
-                "Object": "000819:HTG-System-Core.esp"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Clothes",
-                "Object": "0E048C:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Hat",
-                "Object": "0E048B:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Spacesuit",
-                "Object": "23C7C0:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "Helmet",
-                "Object": "23C7C1:Starfield.esm"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DontShowInUI",
-                "Object": "374EFA:Starfield.esm"
-              }
-            ]
-          },
-          {
-            "Name": "HTG:UtilityExt"
-          },
-          {
-            "Name": "HTG:SystemUtilities",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DebugGlobal",
-                "Object": "0A7D31:Starfield.esm"
-              }
-            ]
+            "Name": "HTG:SystemUtilities"
           }
         ]
       }
@@ -118,6 +56,19 @@
     }
   ],
   "Aliases": [
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 5,
+      "Name": "ModuleInformation",
+      "Flags": [
+        "Optional",
+        "AllowReuseInQuest",
+        "AllowReserved",
+        "CreateRefTemp"
+      ],
+      "ALFG": 0,
+      "VoiceTypes": "Null"
+    },
     {
       "MutagenObjectType": "QuestReferenceAlias",
       "Name": "SystemUtilities",
