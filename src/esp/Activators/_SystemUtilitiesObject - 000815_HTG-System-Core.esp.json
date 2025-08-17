@@ -10,7 +10,10 @@
   "VirtualMachineAdapter": {
     "Scripts": [
       {
-        "Name": "HTG:FloatUtility"
+        "Name": "htg:formutility"
+      },
+      {
+        "Name": "htg:intutility"
       },
       {
         "Name": "HTG:SystemUtilitiesObject",
@@ -19,26 +22,23 @@
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "DebugGlobal",
             "Object": "0A7D31:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SystemData",
+            "Object": "000883:HTG-System-Core.esp"
           }
         ]
+      },
+      {
+        "Name": "HTG:FloatUtility"
       },
       {
         "Name": "htg:timerutility"
       },
       {
-        "Name": "htg:formutility"
-      },
-      {
-        "Name": "htg:intutility"
-      },
-      {
         "Name": "htg:armorutility",
         "Properties": [
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Backpack",
-            "Object": "23C7BF:Starfield.esm"
-          },
           {
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "ArmorTypes",
@@ -46,9 +46,13 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "tempRef",
-            "Object": "000801:HTG-System-Core.esp",
-            "Alias": 8
+            "Name": "Backpack",
+            "Object": "23C7BF:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DontShowInUI",
+            "Object": "374EFA:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -57,8 +61,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Hat",
-            "Object": "0E048B:Starfield.esm"
+            "Name": "Spacesuit",
+            "Object": "23C7C0:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -67,13 +71,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Spacesuit",
-            "Object": "23C7C0:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DontShowInUI",
-            "Object": "374EFA:Starfield.esm"
+            "Name": "Hat",
+            "Object": "0E048B:Starfield.esm"
           }
         ]
       }

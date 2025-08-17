@@ -35,26 +35,26 @@ Int _count = 0
 Int _trackedIndex = 0
 Int _maxSize = 128 Const
 
-FormDictionary Function FormDictionary(Int aiSize = 0) Global 
-    FormDictionary res = _CreateDictionary(aiSize = aiSize)
+FormDictionary Function FormDictionary(SystemModuleInformation akMod, Int aiSize = 0) Global 
+    FormDictionary res = _CreateDictionary(akMod, aiSize = aiSize)
     LogObjectGlobal(res, "HTG:Collections:FormDictionary.FormDictionary(" + aiSize  + "): " + res)
     return res
 EndFunction
 
-FormDictionary Function FormDictionaryIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
-    If HTG:UtilityExt.IsNone(akMod)
-        return None
-    EndIf
+; FormDictionary Function FormDictionaryIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+;     If HTG:UtilityExt.IsNone(akMod)
+;         return None
+;     EndIf
 
-    If !akMod.IsCoreIntegrated
-        return FormDictionary(aiSize)
-    EndIf
+;     If !akMod.IsCoreIntegrated
+;         return FormDictionary(aiSize)
+;     EndIf
 
-    FormDictionary res
-    res = _CreatedRegisteredDictionary(akMod, "HTG:Collections:FormDictionary", aiSize) as FormDictionary
-    LogObjectGlobal(res, "HTG:Collections:FormDictionary.FormDictionary(" + aiSize  + "): " + res)
-    return res
-EndFunction
+;     FormDictionary res
+;     res = _CreatedRegisteredDictionary(akMod, "HTG:Collections:FormDictionary", aiSize) as FormDictionary
+;     LogObjectGlobal(res, "HTG:Collections:FormDictionary.FormDictionary(" + aiSize  + "): " + res)
+;     return res
+; EndFunction
 
 Bool Function Initialize(Int aiSize = 0)
     If _isInitialized
@@ -384,10 +384,10 @@ Int Function _Add(KeyValuePair akPair)
     return -1
 EndFunction
 
-FormDictionary Function _CreateDictionary(Int aiFormId = 0x00000834, String asModName = "HTG-System-Core", Int aiSize = 0) Global
-    Form kForm = CreateForm(aiFormId, asModName)
+FormDictionary Function _CreateDictionary(SystemModuleInformation akMod, Int aiFormId = 0x00000834, Int aiSize = 0) Global
+    Form kForm = CreateForm(aiFormId, akMod.FileName)
     If !HTG:UtilityExt.IsNone(kForm)
-        FormDictionary kList = CreateReference(Game.GetPlayer(), kform) as FormDictionary
+        FormDictionary kList = CreateReference(akMod, kform) as FormDictionary
         If !HTG:UtilityExt.IsNone(kList)
             kList.Enable(False)
             kList.Initialize(aiSize)

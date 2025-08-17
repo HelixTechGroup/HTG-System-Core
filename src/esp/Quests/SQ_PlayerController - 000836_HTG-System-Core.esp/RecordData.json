@@ -46,7 +46,15 @@
             ]
           },
           {
-            "Name": "HTG:SystemUtilities"
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "000836:HTG-System-Core.esp",
+                "Alias": 3
+              }
+            ]
           }
         ]
       },
@@ -54,17 +62,12 @@
         "Property": {
           "Name": "",
           "Object": "000836:HTG-System-Core.esp",
-          "Alias": 0
+          "Alias": 8
         },
         "Scripts": [
           {
             "Name": "HTG:Quests:PlayerEquipmentTracker",
             "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ExcludedItems",
-                "Object": "000843:HTG-System-Core.esp"
-              },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "DetectedEquipmentMessage",
@@ -75,6 +78,11 @@
                 "Name": "EquipmentTextHolder",
                 "Object": "000836:HTG-System-Core.esp",
                 "Alias": 5
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ExcludedItems",
+                "Object": "000843:HTG-System-Core.esp"
               }
             ]
           }
@@ -96,8 +104,25 @@
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
+  "Filter": "HTG\\",
   "UnusedConditions": [],
   "Aliases": [
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 7,
+      "Name": "PlayerRef",
+      "Flags": [
+        "AllowReuseInQuest",
+        "ExternalAliasLinked"
+      ],
+      "ALFG": 0,
+      "AliasIDToForceIntoWhenFilled": 6,
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 10
+      },
+      "VoiceTypes": "Null"
+    },
     {
       "MutagenObjectType": "QuestReferenceAlias",
       "ID": 3,
@@ -133,23 +158,12 @@
     },
     {
       "MutagenObjectType": "QuestReferenceAlias",
-      "ID": 4,
-      "Name": "SystemPlayerRef",
-      "Flags": [
-        "AllowReuseInQuest",
-        "StoresText"
-      ],
-      "ALFG": 0,
-      "AliasIDToForceIntoWhenFilled": 0,
-      "UniqueActor": "000007:Starfield.esm",
-      "VoiceTypes": "Null"
-    },
-    {
-      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 8,
       "Name": "PlayerEquipmentTracker",
       "Flags": [
+        "Optional",
         "AllowReuseInQuest",
-        "ForcedByAliases"
+        "StoresText"
       ],
       "ALFG": 0,
       "VoiceTypes": "Null"

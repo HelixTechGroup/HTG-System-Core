@@ -8,20 +8,30 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateTerminal",
-            "Object": "000824:HTG-System-Core.esp",
-            "Alias": 5
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
             "Name": "DataslateTracker",
             "Object": "000824:HTG-System-Core.esp",
             "Alias": 10
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateAssistant_FirstActivation",
+            "Name": "ShowTutorial",
+            "Object": "00083E:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "FirstActivation",
             "Object": "000830:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateTerminal",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 5
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateLocation",
+            "Object": "0008D5:HTG-System-Core.esp"
           }
         ]
       }
@@ -34,7 +44,7 @@
         "Property": {
           "Name": "",
           "Object": "000824:HTG-System-Core.esp",
-          "Alias": 12
+          "Alias": 14
         },
         "Scripts": [
           {
@@ -65,7 +75,15 @@
             ]
           },
           {
-            "Name": "HTG:SystemUtilities"
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "000824:HTG-System-Core.esp",
+                "Alias": 14
+              }
+            ]
           }
         ]
       },
@@ -81,13 +99,24 @@
             "Properties": [
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DataSlate",
-                "Object": "000877:HTG-System-Core.esp"
+                "Name": "FirstActivation",
+                "Object": "000830:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "FirstActivation",
-                "Object": "000830:HTG-System-Core.esp"
+                "Name": "PlayerRef",
+                "Object": "000824:HTG-System-Core.esp",
+                "Alias": 15
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DataslateAdded",
+                "Object": "00083D:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DataSlate",
+                "Object": "000877:HTG-System-Core.esp"
               }
             ]
           }
@@ -108,32 +137,72 @@
     "Unused": "0x000000"
   },
   "QuestType": "0475F8:Starfield.esm",
+  "Filter": "HTG\\",
   "UnusedConditions": [],
   "Stages": [
+    {},
     {
       "Index": 5,
-      "Flags": [
-        "RunOnStart"
-      ],
       "Unknown": 158,
       "LogEntries": [
         {
           "Flags": [],
-          "Conditions": [
-            {
-              "MutagenObjectType": "ConditionFloat",
-              "Data": {
-                "MutagenObjectType": "GetGlobalValueConditionData",
-                "FirstParameter": "000830:HTG-System-Core.esp"
-              },
-              "ComparisonValue": 1.0
-            }
-          ],
-          "Note": "Open the Dataslate Assistant",
+          "Note": "Tutorial: how to access the Dataslate",
           "Entry": {
             "TargetLanguage": "English",
-            "Value": "Open and configure your Dataslate Assistant"
+            "Value": "Open your <Alias=DataslateTracker>"
           },
+          "StageCompleteDatas": [
+            {
+              "QSRD": "0x00000000"
+            },
+            {
+              "QSRD": "[]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Index": 6,
+      "LogEntries": [
+        {
+          "Flags": [],
+          "Note": "Tutorial: player opens datamenu",
+          "StageCompleteDatas": [
+            {
+              "QSRD": "0x00000000"
+            },
+            {
+              "QSRD": "[]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Index": 7,
+      "LogEntries": [
+        {
+          "Flags": [],
+          "Note": "Tutorial: player opens inventory",
+          "StageCompleteDatas": [
+            {
+              "QSRD": "0x00000000"
+            },
+            {
+              "QSRD": "[]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Index": 8,
+      "LogEntries": [
+        {
+          "Flags": [],
+          "Note": "Tutorial: player activates Dataslate",
           "StageCompleteDatas": [
             {
               "QSRD": "0x00000000"
@@ -152,14 +221,29 @@
       "Flags": [],
       "DisplayText": {
         "TargetLanguage": "English",
-        "Value": "Open your new Dataslate Assistant"
+        "Value": "Open your new <Alias=DataslateTracker>"
       }
     }
   ],
   "Aliases": [
     {
       "MutagenObjectType": "QuestReferenceAlias",
-      "ID": 12,
+      "ID": 15,
+      "Name": "PlayerRef",
+      "Flags": [
+        "AllowReuseInQuest",
+        "ExternalAliasLinked"
+      ],
+      "ALFG": 0,
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 10
+      },
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 14,
       "Name": "ModuleInformation",
       "Flags": [
         "Optional",
@@ -195,7 +279,9 @@
       "ID": 5,
       "Name": "DataslateTerminal",
       "Flags": [
-        "AllowReuseInQuest"
+        "ReservesLocationOrReference",
+        "AllowReuseInQuest",
+        "AllowReserved"
       ],
       "ALFG": 0,
       "ForcedReference": "000884:HTG-System-Core.esp",
@@ -206,17 +292,26 @@
       "ID": 10,
       "Name": "DataslateTracker",
       "Flags": [
+        "ReservesLocationOrReference",
         "Optional",
         "QuestObject",
         "AllowReuseInQuest",
+        "AllowReserved",
+        "CreateRefTemp",
         "0x80000000",
         "0x0"
       ],
       "ALFG": 0,
+      "CreateReferenceToObject": {
+        "Object": "000877:HTG-System-Core.esp",
+        "AliasID": 15,
+        "Create": "In",
+        "Level": "4"
+      },
       "VoiceTypes": "Null"
     }
   ],
   "QuestGroup": "000803:HTG-System-Core.esp",
   "SwfFile": "skillpatches.swf",
-  "Unknown": 41
+  "Unknown": 2
 }

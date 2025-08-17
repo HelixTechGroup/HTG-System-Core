@@ -13,6 +13,11 @@
         "Name": "HTG:SystemModuleInformation",
         "Properties": [
           {
+            "MutagenObjectType": "ScriptStringProperty",
+            "Name": "FileName",
+            "Data": "HTG-System-Core"
+          },
+          {
             "MutagenObjectType": "ScriptStructProperty",
             "Name": "Version",
             "Members": [
@@ -35,13 +40,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SystemRegistry",
-            "Object": "000837:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "LocalSystemRegistry",
-            "Object": "00081D:HTG-System-Core.esp"
+            "Name": "ModuleRegistry",
+            "Object": "000832:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptStringProperty",
@@ -50,8 +50,13 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "ModuleRegistry",
-            "Object": "000832:HTG-System-Core.esp"
+            "Name": "LocalSystemRegistry",
+            "Object": "00081D:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SystemRegistry",
+            "Object": "000837:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",

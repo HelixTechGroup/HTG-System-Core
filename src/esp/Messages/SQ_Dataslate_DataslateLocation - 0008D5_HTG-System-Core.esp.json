@@ -1,0 +1,19 @@
+{
+  "FormKey": "0008D5:HTG-System-Core.esp",
+  "EditorID": "SQ_Dataslate_DataslateLocation",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Please open your Inventory and goto the Misc. category, there you will see a Dataslate called <Alias=DataslateTracker>"
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "How to find your <Alias=DataslateTracker>"
+  },
+  "OwnerQuest": "000824:HTG-System-Core.esp",
+  "DisplayTime": 2,
+  "BNAM": 4294967295,
+  "ShortTitle": {
+    "TargetLanguage": "English",
+    "Value": "<Alias=DataslateTracker> Location"
+  }
+}

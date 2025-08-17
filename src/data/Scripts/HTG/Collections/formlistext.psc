@@ -6,27 +6,27 @@ Event OnInit()
     ArrayType = "Form"
 EndEvent
 
-FormListExt Function FormListExt(Int aiSize = 0) Global
+FormListExt Function FormListExt(SystemModuleInformation akMod, Int aiSize = 0) Global
     Int iFormId = 0x0000080E
-    FormListExt res =  HTG:Collections:List._CreateList(iFormId, aiSize = aiSize) as FormListExt
+    FormListExt res =  HTG:Collections:List._CreateList(akMod, iFormId, aiSize = aiSize) as FormListExt
     LogObjectGlobal(res, "HTG:Collections:FormListExt.FormListExt(" + aiSize  + "): " + res)
     return res
 EndFunction
 
-FormListExt Function FormListExtIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
-    If HTG:UtilityExt.IsNone(akMod)
-        return None
-    EndIf
+; FormListExt Function FormListExtIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+;     If HTG:UtilityExt.IsNone(akMod)
+;         return None
+;     EndIf
 
-    If !akMod.IsCoreIntegrated
-        return FormListExt(aiSize)
-    EndIf
+;     If !akMod.IsCoreIntegrated
+;         return FormListExt(aiSize)
+;     EndIf
 
-    FormListExt res
-    res = HTG:Collections:List._CreatedRegisteredList(akMod, "HTG:Collections:FormListExt", aiSize) as FormListExt
-    LogObjectGlobal(res, "HTG:Collections:FormListExt.FormListExt(" + aiSize  + "): " + res)
-    return res
-EndFunction
+;     FormListExt res
+;     res = HTG:Collections:List._CreatedRegisteredList(akMod, "HTG:Collections:FormListExt", aiSize) as FormListExt
+;     LogObjectGlobal(res, "HTG:Collections:FormListExt.FormListExt(" + aiSize  + "): " + res)
+;     return res
+; EndFunction
 
 Form Function GetAt(Int index)
     return GetVarAt(index) as Form

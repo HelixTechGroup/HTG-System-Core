@@ -1,0 +1,10 @@
+{
+  "FormKey": "0008ED:HTG-System-Core.esp",
+  "EditorID": "Tutorial_Dataslate05",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Press and hold [Cancel] to exit."
+  },
+  "DisplayTime": 10,
+  "BNAM": 4294967295
+}

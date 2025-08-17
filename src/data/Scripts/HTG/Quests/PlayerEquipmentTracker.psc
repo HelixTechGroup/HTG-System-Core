@@ -7,6 +7,7 @@ import HTG:FormUtility
 import HTG:UtilityExt
 import HTG:Collections
 import HTG:SystemLogger
+import Utility
 
 FormListExt Property CurrentEquipment Auto Hidden
 
@@ -33,14 +34,6 @@ Event OnAliasStarted()
     Parent.OnAliasStarted()
 
     If IsFilled()
-        StartTimer(Utilities.Timers.TimerDefaults.Interval, _setupTimerId)
-    EndIf
-EndEvent
-
-Event OnAliasChanged(ObjectReference akObject, bool abRemove)
-    Parent.OnAliasChanged(akObject, abRemove)
-    
-    If abRemove 
         StartTimer(Utilities.Timers.TimerDefaults.Interval, _setupTimerId)
     EndIf
 EndEvent
@@ -91,6 +84,13 @@ Event OnTimer(int aiTimerID)
     EndIf
 EndEvent
 
+Event OnPlayerLoadGame()
+
+    If IsFilled()
+        StartTimer(Utilities.Timers.TimerDefaults.Interval, _setupTimerId)
+    EndIf
+EndEvent
+
 ArmorSet Function GetActorArmorSet()
     WaitForInitialized()
     
@@ -122,19 +122,13 @@ Bool Function _Main()
 EndFunction
 
 Bool Function _CreateCollections()
-    If !Utilities.IsInitialized
-        return False
-    EndIf
-    
     LockGuard _trackedPlayerArmorGuard
         If IsNone(CurrentEquipment) ; || CurrentEquipment == None
-            CurrentEquipment = HTG:Collections:FormListExt.FormListExtIntegrated(Utilities.ModInfo)
-            Logger.Log("Creating FollowersCurrentEquipment:\n" + CurrentEquipment.ToString())
+            CurrentEquipment = HTG:Collections:FormListExt.FormListExt(Utilities.ModInfo)
         EndIf
 
         If IsNone(_detectedEquipment)
-            _detectedEquipment = HTG:Collections:FormListExt.FormListExtIntegrated(Utilities.ModInfo)
-            Logger.Log("Created _detectedEquipment:\n" + _detectedEquipment.ToString())
+            _detectedEquipment = HTG:Collections:FormListExt.FormListExt(Utilities.ModInfo)
         Else
             _detectedEquipment.Clear()
             Logger.Log("Cleared _detectedEquipment:\n" + _detectedEquipment.ToString())
@@ -234,7 +228,7 @@ Bool Function _RegisterActorEquipment()
                         Logger.Log("RegisterFollowerTimer - Registering Spacesuit.")
                         kActor.UnequipItemSlot(kArmorUtil.SSBodySlot) ; Spacesuit                    
                     EndIf
-                    WaitExt(1.0)
+                    Wait(1.5)
                 Else
                     Logger.Log("RegisterFollowerTimer - Existing Equipment found:" + kArmor + " Type:" + kArmorType)
                 EndIf 
@@ -247,7 +241,7 @@ Bool Function _RegisterActorEquipment()
             kActor.WornHasKeyword(kArmorUtil.Hat)
             Logger.Log("RegisterFollowerTimer - Registering Hat.")
             kActor.UnequipItemSlot(kArmorUtil.HeadSlot) ; Hat
-            WaitExt(1.0)
+            Wait(1.5)
             iCheckCount += 1
         EndIf
 
@@ -255,7 +249,7 @@ Bool Function _RegisterActorEquipment()
             kActor.WornHasKeyword(kArmorUtil.Clothes)
             Logger.Log("RegisterFollowerTimer - Registering Clothes.")
             kActor.UnequipItemSlot(kArmorUtil.ClothesSlot) ; Clothes
-            WaitExt(1.0)
+            Wait(1.5)
             iCheckCount += 1
         EndIf
 
@@ -263,7 +257,7 @@ Bool Function _RegisterActorEquipment()
             kActor.WornHasKeyword(kArmorUtil.Helmet)          
             Logger.Log("RegisterFollowerTimer - Registering Helmet.")      
             kActor.UnequipItemSlot(kArmorUtil.SSHeadSlot) ; Helmet
-            WaitExt(1.0)
+            Wait(1.5)
             iCheckCount += 1
         EndIf
 
@@ -271,7 +265,7 @@ Bool Function _RegisterActorEquipment()
             kActor.WornHasKeyword(kArmorUtil.Backpack)
             Logger.Log("RegisterFollowerTimer - Registering Backpack.")
             kActor.UnequipItemSlot(kArmorUtil.SSBackpackSlot) ; Backpack
-            WaitExt(1.0)
+            Wait(1.5)
             iCheckCount += 1
         EndIf
 
@@ -279,7 +273,7 @@ Bool Function _RegisterActorEquipment()
             kActor.WornHasKeyword(kArmorUtil.Spacesuit)
             Logger.Log("RegisterFollowerTimer - Registering Spacesuit.")
             kActor.UnequipItemSlot(kArmorUtil.SSBodySlot) ; Spacesuit 
-            WaitExt(1.0)
+            Wait(1.5)
             iCheckCount += 1                   
         EndIf
 
@@ -319,7 +313,7 @@ Bool Function _CheckActorEquipment()
                     If !kActor.IsEquipped(kArmor)    
                         Logger.Log("CurrentEquipment Equipment not found: " + kArmor)                
                         kActor.EquipItem(kArmor)
-                        WaitExt(0.333)
+                        Wait(1.0)
                         finished = False
                     Else
                         If !CurrentEquipment.Contains(kArmor)
@@ -346,11 +340,10 @@ Bool Function _CheckActorEquipment()
             _isPlayerInitialized = True
         ElseIf _currentEquipTimerCycle < _maxEquipTimerCycle
             _currentEquipTimerCycle += 1
-        ElseIf _currentEquipTimerCycle == _maxEquipTimerCycle
-            If _foundEquipmentCount < _detectedEquipmentCount
+        ElseIf _currentEquipTimerCycle == _maxEquipTimerCycle \
+                && _foundEquipmentCount < _detectedEquipmentCount
                 ; _RegisterActorEquipment()
                 _currentEquipTimerCycle = 0
-            EndIf
         EndIf
     EndTryLockGuard
 
@@ -398,9 +391,15 @@ Function _HandleItemUnequipped(Form akItem)
 
                     kActor.EquipItem(akItem, abSilent = True)
                     _detectedEquipment.Add(akItem)
-                    WaitExt(0.75)
+                    Wait(1.0)
                 EndIf
             EndIf
         EndIf
     ; EndTryLockGuard
+EndFunction
+
+Bool Function _RegisterEvents()
+    Parent._RegisterEvents()
+
+    return RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")    
 EndFunction

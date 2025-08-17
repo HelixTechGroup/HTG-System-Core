@@ -111,21 +111,21 @@ EndFunction
 Bool Function _CreateCollections()
     ; TryLockGuard _ArmorMappingsGuard
         If IsNone(ArmorBackpackMappings)
-            ArmorBackpackMappings = HTG:Collections:HoloArmorMapList.HoloArmorMapListIntegrated(Utilities.ModInfo)
+            ArmorBackpackMappings = HTG:Collections:HoloArmorMapList.HoloArmorMapList(Utilities.ModInfo)
             ; ArmorBackpackMappings.AddArray(DefaultArmorBackpackMappings)
         EndIf
         
         If IsNone(ArmorHelmetMappings)
-            ArmorHelmetMappings = HTG:Collections:HoloArmorMapList.HoloArmorMapListIntegrated(Utilities.ModInfo)
+            ArmorHelmetMappings = HTG:Collections:HoloArmorMapList.HoloArmorMapList(Utilities.ModInfo)
             ; ArmorHelmetMappings.AddArray(DefaultArmorHelmetMappings)
         EndIf
 
         If IsNone(ArmorSpacesuitMappings)
-            ArmorSpacesuitMappings = HTG:Collections:HoloArmorMapList.HoloArmorMapListIntegrated(Utilities.ModInfo)
+            ArmorSpacesuitMappings = HTG:Collections:HoloArmorMapList.HoloArmorMapList(Utilities.ModInfo)
             ; ArmorSpacesuitMappings.AddArray(DefaultArmorSpacesuitMappings)
         EndIf
     ; EndTryLockGuard
-
+    
     return ((!IsNone(ArmorBackpackMappings) && ArmorBackpackMappings.IsInitialized) \
                 && (!IsNone(ArmorHelmetMappings) && ArmorHelmetMappings.IsInitialized) \
                 && (!IsNone(ArmorSpacesuitMappings) && ArmorSpacesuitMappings.IsInitialized)) \

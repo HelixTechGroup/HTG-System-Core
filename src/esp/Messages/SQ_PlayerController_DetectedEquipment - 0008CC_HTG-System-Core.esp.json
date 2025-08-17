@@ -3,7 +3,7 @@
   "EditorID": "SQ_PlayerController_DetectedEquipment",
   "Description": {
     "TargetLanguage": "English",
-    "Value": "<Alias=EquipmentTextHolder> was detected on <Alias=SystemPlayerRef>"
+    "Value": "<Alias=EquipmentTextHolder> was detected on <Alias=PlayerEquipmentTracker>"
   },
   "OwnerQuest": "000836:HTG-System-Core.esp",
   "DisplayTime": 2,

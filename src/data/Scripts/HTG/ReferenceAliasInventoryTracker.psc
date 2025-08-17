@@ -151,6 +151,10 @@ Function _HandleItemRemoved(Form akItem)
 EndFunction
 
 Bool Function _RegisterEvents()
+    If !IsFilled()
+        return False
+    EndIf
+    
     Actor kActor = GetActorReference()
     AddInventoryEventFilter(None)
     RegisterForRemoteEvent(GetReference(), "OnItemAdded")

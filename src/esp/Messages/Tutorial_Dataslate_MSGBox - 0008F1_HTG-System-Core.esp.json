@@ -1,0 +1,12 @@
+{
+  "FormKey": "0008F1:HTG-System-Core.esp",
+  "EditorID": "Tutorial_Dataslate_MSGBox",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Press [DataMenu] to open the data menu. From there, you can open your Inventory (which will be the section in the lower right)."
+  },
+  "Flags": [
+    "MessageBox"
+  ],
+  "BNAM": 4294967295
+}

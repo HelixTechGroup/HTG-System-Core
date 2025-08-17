@@ -6,8 +6,8 @@ import HTG:Structs
 import HTG:SystemLogger
 import HTG:Quests
 
-HTG:SystemUtilities Property Utilities Hidden
-    HTG:SystemUtilities Function Get()
+SystemUtilities Property Utilities Hidden
+    SystemUtilities Function Get()
         return _systemUtilities
     EndFunction
 EndProperty ; Hidden
@@ -31,10 +31,11 @@ Bool Property IsInitialRun Hidden
 EndProperty
 
 Guard _initializeTimerGuard ProtectsFunctionLogic
+Guard _initializeGuard ProtectsFunctionLogic
 Guard _readyTimerGuard ProtectsFunctionLogic
 Guard _mainTimerGuard ProtectsFunctionLogic
 SystemTimerIds _timerIds
-HTG:SystemUtilities _systemUtilities
+SystemUtilities _systemUtilities
 Bool _isInitialized
 Bool _isInitialRun
 Bool _initializeTimerStarted
@@ -69,7 +70,8 @@ Event OnAliasStarted()
 EndEvent
 
 Event OnAliasShutdown()
-    UnregisterForAllEvents()
+    _UnregisterEvents()
+    ; UnregisterForAllEvents()
 EndEvent
 
 Event OnAliasReset()
@@ -167,15 +169,24 @@ Event HTG:RefCollectionAliasExt.OnMain(HTG:RefCollectionAliasExt akSender, Var[]
 EndEvent
 
 Bool Function Initialize()
-    If !_isInitialized
+    If _isInitialized
+        return true
+    EndIf
+
+    TryLockGuard _initializeGuard
         If _SetSystemUtilities()
             _isInitialized = _RegisterEvents() \
                             && _CreateCollections() \
                             && _Init()
         EndIf
-    EndIf
+    Else
+        StartTimer(0.1, _timerIds.InitializeId)
+        ; WaitExt(0.25)
+    EndTryLockGuard
 
-    return _isInitialized
+    return _isInitialized \
+            && (!IsNone(_systemUtilities) \
+                && _systemUtilities.IsInitialized)
 EndFunction
 
 Bool Function Contains(ObjectReference akRef)
@@ -198,22 +209,21 @@ Bool Function WaitForInitialized()
     ; StartTimer(_timerInterval, _initializeTimerId)
     QuestExt kQuest = (GetOwningQuest() as QuestExt)
 
-    While !maxCycleHit \
-            && !_isInitialized ; \
+    While !maxCycleHit ; \
                 ; || (!IsNone(kQuest) \
                 ; || !kQuest.Utilities.WaitForInitialized()))
-        Bool kUtilitInit
-        If !IsNone(kQuest)  && !IsNone(kQuest.Utilities)
-            kUtilitInit = kQuest.Utilities.WaitForInitialized()
-        EndIf
+        ; Bool kUtilitInit
+        ; If !IsNone(kQuest)  && !IsNone(kQuest.Utilities)
+        ;     kUtilitInit = kQuest.Utilities.WaitForInitialized()
+        ; EndIf
 
-        If !_initializeTimerStarted && kUtilitInit
-            ; StartTimer(_timerInterval, _timerIds.InitializeId)
-            Initialize()
-        EndIf
-        WaitExt(0.05)
+        ; If !_initializeTimerStarted && kUtilitInit
+        ;     ; StartTimer(_timerInterval, _timerIds.InitializeId)
+        ;     Initialize()
+        ; EndIf
+        WaitExt(0.25)
 
-        If currentCycle < maxCycle
+        If !Initialize() && currentCycle < maxCycle
             currentCycle += 1
         Else
             maxCycleHit = True
@@ -243,6 +253,10 @@ Bool Function _SetSystemUtilities()
 EndFunction
 
 Bool Function _RegisterEvents()
+    return True
+EndFunction
+
+Bool Function _UnregisterEvents()
     return True
 EndFunction
 

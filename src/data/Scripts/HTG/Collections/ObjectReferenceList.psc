@@ -6,27 +6,27 @@ Event OnInit()
     ArrayType = "ObjectReference"
 EndEvent
 
-ObjectReferenceList Function ObjectReferenceList(Int aiSize = 0) Global
+ObjectReferenceList Function ObjectReferenceList(SystemModuleInformation akMod, Int aiSize = 0) Global
     Int iFormId = 0x00000825
-    ObjectReferenceList res =  HTG:Collections:List._CreateList(iFormId, aiSize = aiSize) as ObjectReferenceList
+    ObjectReferenceList res =  HTG:Collections:List._CreateList(akMod, iFormId, aiSize = aiSize) as ObjectReferenceList
     LogObjectGlobal(res, "HTG:Collections:ObjectReferenceList.ObjectReferenceList(" + aiSize  + "): " + res)
     return res
 EndFunction
 
-ObjectReferenceList Function ObjectReferenceListIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
-    If HTG:UtilityExt.IsNone(akMod)
-        return None
-    EndIf
+; ObjectReferenceList Function ObjectReferenceListIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+;     If HTG:UtilityExt.IsNone(akMod)
+;         return None
+;     EndIf
 
-    If !akMod.IsCoreIntegrated
-        return ObjectReferenceList(aiSize)
-    EndIf
+;     If !akMod.IsCoreIntegrated
+;         return ObjectReferenceList(aiSize)
+;     EndIf
 
-    ObjectReferenceList res
-    res = HTG:Collections:List._CreatedRegisteredList(akMod, "HTG:Collections:ObjectReferenceList", aiSize) as ObjectReferenceList
-    LogObjectGlobal(res, "HTG:Collections:ObjectReference.ObjectReference(" + aiSize  + "): " + res)
-    return res
-EndFunction
+;     ObjectReferenceList res
+;     res = HTG:Collections:List._CreatedRegisteredList(akMod, "HTG:Collections:ObjectReferenceList", aiSize) as ObjectReferenceList
+;     LogObjectGlobal(res, "HTG:Collections:ObjectReference.ObjectReference(" + aiSize  + "): " + res)
+;     return res
+; EndFunction
 
 ObjectReference Function GetAt(Int index)
     return GetVarAt(index) as ObjectReference

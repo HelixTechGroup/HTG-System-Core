@@ -10,7 +10,7 @@ Guard _refreshTimerGuard ProtectsFunctionLogic
 Int _refreshTimerId = 10
 Bool _refreshTimerStarted
 Float _timerInterval = 0.01
-Int _maxTimerCycle = 50
+Int _maxTimerCycle = 100
 Int _currentRefreshTimerCycle = 0
 
 Event OnAliasStarted()
@@ -36,6 +36,10 @@ Event OnTimer(int aiTimerID)
     Parent.OnTimer(aiTimerID)
 
     If aiTimerID == _refreshTimerId
+        If !IsInitialized
+            StartTimer(0.1, _refreshTimerId)
+        EndIf
+
         TryLockGuard _refreshTimerGuard
             _refreshTimerStarted = True
             _Refresh()
@@ -53,20 +57,30 @@ Event OnTimer(int aiTimerID)
 EndEvent
 
 Function _Refresh()
-    ObjectReference[] kModules = Game.GetPlayer().FindAllReferencesWithKeyword(SystemModuleInformationKeyword, 500)
+    ObjectReference kUtilRef = Utilities.GetReference()
+    ObjectReference[] kModules 
+    If !Utilities.IsFilled()
+        return
+    EndIf
+
+    SystemUtilitiesObject kSysObject = kUtilRef as SystemUtilitiesObject
+    kModules = kSysObject.GetRefsLinkedToMe()
+    
     Int i
     While i < kModules.Length ; ModuleRegistry.GetSize()
         SystemModuleInformation kMod = kModules[i] as SystemModuleInformation ; ModuleRegistry.GetAt(i)
         Logger.LogObject(kMod, "Is ModInfo: " + IsNone(kMod))
         If !IsNone(kMod) && !Contains(kMod)
             AddRef(kMod)
-            ObjectReference kUitilRef = Utilities.GetReference()
             Cell kCell = kMod.GetParentCell()
-            Logger.Log("Utilities current cell" + kUitilRef.GetParentCell())
+            Logger.Log("Utilities current cell" + kUtilRef.GetParentCell())
             Logger.Log("Mods current cell" + kCell)
-            kMod.MoveTo(kUitilRef)
-            kCell = kMod.GetParentCell()
-            Logger.Log("Mods new cell" + kCell)
+
+            If kCell != kUtilRef.GetParentCell()
+                kMod.MoveTo(kUtilRef)
+                kCell = kMod.GetParentCell()
+                Logger.Log("Mods new cell" + kCell)
+            EndIf
         EndIf
         i += 1
     EndWhile

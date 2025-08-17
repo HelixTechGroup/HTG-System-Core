@@ -26,6 +26,18 @@ TimerUtility Property Timers Hidden
     EndFunction
 EndProperty
 
+SystemStageIds Property Stages Hidden
+    SystemStageIds Function Get()
+        return _stageIds
+    EndFunction
+EndProperty
+
+SystemMenuIds Property Menus Hidden
+    SystemMenuIds Function Get()
+        return _menuIds
+    EndFunction
+EndProperty
+
 IntUtility Property Integers Hidden
     IntUtility Function Get()
         return _intUtility
@@ -45,6 +57,8 @@ ArmorUtility Property Armors Hidden
 EndProperty
 
 GlobalVariable Property DebugGlobal Mandatory Const Auto
+
+Cell Property SystemData Mandatory Const Auto
 
 ; Form Property ModInfoForm Const Auto
 
@@ -70,6 +84,8 @@ EndProperty
 
 ; SystemModuleInformation _modInfo
 SystemTimerIds _timerIds
+SystemStageIds _stageIds
+SystemMenuIds _menuIds
 ; HTG:SystemLogger _logger
 ; Utilities _utilities
 TimerUtility _timerUtility
@@ -77,7 +93,8 @@ IntUtility _intUtility
 FormUtility _formUtility
 ArmorUtility _armorUtility
 Guard _initializeTimerGuard ProtectsFunctionLogic
-Guard _utilitiesGuard ProtectsFunctionLogic
+Guard _initializeGuard ProtectsFunctionLogic
+; Guard _utilitiesGuard ProtectsFunctionLogic
 Bool _isInitialized
 Bool _initializeTimerStarted
 Int _initializeTimerId = 1
@@ -86,6 +103,9 @@ Int _maxTimerCycle = 600
 Int _currentTimerCycle = 0
 
 Event OnInit()
+    ; _timerIds = new SystemTimerIds
+    ; _stageIds = new SystemStageIds
+    ; _menuIds = new SystemMenuIds
     StartTimer(_timerInternal, _initializeTimerId)
 EndEvent
 
@@ -97,9 +117,9 @@ Event OnTimer(Int aiTimerID)
         EndIf
 
         Bool bRestartTimer
-        TryLockGuard _initializeTimerGuard, _utilitiesGuard
+        TryLockGuard _initializeTimerGuard, _initializeGuard
             If !Initialize() &&  _currentTimerCycle < _maxTimerCycle    
-                WaitExt(0.1)        
+                WaitExt(0.15)        
                 _currentTimerCycle += 1
                 bRestartTimer = True
             ElseIf _currentTimerCycle == _maxTimerCycle
@@ -118,25 +138,30 @@ Bool Function Initialize()
         return True
     EndIf
 
-    ; TODO: Change self to GetReference() and attach scripts to _systemUtilitiesObject
-    ; TryLockGuard _utilitiesGuard
+    TryLockGuard _initializeGuard
         ScriptObject so = Self as ScriptObject 
         LogObjectGlobal(Self, "HTG:SystemUtilities:" + Self + "\n\t As ScriptObject:" + so)
 
         _isInitialized = _SetSystemUtilities(so)
-    ; EndTryLockGuard
+    Else
+        StartTimer(0.1, _initializeTimerId)
+        ; WaitExt(0.25)
+    EndTryLockGuard
 
-    return _CheckSystemUtilites()
+    return !IsNone(_timerUtility) \
+            && !IsNone(_intUtility) \
+            && !IsNone(_formUtility) \
+            && !IsNone(_armorUtility)
 EndFunction
 
-Bool Function _SetSystemUtilities(ScriptObject akScriptObject)
+Bool Function _SetSystemUtilities(ScriptObject akScriptObject) RequiresGuard(_initializeGuard) 
     If akScriptObject == None
         LogErrorGlobal(Self, "The object attached to  this Script is not a ScriptObject:" + Self)
         return False
     EndIf
 
     Bool res = True
-    TryLockGuard _utilitiesGuard
+    ; TryLockGuard _utilitiesGuard
         ; If IsNone(_logger)
         ;     _logger = akScriptObject as HTG:SystemLogger
         ; EndIf
@@ -161,10 +186,20 @@ Bool Function _SetSystemUtilities(ScriptObject akScriptObject)
             LogObjectGlobal(Self, "Utilities.Armors:" + _armorUtility)
         EndIf
 
+        If _stageIds == None
+            _stageIds = new SystemStageIds
+            LogObjectGlobal(Self, "Utilities.Stages:" + _stageIds)
+        EndIf
+
+        If _menuIds == None
+            _menuIds = new SystemMenuIds
+            LogObjectGlobal(Self, "Utilities.Menus:" + _menuIds)
+        EndIf
+
         ; If IsNone(_modInfo) && ModInfoForm != None
         ;         _modInfo = HTG:FormUtility.CreateReference(Self, ModInfoForm) as SystemModuleInformation
         ; EndIf
-    EndTryLockGuard
+    ; EndTryLockGuard
 
     ; !IsNone(_logger) \
     return !IsNone(_timerUtility) \
@@ -184,6 +219,10 @@ Bool Function _CheckSystemUtilites()
     ;     LogWarnGlobal(Self, "Logger is None.")
     If IsNone(_timerUtility)
         LogWarnGlobal(Self, "Timers is None.")
+    ; ElseIf _stageIds == None
+    ;     LogWarnGlobal(Self, "Stages is None.")
+    ; ElseIf _menuIds == None
+    ;     LogWarnGlobal(Self, "Menus is None.")
     ElseIf IsNone(_intUtility)
         LogWarnGlobal(Self, "Integers is None.")
     ElseIf IsNone(_formUtility)        
@@ -195,7 +234,7 @@ Bool Function _CheckSystemUtilites()
     EndIf
 
     ; !IsNone(_logger) \
-    return !IsNone(_timerUtility) \
+    !IsNone(_timerUtility) \
             && !IsNone(_intUtility) \
             && !IsNone(_formUtility) \
             && !IsNone(_armorUtility)
@@ -209,16 +248,15 @@ Bool Function WaitForInitialized()
     Int currentCycle = 0
     Int maxCycle = 600
     Bool maxCycleHit
-    While !maxCycleHit && !_isInitialized
+    While !maxCycleHit
         WaitExt(0.1)
-
-        If currentCycle < maxCycle
+        If !Initialize() && currentCycle < maxCycle
             currentCycle += 1
         Else
             maxCycleHit = True
         EndIf
     EndWhile
-
+    
     If !_isInitialized && !_initializeTimerStarted
         StartTimer(_timerInternal, _initializeTimerId)
     EndIf

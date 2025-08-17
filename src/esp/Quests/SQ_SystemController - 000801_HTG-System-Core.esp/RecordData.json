@@ -38,6 +38,9 @@
         },
         "Scripts": [
           {
+            "Name": "htg:structs"
+          },
+          {
             "Name": "htg:systemlogger",
             "Properties": [
               {
@@ -53,10 +56,15 @@
             ]
           },
           {
-            "Name": "htg:structs"
-          },
-          {
-            "Name": "HTG:SystemUtilities"
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "000801:HTG-System-Core.esp",
+                "Alias": 5
+              }
+            ]
           }
         ]
       },
@@ -72,13 +80,13 @@
             "Properties": [
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "SystemModuleInformationKeyword",
-                "Object": "000839:HTG-System-Core.esp"
+                "Name": "ModuleRegistry",
+                "Object": "000832:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModuleRegistry",
-                "Object": "000832:HTG-System-Core.esp"
+                "Name": "SystemModuleInformationKeyword",
+                "Object": "000839:HTG-System-Core.esp"
               }
             ]
           }
@@ -101,12 +109,25 @@
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
+  "Filter": "HTG\\",
   "Summary": "HTG Systems Controller.\r\n",
   "UnusedConditions": [],
   "Stages": [
     {}
   ],
   "Aliases": [
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 10,
+      "Name": "SystemPlayerRef",
+      "Flags": [
+        "AllowReuseInQuest",
+        "StoresText"
+      ],
+      "ALFG": 0,
+      "UniqueActor": "000007:Starfield.esm",
+      "VoiceTypes": "Null"
+    },
     {
       "MutagenObjectType": "QuestReferenceAlias",
       "ID": 5,
@@ -119,6 +140,9 @@
         "AllowReserved"
       ],
       "ALFG": 0,
+      "LinkedAliases": [
+        {}
+      ],
       "VoiceTypes": "Null"
     },
     {
@@ -133,7 +157,6 @@
       "ForcedReference": "000812:HTG-System-Core.esp",
       "LinkedAliases": [
         {
-          "Keyword": "000839:HTG-System-Core.esp",
           "AliasID": 5
         }
       ],
@@ -151,15 +174,19 @@
             "Flags": [
               "Optional",
               "AllowReuseInQuest",
-              "MatchingRefInLoadedArea",
               "AllowReserved",
               "MatchingRefClosest"
             ],
             "ALFG": 0,
+            "FindMatchingRefNearAlias": {
+              "AliasID": 0,
+              "Type": "LinkedFrom",
+              "RefType": "Null"
+            },
             "Conditions": [
               {
                 "MutagenObjectType": "ConditionFloat",
-                "Unknown2": 28213,
+                "Unknown2": 6667,
                 "Data": {
                   "MutagenObjectType": "HasKeywordConditionData",
                   "FirstParameter": "000839:HTG-System-Core.esp"
@@ -183,17 +210,6 @@
         "Optional",
         "AllowReuseInQuest",
         "StoresText"
-      ],
-      "ALFG": 0,
-      "VoiceTypes": "Null"
-    },
-    {
-      "MutagenObjectType": "QuestReferenceAlias",
-      "ID": 8,
-      "Name": "ArmorUtilitiesTemp",
-      "Flags": [
-        "Optional",
-        "AllowReuseInQuest"
       ],
       "ALFG": 0,
       "VoiceTypes": "Null"

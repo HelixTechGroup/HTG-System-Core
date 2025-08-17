@@ -10,7 +10,7 @@ VersionInfomation Property Version Mandatory Const Auto
 
 Bool Property IsCoreIntegrated Const Auto
 
-String Property FileName Const Auto
+String Property FileName Mandatory Const Auto
 
 FormList Property CollectionRegistry Mandatory Const Auto
 

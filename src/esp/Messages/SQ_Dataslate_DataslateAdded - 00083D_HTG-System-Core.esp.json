@@ -1,0 +1,11 @@
+{
+  "FormKey": "00083D:HTG-System-Core.esp",
+  "EditorID": "SQ_Dataslate_DataslateAdded",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "<Alias=DataslateTracker> has been added."
+  },
+  "OwnerQuest": "000824:HTG-System-Core.esp",
+  "DisplayTime": 2,
+  "BNAM": 4294967295
+}

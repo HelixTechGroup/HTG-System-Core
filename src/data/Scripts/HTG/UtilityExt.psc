@@ -11,10 +11,10 @@ Bool Function AddLeveledItemToActor(Actor akActor, LeveledItem akItem, int count
     ; EndIf
 
     If c > 0 && clearAllExisting
-        If equip
-            akActor.UnequipItem(akItem, abSilent = true)
-            WaitExt(0.333)
-        EndIf
+        ; If equip
+        ;     akActor.UnequipItem(akItem, abSilent = true)
+        ;     WaitExt(0.333)
+        ; EndIf
 
         akActor.RemoveItem(akItem, c, abSilent = true)
         WaitExt(0.50)
@@ -236,6 +236,7 @@ Function WaitExt(Float afInterval) Global
 EndFunction
 
 Function ShowMessage(Message akMessage, \
+                    String asContext = "", \
                     ObjectReference[] akTextHolder = None, \
                     ReferenceAlias[] akTextHolderAlias = None, \
                     Bool abShowAsHelpMessage = false, \
@@ -263,13 +264,13 @@ Function ShowMessage(Message akMessage, \
         float HelpMessageDuration = 3.0
         float HelpMessageInterval = 3.0
         int HelpMessageMaxTimes = 1
-        string HelpMessageContext = ""
         int HelpMessagePriority = 0
-        akMessage.ShowAsHelpMessage(none, \
+        Message.ClearHelpMessages()
+        akMessage.ShowAsHelpMessage("DataslateLocationHelpMsg", \
                                     HelpMessageDuration, \
                                     HelpMessageInterval, \
                                     HelpMessageMaxTimes, \
-                                    HelpMessageContext, \
+                                    "", \
                                     HelpMessagePriority)
     Else 
         akMessage.Show(afArg1, afArg2, afArg3, afArg4, afArg5, afArg6, afArg7, afArg8, afArg9)

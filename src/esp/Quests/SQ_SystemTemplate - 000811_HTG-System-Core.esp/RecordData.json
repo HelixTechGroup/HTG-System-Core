@@ -44,6 +44,7 @@
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
+  "Filter": "HTG\\",
   "Summary": "HTG System Quest Template.\r\nPlease create a new script for your quest that Extends HTG:QuestExt",
   "UnusedConditions": [],
   "Objectives": [
@@ -61,10 +62,10 @@
       "ID": 5,
       "Name": "ModuleInformation",
       "Flags": [
+        "ReservesLocationOrReference",
         "Optional",
         "AllowReuseInQuest",
-        "AllowReserved",
-        "CreateRefTemp"
+        "AllowReserved"
       ],
       "ALFG": 0,
       "VoiceTypes": "Null"
@@ -90,6 +91,7 @@
       "Name": "DataslateTerminal",
       "Flags": [
         "AllowReuseInQuest",
+        "AllowReserved",
         "ExternalAliasLinked"
       ],
       "ALFG": 0,

@@ -47,7 +47,7 @@
         "Property": {
           "Name": "",
           "Object": "00081A:HTG-System-Core.esp",
-          "Alias": 2
+          "Alias": 3
         },
         "Scripts": [
           {
@@ -78,7 +78,15 @@
             ]
           },
           {
-            "Name": "HTG:SystemUtilities"
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "00081A:HTG-System-Core.esp",
+                "Alias": 3
+              }
+            ]
           }
         ]
       }
@@ -97,6 +105,7 @@
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
+  "Filter": "HTG\\",
   "UnusedConditions": [],
   "Stages": [
     {}
@@ -104,7 +113,7 @@
   "Aliases": [
     {
       "MutagenObjectType": "QuestReferenceAlias",
-      "ID": 2,
+      "ID": 3,
       "Name": "ModuleInformation",
       "Flags": [
         "Optional",
@@ -131,21 +140,6 @@
       "External": {
         "Quest": "000801:HTG-System-Core.esp",
         "AliasID": 0
-      },
-      "VoiceTypes": "Null"
-    },
-    {
-      "MutagenObjectType": "QuestReferenceAlias",
-      "ID": 1,
-      "Name": "DataslateTerminal",
-      "Flags": [
-        "AllowReuseInQuest",
-        "ExternalAliasLinked"
-      ],
-      "ALFG": 0,
-      "External": {
-        "Quest": "000824:HTG-System-Core.esp",
-        "AliasID": 5
       },
       "VoiceTypes": "Null"
     }

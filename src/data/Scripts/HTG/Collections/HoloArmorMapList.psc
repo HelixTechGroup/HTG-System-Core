@@ -11,27 +11,27 @@ Event OnInit()
     ArrayType = "HoloArmorMap"
 EndEvent
 
-HoloArmorMapList Function HoloArmorMapList(Int aiSize = 0) Global
+HoloArmorMapList Function HoloArmorMapList(SystemModuleInformation akMod, Int aiSize = 0) Global
     Int iFormId = 0x00000802
-    HoloArmorMapList res =  HTG:Collections:List._CreateList(iFormId, aiSize = aiSize) as HoloArmorMapList
+    HoloArmorMapList res =  HTG:Collections:List._CreateList(akMod, iFormId, aiSize = aiSize) as HoloArmorMapList
     LogObjectGlobal(res, "HTG:Crew:Collections:HoloArmorMapList.HoloArmorMapList(" + aiSize  + "): " + res)
     return res
 EndFunction
 
-HoloArmorMapList Function HoloArmorMapListIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
-    If HTG:UtilityExt.IsNone(akMod)
-        return None
-    EndIf
+; HoloArmorMapList Function HoloArmorMapListIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+;     If HTG:UtilityExt.IsNone(akMod)
+;         return None
+;     EndIf
 
-    If !akMod.IsCoreIntegrated
-        return HoloArmorMapList(aiSize)
-    EndIf
+;     If !akMod.IsCoreIntegrated
+;         return HoloArmorMapList(aiSize)
+;     EndIf
 
-    HoloArmorMapList res
-    res = HTG:Collections:List._CreatedRegisteredList(akMod, "HTG:Collections:HoloArmorMapList", aiSize) as HoloArmorMapList
-    LogObjectGlobal(res, "HTG:Collections:HoloArmorMapList.HoloArmorMapList(" + aiSize  + "): " + res)
-    return res
-EndFunction
+;     HoloArmorMapList res
+;     res = HTG:Collections:List._CreatedRegisteredList(akMod, "HTG:Collections:HoloArmorMapList", aiSize) as HoloArmorMapList
+;     LogObjectGlobal(res, "HTG:Collections:HoloArmorMapList.HoloArmorMapList(" + aiSize  + "): " + res)
+;     return res
+; EndFunction
 
 HoloArmorMap Function GetAt(Int index)
     return GetVarAt(index) as HoloArmorMap

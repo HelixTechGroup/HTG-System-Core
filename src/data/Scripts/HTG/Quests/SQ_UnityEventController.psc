@@ -13,8 +13,9 @@ FormList Property UnityVariantMainQuests Mandatory Const Auto
 FormList Property UnityVariantQuests Mandatory Const Auto
 ;Contains Quests that save or alter game data pre unity
 FormList Property UnityDataQuests Mandatory Const Auto
-FormListExt Property ActiveUnityVariants Hidden
-    FormListExt Function Get()
+
+SQ_UnityVariant[] Property ActiveUnityVariants Hidden
+    SQ_UnityVariant[] Function Get()
         return _activeVariants
     EndFunction
 EndProperty
@@ -29,10 +30,10 @@ EndProperty
 
 Int _enterUnityStageId = 2000
 Int _unityFaceGenCompleteStageId = 120
-Int _unityGetDataStageId = 5000
-Int _unitySetDataStageId = 5001
+Int _unitySaveDataStageId = 5000
+Int _unityLoadDataStageId = 5001
 FormListExt _completeMainVariantList
-FormListExt _activeVariants
+SQ_UnityVariant[] _activeVariants
 Quest _activeMainQuest
 
 Event Quest.OnQuestInit(Quest akSender)
@@ -42,7 +43,7 @@ Event Quest.OnQuestInit(Quest akSender)
     If akSender == BeginUnityQuest
         While i < UnityDataQuests.GetSize()
             Quest kDataQuest = UnityDataQuests.GetAt(i) as Quest
-            kDataQuest.SetStage(_unitySetDataStageId)
+            kDataQuest.SetStage(_unityLoadDataStageId)
             i += 1
         EndWhile 
 
@@ -73,7 +74,7 @@ Event Quest.OnStageSet(Quest akSender, int auiStageID, int auiItemID)
     If akSender == EndGameQuest && auiStageID == _enterUnityStageId && auiItemID == 0
         While i < UnityDataQuests.GetSize()
             Quest kDataQuest = UnityDataQuests.GetAt(i) as Quest
-            kDataQuest.SetStage(_unityGetDataStageId)
+            kDataQuest.SetStage(_unitySaveDataStageId)
             i += 1
         EndWhile 
 
@@ -82,12 +83,12 @@ Event Quest.OnStageSet(Quest akSender, int auiStageID, int auiItemID)
 EndEvent
 
 Bool Function _CreateCollections()
-    If !Utilities.IsInitialized
-        return False
+    If IsNone(_completeMainVariantList)
+        _completeMainVariantList = HTG:Collections:FormListExt.FormListExt(Utilities.ModInfo)
     EndIf
 
-    If IsNone(_completeMainVariantList)
-        _completeMainVariantList = HTG:Collections:FormListExt.FormListExtIntegrated(Utilities.ModInfo)
+    If !IsNone(_completeMainVariantList)
+        Logger.Log(_completeMainVariantList.ToString())
     EndIf
 
     return (!IsNone(_completeMainVariantList) && _completeMainVariantList.IsInitialized)

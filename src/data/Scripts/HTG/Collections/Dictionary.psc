@@ -41,26 +41,26 @@ Int _count = 0
 Int _trackedIndex = 0
 Int _maxSize = 128 Const
 
-Dictionary Function Dictionary(Int aiSize = 0) Global 
-    Dictionary res = _CreateDictionary(aiSize = aiSize)
+Dictionary Function Dictionary(SystemModuleInformation akMod, Int aiSize = 0) Global 
+    Dictionary res = _CreateDictionary(akMod, aiSize = aiSize)
     LogObjectGlobal(res, "HTG:Collections:Dictionary.Dictionary(" + aiSize  + "): " + res)
     return res
 EndFunction
 
-Dictionary Function DictionaryIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
-    If HTG:UtilityExt.IsNone(akMod)
-        return None
-    EndIf
+; Dictionary Function DictionaryIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+;     If HTG:UtilityExt.IsNone(akMod)
+;         return None
+;     EndIf
 
-    If !akMod.IsCoreIntegrated
-        return Dictionary(aiSize)
-    EndIf
+;     If !akMod.IsCoreIntegrated
+;         return Dictionary(aiSize)
+;     EndIf
 
-    Dictionary res
-    res = _CreatedRegisteredDictionary(akMod, "HTG:Collections:Dictionary", aiSize)
-    LogObjectGlobal(res, "HTG:Collections:Dictionary.Dictionary(" + aiSize  + "): " + res)
-    return res
-EndFunction
+;     Dictionary res
+;     res = _CreatedRegisteredDictionary(akMod, "HTG:Collections:Dictionary", aiSize)
+;     LogObjectGlobal(res, "HTG:Collections:Dictionary.Dictionary(" + aiSize  + "): " + res)
+;     return res
+; EndFunction
 
 Bool Function Initialize(Int aiSize = 0)
     If _isInitialized
@@ -440,7 +440,8 @@ String Function ToString()
     String res = "HTG:Collection:Dictionary:" + Self.GetFormID() + "\n" \
     + "\tHTG:Collection:Dictionary<" + KeyType + ", " + ValueType + ">\n" \
     + "\tHTG:Collection:Dictionary.Count:" + _count + "\n" \
-    + "\tHTG:Collection:Dictionary.Keys:" + _keyArray
+    + "\tHTG:Collection:Dictionary.Keys:" + _keyArray \
+    + "\n\tHTG:Collection:Cell:" + GetParentCell()
 
     return res
 EndFunction
@@ -466,13 +467,23 @@ Bool Function WaitForInitialized()
     return _isInitialized
 EndFunction
 
-Dictionary Function _CreateDictionary(Int aiFormId = 0x00000834, String asModName = "HTG-System-Core", Int aiSize = 0) Global
-    Form kForm = CreateForm(aiFormId, asModName)
+Dictionary Function _CreateDictionary(SystemModuleInformation akMod, Int aiFormId = 0x00000834, String asModName = "HTG-System-Core", Int aiSize = 0) Global
+    If HTG:UtilityExt.IsNone(akMod)
+        return None
+    EndIf
+
+    String sModFile = asModName
+    If akMod.IsCoreIntegrated
+        sModFile = akMod.FileName
+    EndIf
+
+    Form kForm = CreateForm(aiFormId, sModFile)
     If !HTG:UtilityExt.IsNone(kForm)
-        Dictionary kList = CreateReference(Game.GetPlayer(), kform) as Dictionary
+        Dictionary kList = CreateReference(akMod, kform) as Dictionary
         If !HTG:UtilityExt.IsNone(kList)
             kList.Enable(False)
             kList.Initialize(aiSize)
+            LogObjectGlobal(kList, kList.ToString())
             return kList
         EndIf
     EndIf
@@ -494,10 +505,11 @@ Dictionary Function _CreatedRegisteredDictionary(SystemModuleInformation akMod, 
     EndWhile
 
     If !HTG:UtilityExt.IsNone(kForm)
-        Dictionary kList = CreateReference(Game.GetPlayer(), kform) as Dictionary
+        Dictionary kList = CreateReference(akMod, kform) as Dictionary
         If !HTG:UtilityExt.IsNone(kList)
             kList.Enable(False)
             kList.Initialize(aiSize)
+            LogObjectGlobal(kList, kList.ToString())
             return kList
         EndIf
     EndIf

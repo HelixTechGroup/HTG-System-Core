@@ -2,11 +2,16 @@ Scriptname HTG:Quests:SQ_DataslateController extends HTG:QuestExt
 {Configuration Management Dataslate System Controller}
 import HTG
 import HTG:SystemLogger
+import HTG:UtilityExt
+import HTG:FloatUtility
 
 ReferenceAlias Property DataslateTerminal Auto Const Mandatory
-GlobalVariable Property DataslateAssistant_FirstActivation Auto Mandatory
+GlobalVariable Property FirstActivation Auto Mandatory
+GlobalVariable Property ShowTutorial Mandatory Const Auto
 DataslateTracker Property DataslateTracker Auto Mandatory
+Message Property DataslateLocation Mandatory Const Auto
 
+Int _tutorialDataslateStageId = 5
 
 Event OnQuestStarted()
     Parent.OnQuestStarted()
@@ -24,8 +29,6 @@ Event OnQuestStarted()
     ;     ; Game.GetPlayer().AddItem(RegenesysAssistantDataslate)
     ;     ;Game.GetPlayer().AddItem(ref, 1, True)
     ; EndIf
-
-    Logger.Log("Regenesys Controller Started.")
 EndEvent
 
 Event OnQuestShutdown()    
@@ -35,5 +38,22 @@ Event OnQuestShutdown()
         LogObjectGlobal(Self, "DataslateTerminal.GetReference(): " + ref)
         ; Game.GetPlayer().RemoveItem(Regenesys_AssistantDataslate, 1)
     EndIf
-    LogObjectGlobal(Self, "Regenesys Controller Shutdown.")
+EndEvent
+
+Event OnStageSet(int auiStageID, int auiItemID)
+    Parent.OnStageSet(auiStageID, auiItemID)
+
+    If auiStageID == _tutorialDataslateStageId && FloatToBool(ShowTutorial.GetValue())
+        Message.ClearHelpMessages()
+        DataslateLocation.ShowAsHelpMessage("", 30.0, 30.0, 1)
+        ; ShowMessage(DataslateLocation, asContext = DataslateTracker, abShowAsHelpMessage = True)
+    EndIf
+EndEvent
+
+Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
+    Parent.OnMenuOpenCloseEvent(asMenuName, abOpening)
+
+    If asMenuName == Utilities.Menus.Data
+    ElseIf asMenuName == Utilities.Menus.Inventory
+    EndIf
 EndEvent

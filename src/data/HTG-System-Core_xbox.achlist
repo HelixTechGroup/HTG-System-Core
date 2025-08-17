@@ -34,7 +34,17 @@
 	"Data\\SCRIPTS\\HTG\\ValueArrayHolderArray.pex",
 	"Data\\SCRIPTS\\HTG\\Terminals\\DataslateSystemDesktop.pex",
 	"Data\\SCRIPTS\\HTG\\Terminals\\DataslateTerminalMenu.pex",
-	"Data\\SCRIPTS\\HTG\\ModInformation.pex",
 	"Data\\SCRIPTS\\HTG\\Quests\\SQ_SystemController.pex",
-	"Data\\SCRIPTS\\htg\\quests\\playerequipmenttracker.pex"
+	"Data\\SCRIPTS\\HTG\\Quests\\PlayerEquipmentTracker.pex",
+	"Data\\SCRIPTS\\HTG\\SystemModuleInformation.pex",
+	"Data\\SCRIPTS\\HTG\\SystemUtilitiesObject.pex",
+	"Data\\SCRIPTS\\htg\\collections\\holoarmormaplist.pex",
+	"Data\\SCRIPTS\\HTG\\Quests\\ModuleInformation.pex",
+	"Data\\SCRIPTS\\HTG\\Quests\\LoadedModules.pex",
+	"Data\\SCRIPTS\\HTG\\Quests\\SQ_PlayerController.pex",
+	"Data\\scripts\\HTG\\RefCollectionAliasInventoryTracker.pex",
+	"Data\\scripts\\HTG\\ReferenceAliasInventoryTracker.pex",
+	"Data\\scripts\\HTG\\Quests\\SQ_UnityVariant.pex",
+	"Data\\scripts\\MQ401QuestScript.pex",
+	"Data\\scripts\\fragments\\quests\\QF_MQ305_0024EF9C.pex"
 ]

@@ -1,0 +1,10 @@
+{
+  "FormKey": "0008E9:HTG-System-Core.esp",
+  "EditorID": "Tutorial_Dataslate02",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Select the area in the lower right to access your inventory."
+  },
+  "DisplayTime": 10,
+  "BNAM": 4294967295
+}
