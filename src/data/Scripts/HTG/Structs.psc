@@ -30,11 +30,13 @@ EndStruct
 
 Struct SystemMenuIds
     String Data = "DataMenu"
+    String Status = "StatusMenu"
     String Inventory = "InventoryMenu"
     String GalaxyMap = "GalaxyStarMapMenu"
     String Spaceship = "SpaceshipInfoMenu"
     String Crew = "ShipCrewMenu"
     String Skills = "SkillsMenu"
+    String Term = "TerminalMenu"
 EndStruct
 
 Struct LeveledItemInjectionSet
