@@ -33,22 +33,29 @@ Int _count = 0
 Int _trackedIndex = 0
 Int _maxSize = 128 Const
 
-List Function List(Int aiSize = 0) Global 
-    List res = _CreateList(aiSize = aiSize)
-    LogObjectGlobal(res, "HTG:Collections:List.List(" + aiSize  + "): " + res)
-    return res
-EndFunction
-
-List Function ListIntegrated(ModInformation akMod, Int aiSize = 0) Global 
-    If !akMod.IsCoreIntegrated
-        return List(aiSize)
+List Function List(SystemModuleInformation akMod, Int aiSize = 0) Global 
+    List res = _CreateList(akMod, aiSize = aiSize)
+    If !HTG:UtilityExt.IsNone(res)
+        LogObjectGlobal(res, "HTG:Collections:List.List(" + aiSize  + "): " + res)
     EndIf
 
-    List res
-    res = _CreatedRegisteredList(akMod, res, aiSize)
-    LogObjectGlobal(res, "HTG:Collections:List.List(" + aiSize  + "): " + res)
     return res
 EndFunction
+
+; List Function ListIntegrated(SystemModuleInformation akMod, Int aiSize = 0) Global 
+;     If HTG:UtilityExt.IsNone(akMod)
+;         return None
+;     EndIf
+
+;     If !akMod.IsCoreIntegrated
+;         return List(aiSize)
+;     EndIf
+
+;     List res
+;     res = _CreatedRegisteredList(akMod, res, aiSize)
+;     LogObjectGlobal(res, "HTG:Collections:List.List(" + aiSize  + "): " + res)
+;     return res
+; EndFunction
 
 Bool Function Initialize(Int aiSize = 0)
     If _isInitialized
@@ -74,7 +81,7 @@ Function Clear()
         _internalArray.Clear()
         _count = 0
         _trackedIndex = 0
-        _isInitialized = False
+        ; _isInitialized = False
     EndTryLockGuard
 EndFunction
 
@@ -267,6 +274,19 @@ Int[] Function FindAll(Var akItem)
     return resArray
 EndFunction
 
+Int Function FindStruct(String asVarName, Var akElement)
+    return _FindStruct(asVarName, akElement)
+;     Int i 
+;     While i < _internalArray.Length
+;         Var kItem = _internalArray[i]
+;         If kItem is Struct
+;             _internalArray.FindStruct("", akElement)
+;         EndIf
+;         i += 1
+;     EndWhile
+;     ; return _internalArray.FindStruct(asVarName, akElement)
+EndFunction
+
 Bool Function Contains(Var akItem)
     If Find(akItem) > -1
         return True
@@ -408,10 +428,11 @@ Var[] Function GetArray()
 EndFunction
 
 String Function ToString()
-    String res = "HTG:Collection:List:" + Self.GetFormID() + "\n" \
-    + "\tHTG:Collection:List<" + ArrayType + ">\n" \
-    + "\tHTG:Collection:List.Count:" + _count + "\n" \
-    + "\tHTG:Collection:List.Array:" + _internalArray
+    String res = "HTG:Collection:List:" + GetFormEditorID() \
+    + "\n\tHTG:Collection:List<" + ArrayType + ">" \
+    + "\n\tHTG:Collection:List.Count:" + _count \
+    + "\n\tHTG:Collection:List.Array:" + _internalArray \
+    + "\n\tHTG:Collection:List.Cell:" + GetParentCell()
 
     return res
 EndFunction
@@ -437,13 +458,23 @@ Bool Function WaitForInitialized()
     return _isInitialized
 EndFunction
 
-List Function _CreateList(Int aiFormId = 0x00000817, String asModName = "HTG-System-Core", Int aiSize = 0) Global
-    Form kForm = CreateForm(aiFormId, asModName)
+List Function _CreateList(SystemModuleInformation akMod, Int aiFormId = 0x00000817, String asModName = "HTG-System-Core", Int aiSize = 0) Global
+    If HTG:UtilityExt.IsNone(akMod)
+        return None
+    EndIf
+
+    String sModFile = asModName
+    If akMod.IsCoreIntegrated
+        sModFile = akMod.FileName
+    EndIf
+
+    Form kForm = CreateForm(aiFormId, sModFile)
     If !HTG:UtilityExt.IsNone(kForm)
-        List kList = CreateReference(Game.GetPlayer(), kform) as List
+        List kList = CreateReference(akMod, kform) as List
         If !HTG:UtilityExt.IsNone(kList)
             kList.Enable(False)
             kList.Initialize(aiSize)
+            LogObjectGlobal(kList, kList.ToString())
             return kList
         EndIf
     EndIf
@@ -451,18 +482,19 @@ List Function _CreateList(Int aiFormId = 0x00000817, String asModName = "HTG-Sys
     return None
 EndFunction
 
-List Function _CreatedRegisteredList(ModInformation akMod, String asListType, Int aiSize = 0) Global
+List Function _CreatedRegisteredList(SystemModuleInformation akMod, String asListType, Int aiSize = 0) Global
     FormList kRegistry = akMod.CollectionRegistry
     Form kForm
     Int i 
     While i < kRegistry.GetSize()
         kForm = kRegistry.GetAt(i)
         If !HTG:UtilityExt.IsNone(kForm)
-            ScriptObject so = CreateReference(Game.GetPlayer(), kform).CastAs(asListType)
+            ScriptObject so = CreateReference(akMod, kform).CastAs(asListType)
             List kList = so as List
             If !HTG:UtilityExt.IsNone(kList)
                 kList.Enable(False)
                 kList.Initialize(aiSize)
+                LogObjectGlobal(kList, kList.ToString())
                 return kList
             EndIf
         EndIf
@@ -471,4 +503,8 @@ List Function _CreatedRegisteredList(ModInformation akMod, String asListType, In
     EndWhile
 
     return None
+EndFunction
+
+Int Function _FindStruct(String asVarName, Var akElement)
+    return -1
 EndFunction

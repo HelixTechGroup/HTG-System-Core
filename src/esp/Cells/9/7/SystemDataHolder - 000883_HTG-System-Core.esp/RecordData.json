@@ -34,7 +34,8 @@
   "LightingTemplate": "Null",
   "WaterHeight": 3.4028235E+38,
   "XILS": 1.0,
-  "UnknownGroupData": 41,
+  "UnknownGroupData": 3,
+  "PersistentUnknownGroupData": 1,
   "Persistent": [
     {
       "MutagenObjectType": "PlacedObject",

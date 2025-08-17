@@ -1,11 +1,12 @@
 Scriptname HTG:QuestExt extends Quest
 import HTG
 import HTG:Structs
+import HTG:Collections
 import HTG:SystemLogger
 import HTG:UtilityExt
 
-HTG:SystemUtilities Property SystemUtilities Hidden
-    HTG:SystemUtilities Function Get()
+SystemUtilities Property Utilities Hidden
+    SystemUtilities Function Get()
         return _systemUtilities
     EndFunction
 EndProperty
@@ -28,13 +29,14 @@ Bool Property IsInitialRun Hidden
     EndFunction
 EndProperty
 
-Int Property UtilitiesAliasId Auto Hidden
+Int Property SystemUtilitiesId = -1 Hidden Auto
 
 Guard _initializeTimerGuard ProtectsFunctionLogic
+Guard _initializeGuard ProtectsFunctionLogic
 Guard _readyTimerGuard ProtectsFunctionLogic
 Guard _mainTimerGuard ProtectsFunctionLogic
 SystemTimerIds _timerIds
-HTG:SystemUtilities _systemUtilities
+SystemUtilities _systemUtilities
 Bool _isInitialized
 Bool _isInitialRun
 Bool _initializeTimerStarted
@@ -43,6 +45,7 @@ Bool _mainTimerStarted
 Float _timerInterval = 0.01
 Int _maxTimerCycle = 100
 Int _currentInitializeTimerCycle = 0
+Dictionary _aliasRegistry
 
 CustomEvent OnInitialRun
 CustomEvent OnMain
@@ -65,13 +68,14 @@ Event OnQuestStarted()
     WaitForInitialized()
     StartTimer(_timerInterval, _timerIds.MainId)
 
-    If _systemUtilities.DebugGlobal.GetValueInt() == 8
+    If _systemUtilities.IsDebugging
         Debug.Notification( Logger.MainLogName + ":" + Logger.SubLogName + " has been started.")
     EndIf
 EndEvent
 
 Event OnQuestShutdown()
-    UnregisterForAllEvents()
+    ; UnregisterForAllEvents()
+    _UnregisterEvents()
 EndEvent
 
 Event OnReset()
@@ -84,6 +88,10 @@ Event OnReset()
 EndEvent
 
 Event OnStageSet(int auiStageID, int auiItemID)
+    WaitForInitialized()
+EndEvent
+
+Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
     WaitForInitialized()
 EndEvent
 
@@ -103,13 +111,14 @@ Event OnTimer(Int aiTimerID)
         Float itimerInterval = _timerInterval
         Int timerId = -1
 
-        TryLockGuard _initializeTimerGuard
+        TryLockGuard _initializeTimerGuard, _initializeGuard
             _initializeTimerStarted = True
             If !Initialize() &&  _currentInitializeTimerCycle < _maxTimerCycle            
                 _currentInitializeTimerCycle += 1
                 timerId = _timerIds.InitializeId
             ElseIf !_isInitialized && _currentInitializeTimerCycle == _maxTimerCycle
-                LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
+                LogWarnGlobal(Self, "HTG:SystemUtililities could not be Initialized")
+                _currentInitializeTimerCycle = 0
             Else
                 Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
                 timerId = _systemUtilities.Timers.SystemTimerIds.InitialRunId
@@ -166,13 +175,23 @@ Event HTG:QuestExt.OnMain(HTG:QuestExt akSender, Var[] akArgs)
 EndEvent
 
 Bool Function Initialize()
-    If !_isInitialized
-        _isInitialized = _SetSystemUtilities() \
-                        && _RegisterEvents() \
-                        && _Init()
+    If _isInitialized
+        return true
     EndIf
 
-    return _isInitialized
+    TryLockGuard _initializeGuard
+        If _SetSystemUtilities()
+            _isInitialized = _RegisterEvents() \
+                            && _CreateCollections() \
+                            && _Init()
+        EndIf
+    Else
+        StartTimer(0.1, _timerIds.InitializeId)
+    EndTryLockGuard
+
+    return _isInitialized \
+            && (!IsNone(_systemUtilities) \
+                && _systemUtilities.IsInitialized)
 EndFunction
 
 Bool Function WaitForInitialized()
@@ -181,14 +200,13 @@ Bool Function WaitForInitialized()
     EndIf
     
     Int currentCycle = 0
-    Int maxCycle = 600
+    Int maxCycle = 150
     Bool maxCycleHit
 
     ; StartTimer(_timerInterval, _initializeTimerId)
-    While !maxCycleHit && !_isInitialized
+    While !maxCycleHit
         WaitExt(0.1)
-
-        If currentCycle < maxCycle
+        If !Initialize() && currentCycle < maxCycle
             currentCycle += 1
         Else
             maxCycleHit = True
@@ -198,42 +216,70 @@ Bool Function WaitForInitialized()
     return _isInitialized
 EndFunction
 
-Bool Function _SetSystemUtilities()
+Alias Function GetAliasType(String asAliasType)
     Int kMaxIndex = 100
     Int i = 0
-    HTG:SystemUtilities kUtils
+    Alias kResult
+    
+    If asAliasType == "None"
+        return None
+    EndIf
 
-    If IsNone(_systemUtilities)
-        If UtilitiesAliasId < 0
-            kUtils = GetAlias(UtilitiesAliasId) as HTG:SystemUtilities
-            If !IsNone(kUtils)
-                _systemUtilities = kUtils
-            EndIf
+    While i <= kMaxIndex
+        kResult = GetAlias(i)
+        If !IsNone(kResult)
+            kResult = kResult.CastAs(asAliasType) as Alias
         EndIf
 
-        If IsNone(_systemUtilities)
-            While i <= kMaxIndex
-                kUtils = GetAlias(i) as HTG:SystemUtilities
-                If IsNone(kUtils)
-                    i += 1
-                Else
-                    _systemUtilities = kUtils
-                    UtilitiesAliasId = i     
-                    i = kMaxIndex + 1
+        If IsNone(kResult)
+            i += 1
+        Else 
+            If kResult is SystemUtilities
+                If IsNone(_aliasRegistry)
+                    _aliasRegistry = HTG:Collections:Dictionary.Dictionary((kResult as SystemUtilities).ModInfo)
                 EndIf
-            EndWhile
+
+                SystemUtilitiesId = i
+            EndIf
+
+            If !IsNone(_aliasRegistry)
+                _aliasRegistry.Add(asAliasType, i)
+            EndIf
+
+            i = kMaxIndex + 1
+        EndIf
+    EndWhile
+
+    return kResult
+EndFunction
+
+Bool Function _SetSystemUtilities() RequiresGuard(_initializeGuard) 
+    If IsNone(_systemUtilities)
+        If (!IsNone(_aliasRegistry) \
+             && _aliasRegistry.Contains(_systemUtilities))
+            SystemUtilitiesId = _aliasRegistry.GetKeyValue(_systemUtilities) as Int
+        EndIf
+
+        If SystemUtilitiesId > -1
+            _systemUtilities = GetAlias(SystemUtilitiesId) as SystemUtilities
+        Else 
+            _systemUtilities = GetAliasType("HTG:SystemUtilities") as SystemUtilities
         EndIf
     EndIf
 
-    If !IsNone(_systemUtilities)
-        return _systemUtilities.WaitForInitialized()
-    EndIf
-
-    Game.Error("Could not find SystemUtilities Alias.")
-    return False
+    return !IsNone(_systemUtilities) && _systemUtilities.IsInitialized
 EndFunction
 
 Bool Function _RegisterEvents()
+    return True
+EndFunction
+
+Bool Function _UnregisterEvents()
+    UnregisterForAllEvents()
+    return True
+EndFunction
+
+Bool Function _CreateCollections()
     return True
 EndFunction
 
@@ -247,3 +293,4 @@ EndFunction
 Bool Function _Main()
     return False
 EndFunction
+

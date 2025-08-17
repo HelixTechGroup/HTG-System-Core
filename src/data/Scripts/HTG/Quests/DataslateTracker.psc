@@ -1,40 +1,47 @@
 Scriptname HTG:Quests:DataslateTracker extends HTG:ReferenceAliasExt
 {Regenesys - System Controller Player Reference Alias that tracks the current dataslate item reference}
 import HTG
+import HTG:UtilityExt
 
-; ObjectReference Property PlayerRef Mandatory Const Auto
+ReferenceAlias Property PlayerRef Mandatory Const Auto
 Potion Property Dataslate Auto Const Mandatory
 GlobalVariable Property FirstActivation Mandatory Auto
+Message Property DataslateAdded Mandatory Const Auto
 
 Bool _isPlayerInitialized
 
-Event OnAliasInit()
-    WaitForInitialized()
+Event OnAliasStarted()
+    Parent.OnAliasStarted()
 
-    Game.GetPlayer().AddAliasedItemSingle(Dataslate, Self, abSilent = False)
-    ; RefillDependentAliases()
-    ; Debug.Notification("Dataslate Configurator has been added.")
-    RegisterForRemoteEvent(Game.GetPlayer(), "OnItemEquipped")
-    RegisterForRemoteEvent(Game.GetPlayer(), "OnItemUnequipped")
-EndEvent
+    If FirstActivation.GetValueInt() == 1
+        GetOwningQuest().SetStage(5)
+        GetOwningQuest().SetObjectiveActive(5, True)
+        ; GetOwningQuest().SetObjectiveDisplayed(5)
+        ; FirstActivation.SetValue(0)
+    EndIf
 
-Event OnAliasShutdown()
-    UnregisterForRemoteEvent(Game.GetPlayer(), "OnItemEquipped")
-    UnregisterForRemoteEvent(Game.GetPlayer(), "OnItemUnequipped")
+    Actor kActor = PlayerRef.GetActorReference()
+    If !IsFilled()
+        kActor.AddAliasedItemSingle(Dataslate, Self, abSilent = False)
+    Else
+        DataslateAdded.Show()
+    EndIf
 EndEvent
 
 Event Actor.OnItemEquipped(Actor akSender, Form akBaseObject, ObjectReference akReference)
+    WaitForInitialized()
+
     If akBaseObject == Dataslate
         If FirstActivation.GetValueInt() == 1
-            GetOwningQuest().SetObjectiveCompleted(5)
-            FirstActivation.SetValue(0)
+            GetOwningQuest().SetStage(5)
         EndIf
 
+        Actor kActor = akSender ; PlayerRef.GetActorReference()
         ObjectReference kLastRef = GetRef()
         Logger.Log("OnItemAdded Current Dataslate Reference: " + kLastRef)
-        Game.GetPlayer().RemoveItem(akBaseObject)
+        kActor.RemoveItem(akBaseObject)
         ; RemoveFromRef(kLastRef)        
-        ObjectReference kNewRef = Game.GetPlayer().AddAliasedItemSingle(Dataslate, Self)
+        ObjectReference kNewRef = kActor.AddAliasedItemSingle(Dataslate, Self)
         ; RefillDependentAliases()
         Logger.Log("OnItemAdded Updated Dataslate Reference: " + kNewRef)
         Logger.Log("OnItemAdded Dataslate Reference: " +  GetRef())
@@ -42,6 +49,7 @@ Event Actor.OnItemEquipped(Actor akSender, Form akBaseObject, ObjectReference ak
 EndEvent
 
 Event Actor.OnItemUnequipped(Actor akSender, Form akBaseObject, ObjectReference akReference)
+    WaitForInitialized()
     ; If akBaseObject == Dataslate
     ;     ObjectReference kLastRef = GetRef()
     ;     Logger.Log("OnItemAdded Current Dataslate Reference: " + kLastRef)
@@ -51,6 +59,14 @@ Event Actor.OnItemUnequipped(Actor akSender, Form akBaseObject, ObjectReference 
     ;     RefillDependentAliases()
     ;     Logger.Log("OnItemAdded Updated Dataslate Reference: " + kNewRef)
     ; EndIf
+EndEvent
+
+Event ObjectReference.OnItemRemoved(ObjectReference akSender, Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akDestContainer, int aiTransferReason)    
+    If akBaseItem == Dataslate \
+        && FirstActivation.GetValueInt() == 1
+        GetOwningQuest().SetObjectiveCompleted(5)
+        FirstActivation.SetValue(0)
+    EndIf
 EndEvent
 
 ; Event OnItemAdded(Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer, int aiTransferReason)
@@ -63,3 +79,35 @@ EndEvent
 ;         Logger.Log("OnItemAdded Updated Dataslate Reference.")
 ;     Endif
 ; EndEvent
+
+Bool Function _RegisterEvents()
+    Actor kActor = Game.GetPlayer()
+    ObjectReference kRef = kActor as ObjectReference
+    If !IsNone(PlayerRef)
+        kRef = PlayerRef.GetReference()
+        kActor = PlayerRef.GetActorReference()
+    EndIf
+
+    AddInventoryEventFilter(Dataslate)
+    RegisterForRemoteEvent(kActor, "OnItemEquipped")
+    RegisterForRemoteEvent(kActor, "OnItemUnequipped")
+    RegisterForRemoteEvent(kRef, "OnItemRemoved")
+
+    return True
+EndFunction
+
+Bool Function _UnregisterEvents()
+    Actor kActor = Game.GetPlayer()
+    ObjectReference kRef = kActor as ObjectReference
+    If !IsNone(PlayerRef)
+        kRef = PlayerRef.GetReference()
+        kActor = PlayerRef.GetActorReference()
+    EndIf
+
+    UnregisterForRemoteEvent(kActor, "OnItemEquipped")
+    UnregisterForRemoteEvent(kActor, "OnItemUnequipped")
+    UnregisterForRemoteEvent(kRef, "OnItemRemoved")
+    RemoveInventoryEventFilter(Dataslate)
+
+    return True
+EndFunction

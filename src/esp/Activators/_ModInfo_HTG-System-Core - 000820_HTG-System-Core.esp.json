@@ -10,8 +10,13 @@
   "VirtualMachineAdapter": {
     "Scripts": [
       {
-        "Name": "HTG:ModInformation",
+        "Name": "HTG:SystemModuleInformation",
         "Properties": [
+          {
+            "MutagenObjectType": "ScriptStringProperty",
+            "Name": "FileName",
+            "Data": "HTG-System-Core"
+          },
           {
             "MutagenObjectType": "ScriptStructProperty",
             "Name": "Version",
@@ -21,40 +26,42 @@
                 "Properties": [
                   {
                     "MutagenObjectType": "ScriptIntProperty",
-                    "Name": "Minor"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptIntProperty",
-                    "Name": "Patch",
-                    "Data": 5
-                  },
-                  {
-                    "MutagenObjectType": "ScriptIntProperty",
-                    "Name": "Major"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptIntProperty",
                     "Name": "Revision",
-                    "Data": 152160
+                    "Data": 6
                   }
                 ]
               }
             ]
           },
           {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "CollectionRegistry",
-            "Object": "000828:HTG-System-Core.esp"
-          },
-          {
             "MutagenObjectType": "ScriptStringProperty",
             "Name": "Name",
-            "Data": "HTG-System-Core"
+            "Data": "HTG System Core"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "ModuleRegistry",
+            "Object": "000832:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptStringProperty",
             "Name": "description",
-            "Data": "temp"
+            "Data": ""
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "LocalSystemRegistry",
+            "Object": "00081D:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SystemRegistry",
+            "Object": "000837:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "CollectionRegistry",
+            "Object": "000828:HTG-System-Core.esp"
           }
         ]
       }
@@ -67,6 +74,9 @@
   "Model": {
     "LightLayer": 1
   },
+  "Keywords": [
+    "000839:HTG-System-Core.esp"
+  ],
   "MarkerColor": "#00CC4C33",
   "Flags": [
     "IgnoredBySandbox"

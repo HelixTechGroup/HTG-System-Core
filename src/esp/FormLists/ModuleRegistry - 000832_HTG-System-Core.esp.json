@@ -1,0 +1,12 @@
+{
+  "FormKey": "000832:HTG-System-Core.esp",
+  "EditorID": "ModuleRegistry",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Module Registry"
+  },
+  "Items": [
+    "000820:HTG-System-Core.esp"
+  ],
+  "AddToList": "Null"
+}

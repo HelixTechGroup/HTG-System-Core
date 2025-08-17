@@ -1,0 +1,15 @@
+{
+  "FormKey": "00081D:HTG-System-Core.esp",
+  "EditorID": "LocalSystemRegistry_HTG-System-Core",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Local System Registry"
+  },
+  "Items": [
+    "000824:HTG-System-Core.esp",
+    "000833:HTG-System-Core.esp",
+    "000836:HTG-System-Core.esp",
+    "000801:HTG-System-Core.esp"
+  ],
+  "AddToList": "000837:HTG-System-Core.esp"
+}

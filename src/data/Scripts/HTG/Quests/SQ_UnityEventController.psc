@@ -7,30 +7,34 @@ import HTG:UtilityExt
 ActorValue Property PlayerUnityTimesEntered Mandatory Const Auto
 Mq305Script Property EndGameQuest Mandatory Const Auto
 MQ401QuestScript Property BeginUnityQuest Mandatory Const Auto 
+;Contains Quests that are Universe Variants of the Main Quest MQ401
+FormList Property UnityVariantMainQuests Mandatory Const Auto
 ;Contains Quests that are Universe Variants
 FormList Property UnityVariantQuests Mandatory Const Auto
 ;Contains Quests that save or alter game data pre unity
 FormList Property UnityDataQuests Mandatory Const Auto
 
+SQ_UnityVariant[] Property ActiveUnityVariants Hidden
+    SQ_UnityVariant[] Function Get()
+        return _activeVariants
+    EndFunction
+EndProperty
+
+Quest Property ActiveMainVariantQuest Hidden
+    Quest Function Get()
+        return _activeMainQuest
+    EndFunction
+EndProperty
+
 ; GameplayOption Property UnityCharGenEnabled Auto Const Mandatory
 
 Int _enterUnityStageId = 2000
 Int _unityFaceGenCompleteStageId = 120
-Int _unityGetDataStageId = 5000
-Int _unitySetDataStageId = 5001
-FormListExt _completeVariantList
-
-Event OnQuestStarted()
-    Parent.OnQuestStarted()
-    
-    RegisterForRemoteEvent(EndGameQuest, "OnStageSet")
-    RegisterForRemoteEvent(BeginUnityQuest, "OnQuestInit")
-EndEvent
-
-Event OnQuestShutdown()
-    UnregisterForRemoteEvent(EndGameQuest, "OnStageSet")
-    UnregisterForRemoteEvent(BeginUnityQuest, "OnQuestInit")
-EndEvent
+Int _unitySaveDataStageId = 5000
+Int _unityLoadDataStageId = 5001
+FormListExt _completeMainVariantList
+SQ_UnityVariant[] _activeVariants
+Quest _activeMainQuest
 
 Event Quest.OnQuestInit(Quest akSender)
     WaitForInitialized()
@@ -39,30 +43,15 @@ Event Quest.OnQuestInit(Quest akSender)
     If akSender == BeginUnityQuest
         While i < UnityDataQuests.GetSize()
             Quest kDataQuest = UnityDataQuests.GetAt(i) as Quest
-            kDataQuest.SetStage(_unitySetDataStageId)
+            kDataQuest.SetStage(_unityLoadDataStageId)
             i += 1
         EndWhile 
 
-        _completeVariantList.AddArray(BeginUnityQuest.MQ401VariantsArray as Var[])
-        _completeVariantList.AddArray(UnityVariantQuests.GetArray() as Var[])
+        _completeMainVariantList.AddArray(BeginUnityQuest.MQ401VariantsArray as Var[])
+        _completeMainVariantList.AddArray(UnityVariantMainQuests.GetArray() as Var[])
         
-        ;roll for a random variant of MQ401
-        ;only do this if the player has been through the Unity twice
-        Int iVariantPercentChance = BeginUnityQuest.MQ401_VariantChance.GetValueInt()
-        Int iVariantChanceRoll = Utility.RandomInt(0, 100)
-        If (Game.GetPlayer().GetValue(PlayerUnityTimesEntered) >= 2) && (iVariantChanceRoll <= iVariantPercentChance)
-            Int iTotalVariants = _completeVariantList.Count - 1 ;MQ401VariantsArray.Length - 1 ;subtract 1 since array values start at 0
-            Int iVariantNumberRoll = BeginUnityQuest.MQ401_ForceVariant.GetValueInt()
-            If iVariantNumberRoll == -1 ;if we're not forcing a variant, then roll for a random one
-                iVariantNumberRoll = Utility.RandomInt(0, iTotalVariants)
-            EndIf
-            BeginUnityQuest.MQ401_VariantCurrent.SetValueInt(iVariantNumberRoll) ; for dialogue conditions across quests        
-
-            Quest kVariant = _completeVariantList.GetAt(iVariantNumberRoll) as Quest
-            kVariant.Start() ;start the variant quest
-        Else
-            BeginUnityQuest.NormalStart()
-        EndIf
+        _StartRandomMainQuest()
+        _StartVariants()
 
         Bool kStartCharGen = True
         If Game.IsPluginInstalled("HTG-Regenesys-Unity")
@@ -85,7 +74,7 @@ Event Quest.OnStageSet(Quest akSender, int auiStageID, int auiItemID)
     If akSender == EndGameQuest && auiStageID == _enterUnityStageId && auiItemID == 0
         While i < UnityDataQuests.GetSize()
             Quest kDataQuest = UnityDataQuests.GetAt(i) as Quest
-            kDataQuest.SetStage(_unityGetDataStageId)
+            kDataQuest.SetStage(_unitySaveDataStageId)
             i += 1
         EndWhile 
 
@@ -93,10 +82,68 @@ Event Quest.OnStageSet(Quest akSender, int auiStageID, int auiItemID)
     EndIf
 EndEvent
 
-Bool Function _Init()
-    If IsNone(_completeVariantList)
-        _completeVariantList = HTG:Collections:FormListExt.FormListExtIntegrated(SystemUtilities.ModInfo)
+Bool Function _CreateCollections()
+    If IsNone(_completeMainVariantList)
+        _completeMainVariantList = HTG:Collections:FormListExt.FormListExt(Utilities.ModInfo)
     EndIf
 
-    return _completeVariantList.IsInitialized
+    If !IsNone(_completeMainVariantList)
+        Logger.Log(_completeMainVariantList.ToString())
+    EndIf
+
+    return (!IsNone(_completeMainVariantList) && _completeMainVariantList.IsInitialized)
+EndFunction
+
+Quest Function _StartRandomMainQuest()
+    Quest kVariant = BeginUnityQuest
+    ;roll for a random variant of MQ401
+    ;only do this if the player has been through the Unity twice
+    Int iVariantPercentChance = BeginUnityQuest.MQ401_VariantChance.GetValueInt()
+    Int iVariantChanceRoll = Utility.RandomInt(0, 100)
+    If (Game.GetPlayer().GetValue(PlayerUnityTimesEntered) >= 2) \
+        && (iVariantChanceRoll <= iVariantPercentChance)
+        Int iTotalVariants = _completeMainVariantList.Count - 1 ;MQ401VariantsArray.Length - 1 ;subtract 1 since array values start at 0
+        Int iVariantNumberRoll = BeginUnityQuest.MQ401_ForceVariant.GetValueInt()
+        If iVariantNumberRoll == -1 ;if we're not forcing a variant, then roll for a random one
+            iVariantNumberRoll = Utility.RandomInt(0, iTotalVariants)
+        EndIf
+        BeginUnityQuest.MQ401_VariantCurrent.SetValueInt(iVariantNumberRoll) ; for dialogue conditions across quests        
+
+        kVariant = _completeMainVariantList.GetAt(iVariantNumberRoll) as Quest
+        kVariant.Start()
+    Else
+        BeginUnityQuest.NormalStart()
+    EndIf
+
+    _activeMainQuest = kVariant
+    return kVariant
+EndFunction
+
+Quest Function _StartVariants()
+    Int i
+    While i < UnityVariantQuests.GetSize() 
+        SQ_UnityVariant kVariant = UnityVariantQuests.GetAt(i) as SQ_UnityVariant
+        If !IsNone(kVariant)
+            Int iVariantPercentChance = kVariant.PercentChance
+            Int iVariantChanceRoll = Utility.RandomInt(0, 100)
+            If (Game.GetPlayer().GetValue(PlayerUnityTimesEntered) > 0) && (iVariantChanceRoll <= iVariantPercentChance)
+                _activeVariants.Add(kVariant)
+                kVariant.Start() ;start the variant quest
+            EndIf
+        EndIf
+    EndWhile
+EndFunction
+
+Bool Function _RegisterEvents()
+    RegisterForRemoteEvent(EndGameQuest, "OnStageSet")
+    RegisterForRemoteEvent(BeginUnityQuest, "OnQuestInit")
+
+    return True
+EndFunction
+
+Bool Function _UnregisterEvents()
+    UnregisterForRemoteEvent(EndGameQuest, "OnStageSet")
+    UnregisterForRemoteEvent(BeginUnityQuest, "OnQuestInit")
+
+    return True
 EndFunction

@@ -22,6 +22,21 @@ Struct SystemTimerIds
     Int MainId = 2000
 EndStruct
 
+Struct SystemStageIds
+    Int TutorialId = 3000
+    Int UnitySaveDataId = 5000
+    Int UnityLoadDataId = 5001
+EndStruct
+
+Struct SystemMenuIds
+    String Data = "DataMenu"
+    String Inventory = "InventoryMenu"
+    String GalaxyMap = "GalaxyStarMapMenu"
+    String Spaceship = "SpaceshipInfoMenu"
+    String Crew = "ShipCrewMenu"
+    String Skills = "SkillsMenu"
+EndStruct
+
 Struct LeveledItemInjectionSet
     LeveledItem BasicList
     LeveledItem CalibratedList
@@ -51,6 +66,7 @@ Struct LeveledArmorSet
 EndStruct
 
 Struct QuestCheckInfo
+    String QuestName
     Quest QuestObject
     int Stage
     Form RewardItem
@@ -68,5 +84,17 @@ Struct VersionInfomation
     Int Major
     Int Minor
     Int Revision
-    Int Patch
+    Int Patch = 115222
+EndStruct
+
+
+Struct HoloArmorMap
+    Armor ArmorPiece
+    ObjectMod ArmorMod
+EndStruct
+
+Struct SystemTypeEntry
+    Int FormId
+    String Name
+    String FullyQualifiedName
 EndStruct

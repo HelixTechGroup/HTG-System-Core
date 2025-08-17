@@ -7,9 +7,84 @@
     "0x100000",
     "0x800000"
   ],
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "htg:formutility"
+      },
+      {
+        "Name": "htg:intutility"
+      },
+      {
+        "Name": "HTG:SystemUtilitiesObject",
+        "Properties": [
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DebugGlobal",
+            "Object": "0A7D31:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SystemData",
+            "Object": "000883:HTG-System-Core.esp"
+          }
+        ]
+      },
+      {
+        "Name": "HTG:FloatUtility"
+      },
+      {
+        "Name": "htg:timerutility"
+      },
+      {
+        "Name": "htg:armorutility",
+        "Properties": [
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "ArmorTypes",
+            "Object": "000819:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Backpack",
+            "Object": "23C7BF:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DontShowInUI",
+            "Object": "374EFA:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Clothes",
+            "Object": "0E048C:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Spacesuit",
+            "Object": "23C7C0:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Helmet",
+            "Object": "23C7C1:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Hat",
+            "Object": "0E048B:Starfield.esm"
+          }
+        ]
+      }
+    ]
+  },
   "ObjectBounds": {
     "First": "-1, -1, -1",
     "Second": "1, 1, 1"
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "System Utilities Core Object"
   },
   "Model": {
     "LightLayer": 1

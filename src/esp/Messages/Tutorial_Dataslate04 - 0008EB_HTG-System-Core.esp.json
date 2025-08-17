@@ -1,0 +1,10 @@
+{
+  "FormKey": "0008EB:HTG-System-Core.esp",
+  "EditorID": "Tutorial_Dataslate04",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Select the <Alias=DataslateTracker> and activate it."
+  },
+  "DisplayTime": 10,
+  "BNAM": 4294967295
+}

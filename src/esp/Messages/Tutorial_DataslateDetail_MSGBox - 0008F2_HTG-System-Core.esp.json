@@ -1,0 +1,12 @@
+{
+  "FormKey": "0008F2:HTG-System-Core.esp",
+  "EditorID": "Tutorial_DataslateDetail_MSGBox",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Manage all your items and swap what you are wearing. You can have a Spacesuit, Backpack, and Helmet equipped in addition to an Apparel (clothing) item, a Weapon, and a Throwable weapon.\r\n\r\nYou can customize your look by toggling whether to show or hide your Spacesuit when you are in breathable environments.\r\n\r\nYou can also add weapons and other equipment to your Favorites menu, allowing you to swap and use items without needing to go back to this menu."
+  },
+  "Flags": [
+    "MessageBox"
+  ],
+  "BNAM": 4294967295
+}

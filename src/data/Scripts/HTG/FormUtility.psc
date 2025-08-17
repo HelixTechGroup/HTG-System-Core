@@ -75,9 +75,9 @@ Form Function CreateForm(Int aiFormId, String modName = "HTG-System-Core") Globa
     return None
 EndFunction
 
-ObjectReference Function CreateReference(Actor akActor, Form akForm, Bool abPersist = False, Alias akAlias = None) Global
-    If akForm && akActor
-        ObjectReference ref = akActor.PlaceAtMe(akForm, abInitiallyDisabled = True, abForcePersist = abPersist, abDeleteWhenAble = !abPersist, akAliasToFill = akAlias)
+ObjectReference Function CreateReference(ObjectReference akSpawnPoint, Form akForm, Bool abPersist = False, Alias akAlias = None) Global
+    If akForm && akSpawnPoint
+        ObjectReference ref = akSpawnPoint.PlaceAtMe(akForm, abInitiallyDisabled = True, abForcePersist = abPersist, abDeleteWhenAble = !abPersist, akAliasToFill = akAlias)
         If ref
             ; If !ref.HasOwner()
             ;     ref.SetActorRefOwner(akActor)
@@ -88,7 +88,7 @@ ObjectReference Function CreateReference(Actor akActor, Form akForm, Bool abPers
         EndIf
     EndIf
 
-    LogErrorGlobal(akActor, "HTG:FormUtility.CreateReference: Unable to create Form: " + akForm)
+    LogErrorGlobal(akSpawnPoint, "HTG:FormUtility.CreateReference: Unable to create Form: " + akForm)
     return None
 EndFunction
 

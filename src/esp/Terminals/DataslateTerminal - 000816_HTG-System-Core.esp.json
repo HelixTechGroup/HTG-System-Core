@@ -32,7 +32,7 @@
   "Background": "Constellation",
   "Name": {
     "TargetLanguage": "English",
-    "Value": "Regenesis Assistant Termiinal"
+    "Value": "Dataslate Assistant Termiinal"
   },
   "Model": {
     "File": "SetDressing\\Terminals\\TerminalA02.nif",

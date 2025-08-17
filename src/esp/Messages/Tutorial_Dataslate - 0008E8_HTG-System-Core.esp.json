@@ -1,0 +1,10 @@
+{
+  "FormKey": "0008E8:HTG-System-Core.esp",
+  "EditorID": "Tutorial_Dataslate",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Press [DataMenu] to open the data menu."
+  },
+  "DisplayTime": 10,
+  "BNAM": 4294967295
+}

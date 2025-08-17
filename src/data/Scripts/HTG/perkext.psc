@@ -1,15 +1,16 @@
 Scriptname HTG:PerkExt extends Perk
-{Extended Perk Script}
+{Extended Perk}
 import HTG
 import HTG:Structs
 import HTG:SystemLogger
 import HTG:UtilityExt
+import HTG:Quests
 
-SystemUtilities Property SystemUtilities Auto Const Mandatory
+SystemUtilities Property Utilities Auto Const Mandatory
 
 HTG:SystemLogger Property Logger Hidden
     HTG:SystemLogger Function Get()
-        return SystemUtilities.Logger
+        return Utilities.Logger
     EndFunction
 EndProperty
 
@@ -26,6 +27,7 @@ Bool Property IsInitialRun Hidden
 EndProperty
 
 Guard _initializeTimerGuard ProtectsFunctionLogic
+Guard _initializeGuard ProtectsFunctionLogic
 Guard _readyTimerGuard ProtectsFunctionLogic
 Guard _mainTimerGuard ProtectsFunctionLogic
 SystemTimerIds _timerIds
@@ -69,7 +71,7 @@ Event OnTimer(Int aiTimerID)
         Float itimerInterval = _timerInterval
         Int timerId = -1
 
-        TryLockGuard _initializeTimerGuard
+        TryLockGuard _initializeTimerGuard, _initializeGuard
         _initializeTimerStarted = True
         If !Initialize() &&  _currentInitializeTimerCycle < _maxTimerCycle            
             _currentInitializeTimerCycle += 1
@@ -78,7 +80,7 @@ Event OnTimer(Int aiTimerID)
             LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
         Else
             Logger.Log("InitializeTimer - Is Initialized. Starting ReadyTimer")
-            timerId = SystemUtilities.Timers.SystemTimerIds.InitialRunId
+            timerId = Utilities.Timers.SystemTimerIds.InitialRunId
         EndIf
         _initializeTimerStarted = False
         EndTryLockGuard
@@ -129,13 +131,23 @@ Event HTG:QuestExt.OnMain(HTG:QuestExt akSender, Var[] akArgs)
 EndEvent
 
 Bool Function Initialize()
-    If !_isInitialized
-        _isInitialized = _SetSystemUtilities() \
-                        && _RegisterEvents() \
-                        && _Init()
+    If _isInitialized
+        return true
     EndIf
 
-    return _isInitialized
+    TryLockGuard _initializeGuard
+        If _SetSystemUtilities()
+            _isInitialized = _RegisterEvents() \
+                            && _CreateCollections() \
+                            && _Init()
+        EndIf
+    Else
+        StartTimer(0.1, _timerIds.InitializeId)
+    EndTryLockGuard
+
+    return _isInitialized \
+            && (!IsNone(Utilities) \
+                && Utilities.IsInitialized)
 EndFunction
 
 Bool Function WaitForInitialized()
@@ -148,7 +160,7 @@ Bool Function WaitForInitialized()
     Bool maxCycleHit
 
     ; StartTimer(_timerInterval, _initializeTimerId)
-    While !maxCycleHit && !_isInitialized
+    While !maxCycleHit && !_isInitialized && !Utilities.IsInitialized
         WaitExt(0.1)
 
         If currentCycle < maxCycle
@@ -162,10 +174,14 @@ Bool Function WaitForInitialized()
 EndFunction
 
 Bool Function _SetSystemUtilities()
-    return SystemUtilities.WaitForInitialized()
+    return !IsNone(Utilities) && Utilities.WaitForInitialized()
 EndFunction
 
 Bool Function _RegisterEvents()
+    return True
+EndFunction
+
+Bool Function _CreateCollections()
     return True
 EndFunction
 

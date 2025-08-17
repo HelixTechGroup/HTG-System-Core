@@ -1,0 +1,12 @@
+{
+  "FormKey": "0008EF:HTG-System-Core.esp",
+  "EditorID": "Tutorial_Dataslate_MKB_MSGBox",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Press [QuickInventory] to open your inventory."
+  },
+  "Flags": [
+    "MessageBox"
+  ],
+  "BNAM": 4294967295
+}
