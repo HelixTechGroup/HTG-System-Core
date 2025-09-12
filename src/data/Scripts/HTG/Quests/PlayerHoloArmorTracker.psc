@@ -3,8 +3,9 @@ Scriptname HTG:Quests:PlayerHoloArmorTracker extends HTG:ReferenceAliasInventory
 import HTG
 import HTG:Structs
 import HTG:UtilityExt
-import HTG:FormUtility
-import HTG:FloatUtility
+import HTG:SystemFormUtility
+import HTG:SystemFloatUtility
+import HTG:Quests
 
 ReferenceAlias Property PlayerTracker Mandatory Const Auto
 ActorValue Property IsHoloArmorEquipped Mandatory Const Auto
@@ -62,7 +63,14 @@ Event OnAliasInit()
     ; AddInventoryEventFilter(kController.HoloArmor.Spacesuit)
     ; AddInventoryEventFilter(kController.HoloArmor.Helmet)
 
-    RegisterForMenuOpenCloseEvent("ContainerMenu")
+    RegisterForMenuOpenCloseEvent(Utilities.Menus.ObjectContainer)
+    RegisterForMenuOpenCloseEvent(Utilities.Menus.Inventory)
+EndEvent
+
+Event OnAliasStarted()
+    Parent.OnAliasStarted()
+
+    ; PlayerTracker.ForceRefTo(GetReference())
 EndEvent
 
 Event OnAliasReset()
@@ -70,7 +78,12 @@ Event OnAliasReset()
 
     If IsInitialized
         SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-        ArmorSet kHoloArmor = kController.HoloArmor
+        ArmorSet kHoloArmor = kController.GetCurrentArmorSet()
+        ; If kHoloArmor == None
+        ;     kHoloArmor.Backpack = kController.DefaultHoloArmorSes[0].Backpack
+        ;     kHoloArmor.Helmet = kController.DefaultHoloArmorSets[0].Helmet
+        ;     kHoloArmor.Spacesuit = kController.DefaultHoloArmorSets[0].Spacesuit
+        ; EndIf
 
         _DestroyArmorReference(kHoloArmor.Backpack, _backpackReference)
         _DestroyArmorReference(kHoloArmor.Helmet, _helmetReference)
@@ -80,7 +93,8 @@ Event OnAliasReset()
         ; RemoveInventoryEventFilter(kController.HoloArmor.Spacesuit)
         ; RemoveInventoryEventFilter(kController.HoloArmor.Helmet)
 
-        UnregisterForMenuOpenCloseEvent("ContainerMenu")
+        UnregisterForMenuOpenCloseEvent(Utilities.Menus.ObjectContainer)
+        UnregisterForMenuOpenCloseEvent(Utilities.Menus.Inventory)
     EndIf
 EndEvent
 
@@ -89,7 +103,7 @@ Event OnTimer(int aiTimerID)
 
     If aiTimerID == _hideTimerId
         TryLockGuard _hideTimerGuard
-            ArmorUtility kArmorUtil = Utilities.Armors
+            SystemArmorUtility kArmorUtil = Utilities.Armors
             If !IsNone(_armorToHide)
                 _equipmentTracker.DisableTracking = True
                 DisableTracking = True
@@ -101,7 +115,7 @@ Event OnTimer(int aiTimerID)
         EndTryLockGuard
     ElseIf aiTimerID == _showTimerId
         TryLockGuard _showTimerGuard
-            ArmorUtility kArmorUtil = Utilities.Armors
+            SystemArmorUtility kArmorUtil = Utilities.Armors
             If !IsNone(_armorToHide)
                 _equipmentTracker.DisableTracking = True
                 DisableTracking = True
@@ -118,11 +132,12 @@ Event OnMenuOpenCloseEvent(string asMenuName, bool abOpening)
     WaitForInitialized()
 
     Logger.Log("Menu Event for " + asMenuName)
-    If asMenuName == "ContainerMenu"
+    If asMenuName == Utilities.Menus.ObjectContainer \
+        || asMenuName == Utilities.Menus.Inventory
         If abOpening
             _isInMenu = True
         Else
-            _isInMenu = True
+            _isInMenu = False
         EndIf
     EndIf
 EndEvent
@@ -133,10 +148,7 @@ Bool Function EquipHoloArmor(ArmorSet akArmorSet = None)
     Actor kActor = GetActorReference()
 
     If FloatToBool(kActor.GetValue(IsHoloArmorEquipped))
-        If Utilities.IsDebugging
-            Debug.Notification("HoloArmor is already Equipped.")
-        EndIf
-
+        Debug.Notification("HoloArmor is already Equipped.")
         Logger.Log("HoloArmor is equipped.")
         return True
     EndIf
@@ -147,8 +159,8 @@ Bool Function EquipHoloArmor(ArmorSet akArmorSet = None)
         _isArmorEquipped = True
         Bool bSilent = True ; !Utilities.IsDebugging
         SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-        ArmorSet kHoloArmor = kController.HoloArmor
-        ArmorUtility kArmorUtil = Utilities.Armors
+        ArmorSet kHoloArmor = kController.GetCurrentArmorSet()
+        SystemArmorUtility kArmorUtil = Utilities.Armors
 
         ; ArmorSet kPlayerArmorSet = PlayerTracker.GetActorArmorSet()
         ; If kPlayerArmorSet
@@ -188,10 +200,19 @@ Bool Function EquipHoloArmor(ArmorSet akArmorSet = None)
             EndIf
 
             If !IsNone(akArmorSet.Spacesuit)
-                kMod = kController.GetArmorMod(akArmorSet.Spacesuit)
-                If !IsNone(kMod)
-                    kSpacesuit.AttachMod(kMod)
-                EndIf
+                ObjectMod[] kMods = kController.GetAllArmorMods(akArmorSet.Spacesuit)
+                Int i = 0
+                While i > kMods.Length
+                    kMod = kMods[i]
+                    If kMod.HasKeyword(kArmorUtil.BackpackMod)
+                        kBackpack.AttachMod(kMod)
+                    ElseIf kMod.HasKeyword(kArmorUtil.HelmetMod)
+                        kHelmet.AttachMod(kMod)
+                    ElseIf kMod.HasKeyword(kArmorUtil.SpacesuitMod)
+                        kSpacesuit.AttachMod(kMod)
+                    EndIf
+                    i += 1
+                EndWhile
             EndIf
         EndIf
 
@@ -215,10 +236,7 @@ Bool Function UnequipHoloArmor()
     Actor kActor = GetActorReference()
 
     If !FloatToBool(kActor.GetValue(IsHoloArmorEquipped))
-        If Utilities.IsDebugging
-            Debug.Notification("HoloArmor is not Equipped.")
-        EndIf
-
+        Debug.Notification("HoloArmor is not Equipped.")
         Logger.Log("HoloArmor is not equipped.")
         return True
     EndIf
@@ -228,7 +246,7 @@ Bool Function UnequipHoloArmor()
 
         Bool bSilent = True ; !Utilities.IsDebugging
         SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-        ArmorUtility kArmorUtil = Utilities.Armors
+        SystemArmorUtility kArmorUtil = Utilities.Armors
         
         ; ArmorSet kPlayerArmorSet = PlayerTracker.GetActorArmorSet()
         ; If kPlayerArmorSet
@@ -248,14 +266,11 @@ Bool Function UnequipHoloArmor()
         ; kActor.SetValue(ForceHideSpacesuit, 0.0)
 
         Bool kResult 
-        If IsNone(_backpackReference) || \
-                IsNone(_helmetReference) || \
-                IsNone(_spacesuitReference)
-                If Utilities.IsDebugging
-                    Debug.Notification("HoloArmor has been Unequipped.")
-                EndIf
-
-                kResult = True
+        If IsNone(_backpackReference) \
+            || IsNone(_helmetReference) \
+            || IsNone(_spacesuitReference)
+            Debug.Notification("HoloArmor has been Unequipped.")
+            kResult = True
         EndIf
 
         _equipmentTracker.DisableTracking = False
@@ -268,7 +283,7 @@ Function CopyArmorAppearance(Actor akSourceToCopyFrom)
     Actor kActor = GetActorReference()
     Bool bSilent = !Utilities.IsDebugging
     SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-    ArmorUtility kArmorUtil = Utilities.Armors
+    SystemArmorUtility kArmorUtil = Utilities.Armors
     ; ObjectMod kMod = kController.GetArmorMod(akArmor)
     ; Keyword kType = kArmorUtil.GetArmorType(akArmor)
     ; ObjectReference kArmorReference = _GetHoloArmorPiece(kType)
@@ -279,69 +294,84 @@ EndFunction
 
 Bool Function ChangeArmorPieceAppearance(Armor akArmor, Bool abIsInMenu = False)
     WaitForInitialized()
+    Bool bResult = True
 
     TryLockGuard _suitGuard
         Actor kActor = GetActorReference()
         Bool bSilent = True ; !Utilities.IsDebugging
         SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-        ArmorUtility kArmorUtil = Utilities.Armors
-        ObjectMod kMod = kController.GetArmorMod(akArmor)
+        SystemArmorUtility kArmorUtil = Utilities.Armors
 
-        Keyword kType = kArmorUtil.GetArmorType(akArmor)
-        ObjectReference kArmorReference = _GetHoloArmorPiece(kType)
-        Armor kCurrentPiece = kArmorUtil.GetArmorPiece(_currentArmorSet, kType)
+        ObjectMod[] kMods = kController.GetAllArmorMods(akArmor)
+        Int i = 0
+        While i < kMods.Length 
+            ObjectMod kMod = kMods[i]
+            Keyword kType ; kArmorUtil.GetAllArmorTypes(akArmor)
 
-        If akArmor != kCurrentPiece \
-            && !IsNone(kArmorReference)
-            Form kItem = kArmorReference.GetBaseObject()
-
-            If (_isInMenu || abIsInMenu) && kActor.GetItemCount(kItem) > 0
-                ; DisableTracking = True
-                kActor.UnequipItem(kItem, bSilent)
-                ; kActor.RemoveItem(kItem, abSilent = !Utilities.IsDebugging, akOtherContainer = kController.TempContainer)
-                kArmorReference.Drop(bSilent)
-                ; kArmorReference.Disable()
-                ; DisableTracking = False
-            EndIf
-
-            Bool res = kArmorReference.AttachMod(kMod)
-            WaitExt(0.25)
-            ; kController.TempContainer.RemoveItem(kItem, abSilent = bSilent, akOtherContainer = kActor)
-
-            If _isInMenu || abIsInMenu
-                ; DisableTracking = True
-                kActor.AddItem(kArmorReference, abSilent = bSilent)
-                ; kArmorReference.Enable()
-
-                ; HTG:UtilityExt.RefreshInventoryItem(kActor, kArmorReference)
-                kActor.EquipItem(kItem, abSilent = bSilent)
-
-                kActor.AddItem(Game.GetCredits(), 1, abSilent = bSilent)
-                kActor.RemoveItem(Game.GetCredits(), 1, abSilent = bSilent)
-                ; DisableTracking = False
-            EndIf
-
-            If kType == kArmorUtil.Backpack
-                _currentArmorSet.Backpack = akArmor
-            ElseIf kType == kArmorUtil.Helmet
-                _currentArmorSet.Helmet = akArmor
-            ElseIf  kType == kArmorUtil.Spacesuit          
-                _currentArmorSet.Spacesuit = akArmor
-            EndIf
-
-            If res
-                Debug.Notification("Changed HoloArmor appearance.")
+            If kMod.HasKeyword(kArmorUtil.Backpack)
+                kType = kArmorUtil.Backpack
+            ElseIf kMod.HasKeyword(kArmorUtil.Helmet)
+                kType = kArmorUtil.Helmet
+            ElseIf kMod.HasKeyword(kArmorUtil.Spacesuit)
+                kType = kArmorUtil.Spacesuit
             Else
-                Debug.Notification("Unable to change HoloArmor appearance.")
-                Logger.Log("Unable to change HoloArmor appearance.")
+                kType = kArmorUtil.GetArmorType(akArmor)
             EndIf
 
-            return res
-        EndIf
-        
-        return True
+            ObjectReference kArmorReference = _GetHoloArmorPiece(kType, kMod)
+            Armor kCurrentPiece = kArmorUtil.GetArmorPiece(_currentArmorSet, kType)
+
+            ; If akArmor != kCurrentPiece \
+            If !IsNone(kArmorReference)
+                Form kItem = kArmorReference.GetBaseObject()
+
+                If (_isInMenu || abIsInMenu) && kActor.GetItemCount(kItem) > 0
+                    ; DisableTracking = True
+                    kActor.UnequipItem(kItem, bSilent)
+                    ; kActor.RemoveItem(kItem, abSilent = !Utilities.IsDebugging, akOtherContainer = kController.TempContainer)
+                    kArmorReference.Drop(bSilent)
+                    ; kArmorReference.Disable()
+                    ; DisableTracking = False
+                EndIf
+
+                Bool res = kArmorReference.AttachMod(kMod)
+                WaitExt(0.25)
+                ; kController.TempContainer.RemoveItem(kItem, abSilent = bSilent, akOtherContainer = kActor)
+
+                If _isInMenu || abIsInMenu
+                    ; DisableTracking = True
+                    kActor.AddItem(kArmorReference, abSilent = bSilent)
+                    ; kArmorReference.Enable()
+
+                    ; HTG:UtilityExt.RefreshInventoryItem(kActor, kArmorReference)
+                    kActor.EquipItem(kItem, abSilent = bSilent)
+
+                    kActor.AddItem(Game.GetCredits(), 1, abSilent = bSilent)
+                    kActor.RemoveItem(Game.GetCredits(), 1, abSilent = bSilent)
+                    ; DisableTracking = False
+                EndIf
+
+                If kType == kArmorUtil.Backpack
+                    _currentArmorSet.Backpack = akArmor
+                ElseIf kType == kArmorUtil.Helmet
+                    _currentArmorSet.Helmet = akArmor
+                ElseIf  kType == kArmorUtil.Spacesuit          
+                    _currentArmorSet.Spacesuit = akArmor
+                EndIf
+
+                If res
+                    Debug.Notification("Changed HoloArmor appearance.")
+                Else
+                    bResult = False
+                    Debug.Notification("Unable to change HoloArmor appearance.")
+                    Logger.Log("Unable to change HoloArmor appearance.")
+                EndIf
+            EndIf
+            i += 1
+        EndWhile
     EndTryLockGuard
     
+    return bResult
 EndFunction
 
 Bool Function ClearArmorPieceAppearance(Armor akArmor, Bool abIsMenuOpen = False)
@@ -349,9 +379,9 @@ Bool Function ClearArmorPieceAppearance(Armor akArmor, Bool abIsMenuOpen = False
 
     TryLockGuard _suitGuard
         Actor kActor = GetActorReference()
-        Bool bSilent = !Utilities.IsDebugging
+        Bool bSilent = True ; !Utilities.IsDebugging
         SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-        ArmorUtility kArmorUtil = Utilities.Armors
+        SystemArmorUtility kArmorUtil = Utilities.Armors
         ObjectMod kMod = kController.GetArmorMod(akArmor)
         Keyword kType = kArmorUtil.GetArmorType(akArmor)
         ObjectReference kArmorReference = _GetHoloArmorPiece(kType)
@@ -392,7 +422,7 @@ EndFunction
 ; Bool Function ChangeArmorSetAppearance(ArmorSet akArmorSet)
 ;     WaitForInitialized()
 ;     SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-;     ArmorUtility kArmorUtil = Utilities.Armors
+;     SystemArmorUtility kArmorUtil = Utilities.Armors
 ;     ArmorSet kHoloArmor = kController.HoloArmor
 ;     ObjectMod kMod
 
@@ -427,7 +457,7 @@ EndFunction
 ; Bool Function ClearArmorSetAppearance(ArmorSet akArmorSet)
 ;     WaitForInitialized()
 ;     SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-;     ArmorUtility kArmorUtil = Utilities.Armors
+;     SystemArmorUtility kArmorUtil = Utilities.Armors
 ;     ArmorSet kHoloArmor = kController.HoloArmor
 ;     ObjectMod kMod
 
@@ -460,11 +490,15 @@ Bool Function _Init()
             && (!IsNone(_equipmentTracker) && _equipmentTracker.WaitForInitialized())
 EndFunction
 
-ObjectReference Function _GetHoloArmorPiece(Keyword akArmorType)
+ObjectReference Function _GetHoloArmorPiece(Keyword akArmorType, ObjectMod akMod = None)
     Actor kActor = GetActorReference()
     SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-    ArmorUtility kArmorUtil = Utilities.Armors
-    ArmorSet kHoloArmor = kController.HoloArmor
+    SystemArmorUtility kArmorUtil = Utilities.Armors
+    ArmorSet kHoloArmor = kController.GetCurrentArmorSet()
+    If !IsNone(akMod)
+        kHoloArmor = kController.GetHoloArmorFromMod(akMod)
+    EndIf
+
     Armor kArmorPiece = kArmorUtil.GetArmorPiece(kHoloArmor, akArmorType)
 
     If akArmorType == kArmorUtil.Backpack
@@ -489,10 +523,15 @@ ObjectReference Function _RefreshArmorReference(Armor akArmorPiece, ObjectRefere
     Int kCount
     Bool bAddPiece
 
-    If IsNone(akArmorReference)
-        kCount = kActor.GetItemCount(akArmorPiece)
-        If kCount > 0
-            kActor.RemoveItem(akArmorPiece, kCount, bSilent)
+    If IsNone(akArmorReference) \
+        || akArmorReference.GetBaseObject() != akArmorPiece
+        Form kOldArmorPiece
+        If !IsNone(akArmorReference)
+            kOldArmorPiece = akArmorReference.GetBaseObject()
+            kCount = kActor.GetItemCount(kOldArmorPiece)
+            If kCount > 0
+                kActor.RemoveItem(kOldArmorPiece, kCount, bSilent)
+            EndIf
         EndIf
 
         akArmorReference = CreateReference(kActor, akArmorPiece)
@@ -523,7 +562,7 @@ EndFunction
 Function _DestroyArmorReference(Armor akArmorPiece, ObjectReference akArmorReference)
     Actor kActor = GetActorReference()
     Bool bSilent = !Utilities.IsDebugging
-    ArmorUtility kArmorUtil = Utilities.Armors
+    SystemArmorUtility kArmorUtil = Utilities.Armors
     ; ObjectReference kTempContainer = Utilities.TempContainer
     
     ; Int kCount = kTempContainer.GetItemCount(akArmorPiece)
@@ -547,7 +586,7 @@ Function _HandleItemAdded(Form akItem)
     _equipmentTracker.DisableTracking = True
 
     Actor kActor = _equipmentTracker.GetActorReference()
-    ArmorUtility kArmorUtil = Utilities.Armors
+    SystemArmorUtility kArmorUtil = Utilities.Armors
     Keyword kType = kArmorUtil.GetArmorType(akItem)
 
     If !IsNone(kType)
@@ -574,7 +613,7 @@ Function _HandleItemRemoved(Form akItem)
     ; DisableTracking = True
     
     Actor kActor = _equipmentTracker.GetActorReference()
-    ArmorUtility kArmorUtil = Utilities.Armors
+    SystemArmorUtility kArmorUtil = Utilities.Armors
     Keyword kType = kArmorUtil.GetArmorType(akItem)
 
     If !IsNone(kType)
@@ -602,8 +641,8 @@ Function _HandleItemEquipped(Form akItem)
     
     Actor kActor = _equipmentTracker.GetActorReference()
     SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-    ArmorUtility kArmorUtil = Utilities.Armors
-    ArmorSet kHoloArmor = kController.HoloArmor
+    SystemArmorUtility kArmorUtil = Utilities.Armors
+    ArmorSet kHoloArmor = kController.GetCurrentArmorSet()
     Keyword kType = kArmorUtil.GetArmorType(akItem)
     Armor kHoloArmorPiece = kArmorUtil.GetArmorPiece(kHoloArmor, kType)
 
@@ -636,8 +675,8 @@ Function _HandleItemUnequipped(Form akItem)
     
     Actor kActor = _equipmentTracker.GetActorReference()
     SQ_HoloArmorController kController = GetOwningQuest() as SQ_HoloArmorController
-    ArmorUtility kArmorUtil = Utilities.Armors
-    ArmorSet kHoloArmor = kController.HoloArmor
+    SystemArmorUtility kArmorUtil = Utilities.Armors
+    ArmorSet kHoloArmor = kController.GetCurrentArmorSet()
 
     Keyword kType = kArmorUtil.GetArmorType(akItem)
     Armor kHoloArmorPiece = kArmorUtil.GetArmorPiece(kHoloArmor, kType)

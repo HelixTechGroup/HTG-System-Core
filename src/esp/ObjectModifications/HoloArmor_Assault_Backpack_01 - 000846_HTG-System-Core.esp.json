@@ -1,7 +1,20 @@
 {
   "MutagenObjectType": "ArmorModification",
   "FormKey": "000846:HTG-System-Core.esp",
+  "MajorRecordFlagsRaw": 256,
   "EditorID": "HoloArmor_Assault_Backpack_01",
+  "StarfieldMajorRecordFlags": [
+    "0x100"
+  ],
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp",
+        "23C7BF:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Shocktrooper Core"
@@ -13,10 +26,13 @@
   "Model": {
     "LightLayer": 1
   },
-  "AttachPoint": "088C9C:Starfield.esm",
   "TargetOmodKeywords": [
     "3E612E:Starfield.esm",
-    "00082D:HTG-System-Core.esp"
+    "00082D:HTG-System-Core.esp",
+    "0008F6:HTG-System-Core.esp"
+  ],
+  "MajorFlags": [
+    "0x100"
   ],
   "Properties": [
     {

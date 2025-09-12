@@ -1,0 +1,44 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "000838:HTG-System-Core.esp",
+  "MajorRecordFlagsRaw": 256,
+  "EditorID": "HoloArmor_Starborn_Helmet_Companion",
+  "StarfieldMajorRecordFlags": [
+    "0x100"
+  ],
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp",
+        "23C7C1:Starfield.esm"
+      ]
+    }
+  ],
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Starborn"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": ""
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "TargetOmodKeywords": [
+    "00082D:HTG-System-Core.esp",
+    "3A0B3B:Starfield.esm"
+  ],
+  "MajorFlags": [
+    "0x100"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 24,
+      "Value2": 24
+    }
+  ]
+}

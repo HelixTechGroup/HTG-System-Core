@@ -8,16 +8,6 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "BeginUnityQuest",
-            "Object": "1DC45E:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "UnityVariantMainQuests",
-            "Object": "000886:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
             "Name": "UnityDataQuests",
             "Object": "000818:HTG-System-Core.esp"
           },
@@ -30,6 +20,16 @@
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "UnityVariantQuests",
             "Object": "000810:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "UnityVariantMainQuests",
+            "Object": "000886:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "BeginUnityQuest",
+            "Object": "1DC45E:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -63,6 +63,17 @@
         },
         "Scripts": [
           {
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "00081A:HTG-System-Core.esp",
+                "Alias": 3
+              }
+            ]
+          },
+          {
             "Name": "htg:systemlogger",
             "Properties": [
               {
@@ -74,17 +85,6 @@
                 "MutagenObjectType": "ScriptStringProperty",
                 "Name": "SubLogName",
                 "Data": "Unity"
-              }
-            ]
-          },
-          {
-            "Name": "HTG:SystemUtilities",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModInfoAlias",
-                "Object": "00081A:HTG-System-Core.esp",
-                "Alias": 3
               }
             ]
           }

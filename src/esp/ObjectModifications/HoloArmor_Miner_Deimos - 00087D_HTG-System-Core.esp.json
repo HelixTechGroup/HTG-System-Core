@@ -2,6 +2,14 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "00087D:HTG-System-Core.esp",
   "EditorID": "HoloArmor_Miner_Deimos",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Deimos Miner Core"

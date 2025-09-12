@@ -8,19 +8,13 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateTracker",
-            "Object": "000824:HTG-System-Core.esp",
-            "Alias": 10
+            "Name": "FirstActivation",
+            "Object": "000830:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "ShowTutorial",
             "Object": "00083E:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "FirstActivation",
-            "Object": "000830:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -32,6 +26,12 @@
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "DataslateLocation",
             "Object": "0008D5:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateTracker",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 10
           }
         ]
       }
@@ -60,6 +60,17 @@
         },
         "Scripts": [
           {
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "000824:HTG-System-Core.esp",
+                "Alias": 14
+              }
+            ]
+          },
+          {
             "Name": "htg:systemlogger",
             "Properties": [
               {
@@ -71,17 +82,6 @@
                 "MutagenObjectType": "ScriptStringProperty",
                 "Name": "SubLogName",
                 "Data": "DataSlate"
-              }
-            ]
-          },
-          {
-            "Name": "HTG:SystemUtilities",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModInfoAlias",
-                "Object": "000824:HTG-System-Core.esp",
-                "Alias": 14
               }
             ]
           }
@@ -99,14 +99,13 @@
             "Properties": [
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "FirstActivation",
-                "Object": "000830:HTG-System-Core.esp"
+                "Name": "DataSlate",
+                "Object": "000877:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "PlayerRef",
-                "Object": "000824:HTG-System-Core.esp",
-                "Alias": 15
+                "Name": "FirstActivation",
+                "Object": "000830:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -115,8 +114,9 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DataSlate",
-                "Object": "000877:HTG-System-Core.esp"
+                "Name": "PlayerRef",
+                "Object": "000824:HTG-System-Core.esp",
+                "Alias": 15
               }
             ]
           }
@@ -313,5 +313,5 @@
   ],
   "QuestGroup": "000803:HTG-System-Core.esp",
   "SwfFile": "skillpatches.swf",
-  "Unknown": 2
+  "Unknown": 39
 }

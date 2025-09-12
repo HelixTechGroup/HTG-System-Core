@@ -31,6 +31,17 @@
         },
         "Scripts": [
           {
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "000836:HTG-System-Core.esp",
+                "Alias": 3
+              }
+            ]
+          },
+          {
             "Name": "htg:systemlogger",
             "Properties": [
               {
@@ -42,17 +53,6 @@
                 "MutagenObjectType": "ScriptStringProperty",
                 "Name": "SubLogName",
                 "Data": "Player"
-              }
-            ]
-          },
-          {
-            "Name": "HTG:SystemUtilities",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModInfoAlias",
-                "Object": "000836:HTG-System-Core.esp",
-                "Alias": 3
               }
             ]
           }
@@ -75,14 +75,19 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ExcludedItems",
+                "Object": "000843:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "EquipmentTextHolder",
                 "Object": "000836:HTG-System-Core.esp",
                 "Alias": 5
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ExcludedItems",
-                "Object": "000843:HTG-System-Core.esp"
+                "Name": "AllowSuffocation",
+                "Object": "23AED3:Starfield.esm"
               }
             ]
           }
@@ -116,7 +121,6 @@
         "ExternalAliasLinked"
       ],
       "ALFG": 0,
-      "AliasIDToForceIntoWhenFilled": 6,
       "External": {
         "Quest": "000801:HTG-System-Core.esp",
         "AliasID": 10
@@ -161,11 +165,27 @@
       "ID": 8,
       "Name": "PlayerEquipmentTracker",
       "Flags": [
-        "Optional",
         "AllowReuseInQuest",
-        "StoresText"
+        "StoresText",
+        "InitiallyDisabled",
+        "ExternalAliasLinked"
       ],
       "ALFG": 0,
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 10
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 23870,
+          "Data": {
+            "MutagenObjectType": "GetIsIDConditionData",
+            "FirstParameter": "000007:Starfield.esm"
+          },
+          "ComparisonValue": 1.0
+        }
+      ],
       "VoiceTypes": "Null"
     },
     {
