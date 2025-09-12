@@ -23,7 +23,7 @@
       "LightLayer": 1
     }
   },
-  "FirstPersonFlags": "1152921504606846976",
+  "FirstPersonFlags": "SSHelmet",
   "PickupSound": {
     "Start": "fa884ae4-018b-627c-f720-9608e364b48c"
   },
@@ -33,11 +33,13 @@
   "Race": "00347D:Starfield.esm",
   "Keywords": [
     "23C7C1:Starfield.esm",
-    "3A0B3B:Starfield.esm",
     "00082D:HTG-System-Core.esp",
     "11A47A:Starfield.esm",
     "0E55E3:Starfield.esm",
-    "2BE987:Starfield.esm"
+    "2BE987:Starfield.esm",
+    "00090F:HTG-System-Core.esp",
+    "0008F6:HTG-System-Core.esp",
+    "3A0B3B:Starfield.esm"
   ],
   "Description": {
     "TargetLanguage": "English",

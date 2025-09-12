@@ -2,6 +2,14 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "0008A5:HTG-System-Core.esp",
   "EditorID": "HoloArmor_UC_XenoSpecialist_Backpack_UC08",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "23C7BF:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "UC AntiXeno Core"

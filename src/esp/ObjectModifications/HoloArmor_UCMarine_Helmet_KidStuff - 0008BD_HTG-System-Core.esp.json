@@ -2,6 +2,14 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "0008BD:HTG-System-Core.esp",
   "EditorID": "HoloArmor_UCMarine_Helmet_KidStuff",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "23C7C1:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Gran-Gran's Core"

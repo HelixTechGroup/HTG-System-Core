@@ -1,0 +1,9 @@
+{
+  "FormKey": "0008CE:HTG-System-Core.esp",
+  "EditorID": "UnityActorValues",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "ActorValues that are saved during Unity"
+  },
+  "AddToList": "15F47B:Starfield.esm"
+}

@@ -22,7 +22,7 @@
       "LightLayer": 1
     }
   },
-  "FirstPersonFlags": "4611686018427387904",
+  "FirstPersonFlags": "SSBackpack",
   "PickupSound": {
     "Start": "de17433a-89a8-16f1-86d6-7114a3b197bb"
   },
@@ -31,12 +31,14 @@
   },
   "Race": "00347D:Starfield.esm",
   "Keywords": [
-    "3E612E:Starfield.esm",
     "11A479:Starfield.esm",
     "00082D:HTG-System-Core.esp",
     "0E55E3:Starfield.esm",
     "23C7BF:Starfield.esm",
-    "2BE987:Starfield.esm"
+    "2BE987:Starfield.esm",
+    "00090F:HTG-System-Core.esp",
+    "0008F6:HTG-System-Core.esp",
+    "3E612E:Starfield.esm"
   ],
   "Description": {
     "TargetLanguage": "English",
@@ -155,6 +157,18 @@
     {
       "AddonIndex": 27,
       "ArmorAddon": "166412:Starfield.esm"
+    },
+    {
+      "AddonIndex": 31,
+      "ArmorAddon": "3E3DAE:Starfield.esm"
+    },
+    {
+      "AddonIndex": 29,
+      "ArmorAddon": "3E3DB1:Starfield.esm"
+    },
+    {
+      "AddonIndex": 30,
+      "ArmorAddon": "3E3DB2:Starfield.esm"
     }
   ],
   "Unused": "0x000000",

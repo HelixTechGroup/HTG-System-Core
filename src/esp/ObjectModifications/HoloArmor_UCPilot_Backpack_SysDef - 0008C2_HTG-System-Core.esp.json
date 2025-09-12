@@ -2,6 +2,14 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "0008C2:HTG-System-Core.esp",
   "EditorID": "HoloArmor_UCPilot_Backpack_SysDef",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "23C7BF:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "SysDef Pilot Core"

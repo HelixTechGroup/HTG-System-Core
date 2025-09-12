@@ -2,6 +2,15 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "000850:HTG-System-Core.esp",
   "EditorID": "HoloArmor_BountyHunter_02_BackPack",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp",
+        "23C7BF:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Trackers Alliance Core"

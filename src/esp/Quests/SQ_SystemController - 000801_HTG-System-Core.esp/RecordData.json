@@ -41,6 +41,17 @@
             "Name": "htg:structs"
           },
           {
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "000801:HTG-System-Core.esp",
+                "Alias": 5
+              }
+            ]
+          },
+          {
             "Name": "htg:systemlogger",
             "Properties": [
               {
@@ -52,17 +63,6 @@
                 "MutagenObjectType": "ScriptStringProperty",
                 "Name": "SubLogName",
                 "Data": "System"
-              }
-            ]
-          },
-          {
-            "Name": "HTG:SystemUtilities",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModInfoAlias",
-                "Object": "000801:HTG-System-Core.esp",
-                "Alias": 5
               }
             ]
           }
@@ -186,7 +186,7 @@
             "Conditions": [
               {
                 "MutagenObjectType": "ConditionFloat",
-                "Unknown2": 6667,
+                "Unknown2": 23871,
                 "Data": {
                   "MutagenObjectType": "HasKeywordConditionData",
                   "FirstParameter": "000839:HTG-System-Core.esp"

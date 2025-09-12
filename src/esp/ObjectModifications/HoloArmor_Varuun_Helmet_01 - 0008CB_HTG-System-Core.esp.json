@@ -2,6 +2,14 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "0008CB:HTG-System-Core.esp",
   "EditorID": "HoloArmor_Varuun_Helmet_01",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "23C7C1:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Va'ruun Core"

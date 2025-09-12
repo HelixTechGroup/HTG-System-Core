@@ -2,6 +2,15 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "00087B:HTG-System-Core.esp",
   "EditorID": "HoloArmor_Miner_Backpack_NoBoostPack_Deimos",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp",
+        "23C7BF:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Deimos Tunnel Core"

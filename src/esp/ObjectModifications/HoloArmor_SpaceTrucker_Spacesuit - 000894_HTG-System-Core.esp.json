@@ -2,6 +2,15 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "000894:HTG-System-Core.esp",
   "EditorID": "HoloArmor_SpaceTrucker_Spacesuit",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp",
+        "23C7C0:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Space Trucker Core"

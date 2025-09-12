@@ -2,6 +2,14 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "000899:HTG-System-Core.esp",
   "EditorID": "HoloArmor_SpaceTrucker_Generic_MQ207C",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Experimental Nishina Core"

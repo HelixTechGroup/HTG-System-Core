@@ -2,6 +2,15 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "000890:HTG-System-Core.esp",
   "EditorID": "HoloArmor_Recon_Backpack_01",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp",
+        "23C7BF:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Deep Recon Core"

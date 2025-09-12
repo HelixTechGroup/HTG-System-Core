@@ -4,7 +4,14 @@ import HTG:Structs
 import HTG:Collections
 import HTG:UtilityExt
 
-ArmorSet Property HoloArmor Mandatory Const Auto
+HoloArmorSet[] Property DefaultHoloArmorSets Mandatory Const Auto
+HoloArmorSetList Property HoloArmorSets Auto Hidden
+
+Keyword Property CurrentHoloArmorType Hidden
+    Keyword Function Get()
+        return _currentArmorType
+    EndFunction
+EndProperty
 
 FormList Property BackpackMods Mandatory Const Auto
 FormList Property HelmetMods Mandatory Const Auto
@@ -20,7 +27,7 @@ HoloArmorMap[] Property ArmorSpacesuitMappingDefaults Mandatory Const Auto
 HoloArmorMapList Property ArmorBackpackMappings Auto Hidden
 HoloArmorMapList Property ArmorHelmetMappings Auto Hidden
 HoloArmorMapList Property ArmorSpacesuitMappings Auto Hidden
-PlayerHoloArmorTracker Property PlayerTracker Auto Const
+PlayerHoloArmorTracker Property PlayerTracker Mandatory Auto Const
 
 Guard _ArmorMappingsGuard ProtectsFunctionLogic
 Guard _playerTrackerGuard ProtectsFunctionLogic
@@ -32,6 +39,8 @@ Int _knownSpacesuitCount
 Int _backpackModCount
 Int _helmetModCount
 Int _spacesuitModCount
+Int _armorSetCount
+Keyword _currentArmorType
 
 ; Event OnTimer(int aiTimerID)
 ;     Parent.OnTimer(aiTimerID)
@@ -54,31 +63,96 @@ Int _spacesuitModCount
 ;     StartTimer(0.1, _refreshTimerId)    
 ; EndFunction
 
+Event ObjectReference.OnEquipped(ObjectReference akSender, Actor akActor)
+    Keyword[] kTypes = HoloArmorSets.GetArmorTypes()
+    Int i = 0
+    While i < kTypes.Length
+        Keyword kType = kTypes[i]
+        If akSender.HasKeyword(kType)
+            _currentArmorType = kType
+        EndIf
+        i += 1
+    EndWhile
+EndEvent
+
+ObjectMod[] Function GetAllArmorMods(Armor akArmor)
+    WaitForInitialized()
+
+    ObjectMod[] res = new ObjectMod[0]
+    Int i = 0
+    HTG:SystemArmorUtility kArmorUtil = Utilities.Armors
+
+    Keyword[] kTypes = kArmorUtil.GetAllArmorTypes(akArmor)
+    While i < kTypes.Length
+        Keyword kType = kTypes[i]
+        If kType == kArmorUtil.Backpack
+            res.Add(ArmorBackpackMappings.GetMod(akArmor))
+        ElseIf kType == kArmorUtil.Helmet
+            res.Add(ArmorHelmetMappings.GetMod(akArmor))
+        ElseIf kType == kArmorUtil.Spacesuit
+            res.Add(ArmorSpacesuitMappings.GetMod(akArmor))
+        EndIf
+        i += 1
+    EndWhile
+
+    return res
+EndFunction
+
 ObjectMod Function GetArmorMod(Armor akArmor)
     WaitForInitialized()
 
     ObjectMod res
-    Int i
-    HTG:ArmorUtility kArmorUtil = Utilities.Armors
+    Int i = 0
+    HTG:SystemArmorUtility kArmorUtil = Utilities.Armors
+
     Keyword kType = kArmorUtil.GetArmorType(akArmor)
     If kType == kArmorUtil.Backpack
-        ; i = KnownBackpacks.Find(akArmor)
-        ; If i > -1
         res = ArmorBackpackMappings.GetMod(akArmor)
-        ; EndIf
     ElseIf kType == kArmorUtil.Helmet
-        ; i = KnownHelmets.Find(akArmor)
-        ; If i > -1
         res = ArmorHelmetMappings.GetMod(akArmor)
-        ; EndIf
     ElseIf kType == kArmorUtil.Spacesuit
-        ; i = KnownSpacesuits.Find(akArmor)
-        ; If i > -1
         res = ArmorSpacesuitMappings.GetMod(akArmor)
-        ; EndIf
     EndIf
+    i += 1
 
     return res
+EndFunction
+
+ArmorSet Function GetCurrentArmorSet()
+    WaitForInitialized()
+
+    ArmorSet kRes = HoloArmorSets.GetArmorSet(_currentArmorType)
+    If kRes == None
+        kRes = new ArmorSet
+        kRes.Backpack = DefaultHoloArmorSets[0].Backpack
+        kRes.Helmet = DefaultHoloArmorSets[0].Helmet
+        kRes.Spacesuit = DefaultHoloArmorSets[0].Spacesuit
+    EndIf
+
+    return kRes
+EndFunction
+
+ArmorSet Function GetHoloArmorFromMod(ObjectMod akMod)
+    WaitForInitialized()
+    
+    Int i = 0
+    Bool bFound
+    HoloArmorSet kSet
+    ArmorSet kRes = new ArmorSet
+
+    While i < HoloArmorSets.Count && !bFound
+        kSet = HoloArmorSets.GetAt(i)
+        bFound = akMod.HasKeyword(kSet.ArmorType)
+        i += 1
+    EndWhile 
+
+    If bFound
+        kRes.Backpack = kSet.Backpack
+        kRes.Helmet = kSet.Helmet
+        kRes.Spacesuit = kSet.Spacesuit
+    EndIf
+
+    return kRes
 EndFunction
 
 Bool Function EquipArmorToPlayer()
@@ -124,18 +198,23 @@ Bool Function _CreateCollections()
             ArmorSpacesuitMappings = HTG:Collections:HoloArmorMapList.HoloArmorMapList(Utilities.ModInfo)
             ; ArmorSpacesuitMappings.AddArray(DefaultArmorSpacesuitMappings)
         EndIf
+
+        If IsNone(HoloArmorSets)
+            HoloArmorSets = HTG:Collections:HoloArmorSetList.HoloArmorSetList(Utilities.ModInfo)
+        EndIf
     ; EndTryLockGuard
     
     return ((!IsNone(ArmorBackpackMappings) && ArmorBackpackMappings.IsInitialized) \
                 && (!IsNone(ArmorHelmetMappings) && ArmorHelmetMappings.IsInitialized) \
-                && (!IsNone(ArmorSpacesuitMappings) && ArmorSpacesuitMappings.IsInitialized)) \
-            && _UpdateArmorMappings()
+                && (!IsNone(ArmorSpacesuitMappings) && ArmorSpacesuitMappings.IsInitialized) \
+                && (!IsNone(HoloArmorSets) && HoloArmorSets.IsInitialized)) \
+            && _UpdateArmorMappings() && _UpdateArmorSets()
 EndFunction
 
 Bool Function _UpdateArmorMappings()
-    _backpackModCount = ArmorBackpackMappings.AddMappings(ArmorBackpackMappingDefaults).Length
-    _helmetModCount = ArmorHelmetMappings.AddMappings(ArmorHelmetMappingDefaults).Length
-    _spacesuitModCount = ArmorSpacesuitMappings.AddMappings(ArmorSpacesuitMappingDefaults).Length
+    _backpackModCount = ArmorBackpackMappings.AddMappings(ArmorBackpackMappingDefaults)
+    _helmetModCount = ArmorHelmetMappings.AddMappings(ArmorHelmetMappingDefaults)
+    _spacesuitModCount = ArmorSpacesuitMappings.AddMappings(ArmorSpacesuitMappingDefaults)
 
     ; Int i = 0
     ; Bool kBackpackChanged
@@ -209,4 +288,19 @@ Bool Function _UpdateArmorMappings()
 
     ; return kBackpackChanged || kHelmetChanged || kSpacesuitChanged
     return _backpackModCount && _helmetModCount && _spacesuitModCount
+EndFunction
+
+Bool Function _UpdateArmorSets()
+    _armorSetCount = HoloArmorSets.AddArmorSets(DefaultHoloArmorSets)
+
+    return _armorSetCount
+EndFunction
+
+Bool Function _Init()
+    If IsNone(_currentArmorType)
+        _currentArmorType = DefaultHoloArmorSets[0].ArmorType
+    EndIf
+
+    return Parent._Init() \
+            && !IsNone(_currentArmorType)
 EndFunction

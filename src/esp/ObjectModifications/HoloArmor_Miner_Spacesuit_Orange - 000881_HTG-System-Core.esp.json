@@ -2,6 +2,15 @@
   "MutagenObjectType": "ArmorModification",
   "FormKey": "000881:HTG-System-Core.esp",
   "EditorID": "HoloArmor_Miner_Spacesuit_Orange",
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp",
+        "23C7C0:Starfield.esm"
+      ]
+    }
+  ],
   "Name": {
     "TargetLanguage": "English",
     "Value": "Deepcore Core"

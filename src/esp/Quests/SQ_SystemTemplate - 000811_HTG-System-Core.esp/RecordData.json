@@ -14,7 +14,14 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:Quests:ModuleInformation"
+            "Name": "HTG:Quests:ModuleInformation",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoForm",
+                "Object": "00082C:HTG-System-Core.esp"
+              }
+            ]
           }
         ]
       },
@@ -26,10 +33,18 @@
         },
         "Scripts": [
           {
-            "Name": "htg:systemlogger"
+            "Name": "HTG:SystemUtilities",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoAlias",
+                "Object": "000811:HTG-System-Core.esp",
+                "Alias": 5
+              }
+            ]
           },
           {
-            "Name": "HTG:SystemUtilities"
+            "Name": "htg:systemlogger"
           }
         ]
       }
