@@ -47,21 +47,6 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Spacesuit",
-            "Object": "23C7C0:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DontShowInUI",
-            "Object": "374EFA:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "BackpackMod",
-            "Object": "3E612E:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
             "Name": "ArmorTypes",
             "Object": "000819:HTG-System-Core.esp"
           },
@@ -77,13 +62,28 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Clothes",
+            "Object": "0E048C:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
             "Name": "Hat",
             "Object": "0E048B:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "StarbornManufacturer",
-            "Object": "35545C:Starfield.esm"
+            "Name": "DontShowInUI",
+            "Object": "374EFA:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "BackpackMod",
+            "Object": "3E612E:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Spacesuit",
+            "Object": "23C7C0:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -97,8 +97,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Clothes",
-            "Object": "0E048C:Starfield.esm"
+            "Name": "StarbornManufacturer",
+            "Object": "35545C:Starfield.esm"
           }
         ]
       },

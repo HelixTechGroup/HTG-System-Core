@@ -165,16 +165,12 @@
       "ID": 8,
       "Name": "PlayerEquipmentTracker",
       "Flags": [
+        "Optional",
         "AllowReuseInQuest",
         "StoresText",
-        "InitiallyDisabled",
-        "ExternalAliasLinked"
+        "InitiallyDisabled"
       ],
       "ALFG": 0,
-      "External": {
-        "Quest": "000801:HTG-System-Core.esp",
-        "AliasID": 10
-      },
       "Conditions": [
         {
           "MutagenObjectType": "ConditionFloat",
