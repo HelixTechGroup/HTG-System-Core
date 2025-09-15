@@ -13,14 +13,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateTracker",
-            "Object": "000824:HTG-System-Core.esp",
-            "Alias": 10
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateLocation",
-            "Object": "0008D5:HTG-System-Core.esp"
+            "Name": "ShowTutorial",
+            "Object": "00083E:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -30,8 +24,14 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "ShowTutorial",
-            "Object": "00083E:HTG-System-Core.esp"
+            "Name": "DataslateLocation",
+            "Object": "0008D5:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateTracker",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 10
           }
         ]
       }

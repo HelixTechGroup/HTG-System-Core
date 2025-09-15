@@ -12,6 +12,8 @@ import Utility
 FormListExt Property CurrentEquipment Auto Hidden
 GlobalVariable Property AllowSuffocation Auto Const Mandatory
 Message Property DetectedEquipmentMessage Mandatory Const Auto
+Message Property DetectedBackpackMessage Mandatory Const Auto
+Message Property TrackerInitializedMessage Mandatory Const Auto
 ReferenceAlias Property EquipmentTextHolder Mandatory Const Auto
 
 Guard _trackedPlayerArmorGuard ProtectsFunctionLogic
@@ -345,7 +347,8 @@ Bool Function _CheckActorEquipment()
 
         If finished ; && (_foundEquipmentCount >= _detectedEquipmentCount)
             AllowSuffocation.SetValueInt(_allowSuffocation)
-            Debug.Notification("Player Equipment Tracker has been Initialized.")
+            TrackerInitializedMessage.Show()
+            ; Debug.Notification("Player Equipment Tracker has been Initialized.")
             Logger.Log("Player Equipment Tracker has been Initialized.")
             _isPlayerInitialized = True
         ElseIf _currentEquipTimerCycle < _maxEquipTimerCycle
@@ -382,7 +385,8 @@ EndFunction
 Function _HandleItemUnequipped(Form akItem)
     ; TryLockGuard _trackedPlayerArmorGuard
         Logger.Log("OnItemUnequipped: " + akItem)
-        If Utilities.Armors.GetArmorType(akItem)
+        Keyword kArmorType = Utilities.Armors.GetArmorType(akItem)
+        If !IsNone(kArmorType)
             If _isPlayerInitialized
                 If CurrentEquipment.Contains(akItem)
                     Logger.Log("CurrentEquipment.RemoveAddedForm: " + akItem)
@@ -395,7 +399,13 @@ Function _HandleItemUnequipped(Form akItem)
                     ObjectReference kEquipRef = CreateReference(kActor, akItem)
                     kEquipRef.Enable()
                     EquipmentTextHolder.ForceRefTo(kEquipRef)
-                    DetectedEquipmentMessage.Show()
+                    
+                    If kArmorType == Utilities.Armors.Backpack
+                        DetectedBackpackMessage.Show()
+                    Else
+                        DetectedEquipmentMessage.Show()
+                    EndIf
+
                     kEquipRef.Delete()
                     EquipmentTextHolder.Clear()
 

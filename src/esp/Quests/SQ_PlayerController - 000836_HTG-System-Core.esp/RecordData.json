@@ -70,11 +70,6 @@
             "Properties": [
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DetectedEquipmentMessage",
-                "Object": "0008CC:HTG-System-Core.esp"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "AllowSuffocation",
                 "Object": "23AED3:Starfield.esm"
               },
@@ -86,8 +81,23 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DetectedEquipmentMessage",
+                "Object": "0008CC:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "ExcludedItems",
                 "Object": "000843:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DetectedBackpackMessage",
+                "Object": "0008E0:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "TrackerInitializedMessage",
+                "Object": "0008E2:HTG-System-Core.esp"
               }
             ]
           }
@@ -165,12 +175,16 @@
       "ID": 8,
       "Name": "PlayerEquipmentTracker",
       "Flags": [
-        "Optional",
         "AllowReuseInQuest",
         "StoresText",
-        "InitiallyDisabled"
+        "InitiallyDisabled",
+        "ExternalAliasLinked"
       ],
       "ALFG": 0,
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 10
+      },
       "Conditions": [
         {
           "MutagenObjectType": "ConditionFloat",

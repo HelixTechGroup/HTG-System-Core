@@ -1,0 +1,47 @@
+{
+  "MutagenObjectType": "ArmorModification",
+  "FormKey": "0008DA:HTG-System-Core.esp",
+  "MajorRecordFlagsRaw": 256,
+  "EditorID": "HoloArmor_Hide_Armor",
+  "StarfieldMajorRecordFlags": [
+    "0x100"
+  ],
+  "Components": [
+    {
+      "MutagenObjectType": "KeywordFormComponent",
+      "Keywords": [
+        "0008F6:HTG-System-Core.esp",
+        "23C7BF:Starfield.esm",
+        "23C7C0:Starfield.esm",
+        "23C7C1:Starfield.esm"
+      ]
+    }
+  ],
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "Makes Armor Hidden"
+  },
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "Sets Underlying armor to be hidden"
+  },
+  "Model": {
+    "LightLayer": 1
+  },
+  "TargetOmodKeywords": [
+    "3E612E:Starfield.esm",
+    "0E8D7B:Starfield.esm",
+    "3A0B3B:Starfield.esm"
+  ],
+  "MajorFlags": [
+    "0x100"
+  ],
+  "Properties": [
+    {
+      "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
+      "Property": "AddonIndex",
+      "Value": 999,
+      "Value2": 999
+    }
+  ]
+}

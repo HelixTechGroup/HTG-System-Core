@@ -148,7 +148,7 @@ Bool Function EquipHoloArmor(ArmorSet akArmorSet = None)
     Actor kActor = GetActorReference()
 
     If FloatToBool(kActor.GetValue(IsHoloArmorEquipped))
-        Debug.Notification("HoloArmor is already Equipped.")
+        ; Debug.Notification("HoloArmor is already Equipped.")
         Logger.Log("HoloArmor is equipped.")
         return True
     EndIf
@@ -174,7 +174,7 @@ Bool Function EquipHoloArmor(ArmorSet akArmorSet = None)
         If IsNone(kBackpack) \
             || IsNone(kHelmet) \
             || IsNone(kSpacesuit)
-            Debug.Notification("HoloArmor could not be Equipped.")
+            ; Debug.Notification("HoloArmor could not be Equipped.")
             Logger.ErrorEx("Could not equip HolorArmor to Player.")
             _DestroyArmorReference(kHoloArmor.Backpack, _backpackReference)
             _DestroyArmorReference(kHoloArmor.Helmet, _helmetReference)
@@ -202,13 +202,16 @@ Bool Function EquipHoloArmor(ArmorSet akArmorSet = None)
             If !IsNone(akArmorSet.Spacesuit)
                 ObjectMod[] kMods = kController.GetAllArmorMods(akArmorSet.Spacesuit)
                 Int i = 0
-                While i > kMods.Length
+                While i < kMods.Length
                     kMod = kMods[i]
-                    If kMod.HasKeyword(kArmorUtil.BackpackMod)
+                    If kMod.HasKeyword(kArmorUtil.BackpackMod) \
+                            || kMod.HasKeyword(kArmorUtil.Backpack)
                         kBackpack.AttachMod(kMod)
-                    ElseIf kMod.HasKeyword(kArmorUtil.HelmetMod)
+                    ElseIf kMod.HasKeyword(kArmorUtil.HelmetMod) \
+                            || kMod.HasKeyword(kArmorUtil.Helmet)
                         kHelmet.AttachMod(kMod)
-                    ElseIf kMod.HasKeyword(kArmorUtil.SpacesuitMod)
+                    ElseIf kMod.HasKeyword(kArmorUtil.SpacesuitMod) \
+                            || kMod.HasKeyword(kArmorUtil.Spacesuit)
                         kSpacesuit.AttachMod(kMod)
                     EndIf
                     i += 1
@@ -221,7 +224,7 @@ Bool Function EquipHoloArmor(ArmorSet akArmorSet = None)
         kActor.EquipItem(kSpacesuit.GetBaseObject(), abSilent = bSilent)
         kActor.SetValue(IsHoloArmorEquipped, 1.0)
         ; kActor.SetValue(ForceHideSpacesuit, 1.0)
-        Debug.Notification("HoloArmor has been Equipped.")
+        ; Debug.Notification("HoloArmor has been Equipped.")
 
         _equipmentTracker.DisableTracking = False
         return True
@@ -236,7 +239,7 @@ Bool Function UnequipHoloArmor()
     Actor kActor = GetActorReference()
 
     If !FloatToBool(kActor.GetValue(IsHoloArmorEquipped))
-        Debug.Notification("HoloArmor is not Equipped.")
+        ; Debug.Notification("HoloArmor is not Equipped.")
         Logger.Log("HoloArmor is not equipped.")
         return True
     EndIf
@@ -269,7 +272,7 @@ Bool Function UnequipHoloArmor()
         If IsNone(_backpackReference) \
             || IsNone(_helmetReference) \
             || IsNone(_spacesuitReference)
-            Debug.Notification("HoloArmor has been Unequipped.")
+            ; Debug.Notification("HoloArmor has been Unequipped.")
             kResult = True
         EndIf
 
@@ -338,6 +341,11 @@ Bool Function ChangeArmorPieceAppearance(Armor akArmor, Bool abIsInMenu = False)
                 WaitExt(0.25)
                 ; kController.TempContainer.RemoveItem(kItem, abSilent = bSilent, akOtherContainer = kActor)
 
+                If IsNone(kMod)
+                    kActor.UnequipItem(kArmorReference)
+                    return True
+                EndIf
+
                 If _isInMenu || abIsInMenu
                     ; DisableTracking = True
                     kActor.AddItem(kArmorReference, abSilent = bSilent)
@@ -360,10 +368,10 @@ Bool Function ChangeArmorPieceAppearance(Armor akArmor, Bool abIsInMenu = False)
                 EndIf
 
                 If res
-                    Debug.Notification("Changed HoloArmor appearance.")
+                    ; Debug.Notification("Changed HoloArmor appearance.")
                 Else
                     bResult = False
-                    Debug.Notification("Unable to change HoloArmor appearance.")
+                    ; Debug.Notification("Unable to change HoloArmor appearance.")
                     Logger.Log("Unable to change HoloArmor appearance.")
                 EndIf
             EndIf
@@ -572,6 +580,10 @@ Function _DestroyArmorReference(Armor akArmorPiece, ObjectReference akArmorRefer
 
     Int kCount = kActor.GetItemCount(akArmorPiece)
     If kCount > 0
+        If kActor.IsEquipped(akArmorPiece)
+            kActor.UnequipItem(akArmorPiece, bSilent)
+        EndIf
+        
         kActor.RemoveItem(akArmorPiece, kCount, bSilent)
     EndIf
 

@@ -18,8 +18,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "BeginUnityQuest",
-            "Object": "1DC45E:Starfield.esm"
+            "Name": "UnityVariantQuests",
+            "Object": "000810:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -28,8 +28,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "UnityVariantQuests",
-            "Object": "000810:HTG-System-Core.esp"
+            "Name": "BeginUnityQuest",
+            "Object": "1DC45E:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
