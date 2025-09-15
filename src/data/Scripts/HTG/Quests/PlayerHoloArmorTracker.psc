@@ -561,7 +561,7 @@ EndFunction
 
 Function _DestroyArmorReference(Armor akArmorPiece, ObjectReference akArmorReference)
     Actor kActor = GetActorReference()
-    Bool bSilent = !Utilities.IsDebugging
+    Bool bSilent = True ; !Utilities.IsDebugging
     SystemArmorUtility kArmorUtil = Utilities.Armors
     ; ObjectReference kTempContainer = Utilities.TempContainer
     

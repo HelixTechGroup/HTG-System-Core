@@ -75,8 +75,8 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ExcludedItems",
-                "Object": "000843:HTG-System-Core.esp"
+                "Name": "AllowSuffocation",
+                "Object": "23AED3:Starfield.esm"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -86,8 +86,8 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "AllowSuffocation",
-                "Object": "23AED3:Starfield.esm"
+                "Name": "ExcludedItems",
+                "Object": "000843:HTG-System-Core.esp"
               }
             ]
           }
