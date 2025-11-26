@@ -33,6 +33,12 @@ Bool Property IsInitialized Hidden
     EndFunction
 EndProperty
 
+ObjectReference Property _SpawnPoint Hidden
+    ObjectReference Function Get()
+        return _internalSpawnPoint
+    EndFunction
+EndProperty
+
 Guard _arrayGuard ProtectsFunctionLogic
 Var[] _keyArray
 Var[] _valueArray
@@ -40,6 +46,7 @@ Bool _isInitialized
 Int _count = 0
 Int _trackedIndex = 0
 Int _maxSize = 128 Const
+ObjectReference _internalSpawnPoint
 
 Dictionary Function Dictionary(SystemModuleInformation akMod, Int aiSize = 0) Global 
     Dictionary res = _CreateDictionary(akMod, aiSize = aiSize)
@@ -62,7 +69,7 @@ EndFunction
 ;     return res
 ; EndFunction
 
-Bool Function Initialize(Int aiSize = 0)
+Bool Function Initialize(Int aiSize = 0, ObjectReference akSpawnPoint = None)
     If _isInitialized
         return False
     EndIf
@@ -73,6 +80,10 @@ Bool Function Initialize(Int aiSize = 0)
         _trackedIndex = 0
         _count = 0
         _isInitialized = True
+
+        If !IsNone(akSpawnPoint) && akSpawnPoint != _internalSpawnPoint
+            _internalSpawnPoint = akSpawnPoint
+        EndIf
     EndTryLockGuard
 
     return True
@@ -113,7 +124,9 @@ Var[] Function GetAt(Int index)
 EndFunction
 
 Int Function Add(Var akKey, Var akValue)
-    If !_isInitialized || !TestKey(akKey) || !TestValue(akValue)
+    If !_isInitialized \
+        || !TestKey(akKey) \
+        || !TestValue(akValue)
         return -1
     EndIf
 
@@ -141,7 +154,9 @@ Int Function Add(Var akKey, Var akValue)
     EndTryLockGuard
 
     ; Clean()
-    LogObjectGlobal(akValue as ScriptObject, "Added item with Index: " + i + " and Count: " + _count)
+    LogObjectGlobal(Self, "Added item with Index: " + i + " and Count: " + _count + \
+                            "/r/tItem: " + akKey + \
+                            "/r/t Value: " + akValue)
     return i
 EndFunction
 
@@ -278,11 +293,7 @@ Int Function FindStruct(String asVarName, Var akElement)
 EndFunction
 
 Bool Function Contains(Var akKey)
-    If !IsNone(akKey) && Find(akKey) > -1
-        return True
-    EndIf
-
-    return False
+    return !IsNone(akKey) && Find(akKey) > -1
 EndFunction
 
 Int Function FindFirstEmpty()
@@ -387,7 +398,10 @@ Bool Function TestValue(Var akValue)
     ;     return akArrayItem as Array == akValue as Array
     ; ElseIf kArrayItem as Struct
     ElseIf kArrayItem as ScriptObject && akValue as ScriptObject
-        return True
+        ScriptObject  kSO = akValue as ScriptObject
+        If kSO.CastAs(ValueType) != None
+            return True        
+        EndIf
     EndIf
 
     return False
@@ -409,7 +423,10 @@ Bool Function TestKey(Var akKey)
     ;     return akArrayItem as Array == akKey as Array
     ; ElseIf kArrayItem as Struct
     ElseIf kArrayItem as ScriptObject && akKey as ScriptObject
-        return True
+        ScriptObject  kSO = akKey as ScriptObject
+        If kSO.CastAs(KeyType) != None
+            return True        
+        EndIf
     EndIf
 
     return False
@@ -486,7 +503,7 @@ Dictionary Function _CreateDictionary(SystemModuleInformation akMod, Int aiFormI
         Dictionary kList = CreateReference(akMod, kform) as Dictionary
         If !HTG:UtilityExt.IsNone(kList)
             kList.Enable(False)
-            kList.Initialize(aiSize)
+            kList.Initialize(aiSize, akMod)
             LogObjectGlobal(kList, kList.ToString())
             return kList
         EndIf

@@ -59,6 +59,8 @@ Cell Property SystemData Mandatory Const Auto
 Quest Property MQ101 Mandatory Const Auto
 Quest Property City_NA_Aquilus01 Mandatory Const Auto
 ActorValue Property PlayerUnityTimesEntered Mandatory Const Auto
+ModuleTracker Property Modules Mandatory Const Auto
+DependencyTracker Property Dependencies Mandatory Const Auto
 ; ObjectReference Property TempContainer Mandatory Const Auto
 
 Bool Property IsInitialized Hidden
@@ -175,9 +177,11 @@ Bool Function WaitForInitialized()
     Int currentCycle = 0
     Int maxCycle = 600
     Bool maxCycleHit
-    While !maxCycleHit
+    While !maxCycleHit \
+            && !_CheckSystemUtilites()
         WaitExt(0.1)
-        If !Initialize() && currentCycle < maxCycle
+        ; !Initialize() && 
+        If currentCycle < maxCycle
             currentCycle += 1
         Else
             maxCycleHit = True
@@ -198,6 +202,7 @@ Bool Function _SetSystemUtilities(ScriptObject akScriptObject) RequiresGuard(_in
     EndIf
 
     Bool res = True
+
     ; TryLockGuard _utilitiesGuard
         ; If IsNone(_logger)
         ;     _logger = akScriptObject as HTG:SystemLogger
@@ -233,12 +238,17 @@ Bool Function _SetSystemUtilities(ScriptObject akScriptObject) RequiresGuard(_in
             LogObjectGlobal(Self, "Utilities.Menus:" + _menuIds)
         EndIf
 
+        If !IsNone(Dependencies) && !Dependencies.IsInitialized
+            Dependencies.WaitForInitialized()
+        EndIf
+
         ; If IsNone(_modInfo) && ModInfoForm != None
         ;         _modInfo = HTG:SystemFormUtility.CreateReference(Self, ModInfoForm) as SystemModuleInformation
         ; EndIf
     ; EndTryLockGuard
 
     ; !IsNone(_logger) \
+
     return !IsNone(_timerUtility) \
             && !IsNone(_intUtility) \
             && !IsNone(_formUtility) \
@@ -246,7 +256,8 @@ Bool Function _SetSystemUtilities(ScriptObject akScriptObject) RequiresGuard(_in
 EndFunction
 
 Bool Function _CheckSystemUtilites()
-    Bool res
+    Bool res = true
+
     ; If _utilities == None
     ;     LogErrorGlobal(Self, "Utilities is None.")
     ;     return False
@@ -254,27 +265,53 @@ Bool Function _CheckSystemUtilites()
 
     ; If IsNone(_logger)
     ;     LogWarnGlobal(Self, "Logger is None.")
+    ; EndIf
+
     If IsNone(_timerUtility)
+        res = False
         LogWarnGlobal(Self, "Timers is None.")
-    ; ElseIf _stageIds == None
+    EndIf
+
+    ; If _stageIds == None
     ;     LogWarnGlobal(Self, "Stages is None.")
-    ; ElseIf _menuIds == None
+    ; EndIf
+    
+    ; If _menuIds == None
     ;     LogWarnGlobal(Self, "Menus is None.")
-    ElseIf IsNone(_intUtility)
+    ; EndIf
+
+    If IsNone(_intUtility)
+        res = False
         LogWarnGlobal(Self, "Integers is None.")
-    ElseIf IsNone(_formUtility)        
+    EndIf
+
+    If IsNone(_formUtility)        
+        res = False
         LogWarnGlobal(Self, "Forms is None.")
-    ElseIf IsNone(_armorUtility)        
+    EndIf
+
+    If IsNone(_armorUtility)   
+        res = False     
         LogWarnGlobal(Self, "Armors is None.")
-    Else
-        res = True
+    EndIf
+
+    If !IsNone(Modules) && !Modules.IsInitialized
+        res = False
+        LogWarnGlobal(Self, "Modules is None.")
+    EndIf
+
+    If !IsNone(Dependencies) && !Dependencies.IsInitialized
+        res = False
+        LogWarnGlobal(Self, "Dependencies is None.")
     EndIf
 
     ; !IsNone(_logger) \
-    return !IsNone(_timerUtility) \
-            && !IsNone(_intUtility) \
-            && !IsNone(_formUtility) \
-            && !IsNone(_armorUtility)
+    ; return !IsNone(_timerUtility) \
+    ;         && !IsNone(_intUtility) \
+    ;         && !IsNone(_formUtility) \
+    ;         && !IsNone(_armorUtility)
+
+    return res
 EndFunction
 
 Bool Function _DetectNewGame()

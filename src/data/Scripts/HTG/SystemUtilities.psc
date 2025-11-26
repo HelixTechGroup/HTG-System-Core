@@ -5,6 +5,7 @@ import HTG:SystemLogger
 import HTG:Structs
 import HTG:UtilityExt
 import HTG:Quests
+import HTG:SystemReferenceUtility
 
 HTG:SystemLogger Property Logger Hidden
     HTG:SystemLogger Function Get()
@@ -83,10 +84,12 @@ HTG:Quests:ModuleInformation Property ModInfoAlias Mandatory Const Auto
 HTG:SystemModuleInformation Property ModInfo Hidden
     HTG:SystemModuleInformation Function Get()
         If ModInfoAlias.IsFilled()
-            return ModInfoAlias.GetReference() as HTG:SystemModuleInformation
-        Else
-            return _modInfo
+            If IsNone(_modInfo)
+                _modInfo = ModInfoAlias.GetReference() as HTG:SystemModuleInformation
+            EndIf
         EndIf
+
+        return _modInfo
     EndFunction
 EndProperty
 
@@ -119,6 +122,16 @@ EndProperty
 Bool Property IsNewGamePlus Hidden
     Bool Function Get()
         return IsFilled() && (GetReference() as SystemUtilitiesObject).IsNewGamePlus   
+    EndFunction
+EndProperty
+
+HTG:Quests:DependencyTracker Property Dependencies
+    HTG:Quests:DependencyTracker Function Get()
+        If IsFilled()
+            return (GetReference() as SystemUtilitiesObject).Dependencies
+        EndIf
+
+        return None
     EndFunction
 EndProperty
 
@@ -173,7 +186,6 @@ Bool Function Initialize()
         return True
     EndIf
 
-    ; TODO: Change self to GetReference() and attach scripts to _systemUtilitiesObject
     TryLockGuard _initializeGuard
         ;ScriptObject so = Self as ScriptObject 
         ;LogObjectGlobal(Self, "HTG:SystemUtilities:" + Self + "\n\t As ScriptObject:" + so)
@@ -249,19 +261,20 @@ Bool Function _SetSystemUtilities()
     ; EndIf
 
     If IsNone(_modInfo)
-        If !IsNone(ModInfoAlias) && !IsNone(ModInfoAlias.ModInfoForm)
-                _modInfo = HTG:SystemFormUtility.CreateReference(GetReference(), ModInfoAlias.ModInfoForm) as SystemModuleInformation
-                ModInfoAlias.ForceRefTo(_modInfo)
-            ; EndIf
-        Else
+        ; If !IsNone(ModInfoAlias) && !ModInfoAlias.IsFilled() && !IsNone(ModInfoAlias.ModInfoForm)
+        ;         _modInfo = HTG:SystemFormUtility.CreateReference(GetReference(), ModInfoAlias.ModInfoForm) as SystemModuleInformation
+        ;     ; EndIf
+        ; Else
+        If ModInfoAlias.IsFilled()
             _modInfo = ModInfoAlias.GetReference() as SystemModuleInformation
         EndIf
 
-        If !IsNone(_modInfo)
+        If !IsNone(_modInfo) ; && ModInfoAlias.GetReference() != _modInfo
+            ; ModInfoAlias.ForceRefTo(_modInfo)
             Cell kCell = _modInfo.GetParentCell()
             Logger.Log("Utilities current cell" + kUtils.GetParentCell())
             Logger.Log("Mods current cell" + kCell)
-
+            MoveReference(_modInfo, kUtils)
             ; _modInfo.MoveTo(kUtils)
         EndIf
     EndIf

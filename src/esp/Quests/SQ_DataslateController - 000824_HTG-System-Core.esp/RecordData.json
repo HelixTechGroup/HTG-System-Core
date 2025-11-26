@@ -285,7 +285,10 @@
       ],
       "ALFG": 0,
       "ForcedReference": "000884:HTG-System-Core.esp",
-      "VoiceTypes": "Null"
+      "VoiceTypes": "Null",
+      "TerminalMenus": [
+        "000804:HTG-System-Core.esp"
+      ]
     },
     {
       "MutagenObjectType": "QuestReferenceAlias",

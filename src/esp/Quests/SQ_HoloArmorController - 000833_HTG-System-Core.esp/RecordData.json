@@ -7,1060 +7,6 @@
         "Name": "HTG:Quests:SQ_HoloArmorController",
         "Properties": [
           {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "PlayerTracker",
-            "Object": "000833:HTG-System-Core.esp",
-            "Alias": 2
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "KnownHelmets",
-            "Object": "000829:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptStructListProperty",
-            "Name": "ArmorHelmetMappingDefaults",
-            "Structs": [
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "169F58:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000848:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "03B424:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000849:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "102E39:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000849:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "192299:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000848:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1C0F32:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00084E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "102F72:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00084E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "166403:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000851:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1E2B17:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000800:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "104632:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000800:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "066822:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000853:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1ED06C:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000853:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "066827:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000857:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1ED06E:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000857:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "066829:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000859:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "06682B:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00085B:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "16D15C:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00085E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "192290:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00085E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "228829:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000861:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "169F50:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000867:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "03084D:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000868:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "192292:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000867:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "2392B4:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00086B:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "01754F:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00086E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "16E0B5:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000871:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "104630:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000871:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1D0F94:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000874:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "052792:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00087E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "026BF0:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00087F:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "27D004:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00087E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "25176A:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00087E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "06ABFF:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000880:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "27D005:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000880:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "16640A:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000887:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "067C93:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00088A:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "192295:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00088A:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1E2AC1:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00088D:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "108DBD:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00088D:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "169F54:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000892:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "192298:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000892:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "13F97B:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000893:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "003E8F:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000898:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "108A8E:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000898:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "065926:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00089A:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "16E0BD:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00089B:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "21A86B:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008A2:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "20612E:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008A6:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "10A25E:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008A7:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "257806:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008B9:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "25780B:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008BA:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "398107:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008BB:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "0EF9B2:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008BC:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1F22BC:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008BD:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "398106:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008BE:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "0EF9B1:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008BF:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "16640F:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008C4:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "2AAF45:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00089E:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "248C0E:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008C7:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "104633:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008C7:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "12E187:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083B:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1CBA52:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008DB:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "21C77E:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000838:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "21C77F:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083A:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1CBA4A:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083A:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1CBA49:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083A:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "1CBA4D:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083A:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "2D7365:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083B:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "2D7346:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083B:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "225FC9:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "0008F4:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "22856E:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083B:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "13D981:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "000838:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "13D982:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083A:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "13D983:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083B:HTG-System-Core.esp"
-                  }
-                ]
-              },
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorPiece",
-                    "Object": "13D984:Starfield.esm"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorMod",
-                    "Object": "00083B:HTG-System-Core.esp"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "HelmetMods",
-            "Object": "0008D4:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "BackpackMods",
-            "Object": "0008D3:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "KnownSpacesuits",
-            "Object": "000840:HTG-System-Core.esp"
-          },
-          {
             "MutagenObjectType": "ScriptStructListProperty",
             "Name": "DefaultHoloArmorSets",
             "Structs": [
@@ -1073,11 +19,6 @@
                   },
                   {
                     "MutagenObjectType": "ScriptObjectProperty",
-                    "Name": "ArmorType",
-                    "Object": "0008F6:HTG-System-Core.esp"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptObjectProperty",
                     "Name": "Spacesuit",
                     "Object": "00082F:HTG-System-Core.esp"
                   },
@@ -1085,6 +26,11 @@
                     "MutagenObjectType": "ScriptObjectProperty",
                     "Name": "Helmet",
                     "Object": "000831:HTG-System-Core.esp"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorType",
+                    "Object": "0008F6:HTG-System-Core.esp"
                   }
                 ]
               }
@@ -1092,13 +38,24 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SpacesuitMods",
-            "Object": "000842:HTG-System-Core.esp"
+            "Name": "KnownHelmets",
+            "Object": "000829:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "KnownSpacesuits",
+            "Object": "000840:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "KnownBackpacks",
             "Object": "00082A:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "PlayerTracker",
+            "Object": "000833:HTG-System-Core.esp",
+            "Alias": 2
           },
           {
             "MutagenObjectType": "ScriptStructListProperty",
@@ -3393,6 +2350,1049 @@
                 ]
               }
             ]
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "HelmetMods",
+            "Object": "0008D4:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "BackpackMods",
+            "Object": "0008D3:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SpacesuitMods",
+            "Object": "000842:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptStructListProperty",
+            "Name": "ArmorHelmetMappingDefaults",
+            "Structs": [
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "169F58:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000848:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "03B424:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000849:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "102E39:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000849:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "192299:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000848:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1C0F32:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00084E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "102F72:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00084E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "166403:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000851:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1E2B17:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000800:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "104632:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000800:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "066822:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000853:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1ED06C:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000853:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "066827:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000857:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1ED06E:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000857:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "066829:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000859:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "06682B:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00085B:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "16D15C:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00085E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "192290:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00085E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "228829:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000861:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "169F50:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000867:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "03084D:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000868:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "192292:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000867:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "2392B4:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00086B:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "01754F:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00086E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "16E0B5:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000871:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "104630:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000871:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1D0F94:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000874:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "052792:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00087E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "026BF0:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00087F:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "27D004:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00087E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "25176A:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00087E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "06ABFF:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000880:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "27D005:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000880:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "16640A:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000887:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "067C93:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00088A:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "192295:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00088A:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1E2AC1:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00088D:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "108DBD:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00088D:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "169F54:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000892:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "192298:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000892:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "13F97B:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000893:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "003E8F:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000898:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "108A8E:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000898:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "065926:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00089A:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "16E0BD:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00089B:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "21A86B:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008A2:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "20612E:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008A6:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "10A25E:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008A7:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "257806:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008B9:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "25780B:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008BA:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "398107:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008BB:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "0EF9B2:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008BC:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1F22BC:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008BD:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "398106:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008BE:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "0EF9B1:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008BF:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "16640F:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008C4:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "2AAF45:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00089E:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "248C0E:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008C7:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "104633:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008C7:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "12E187:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083B:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1CBA52:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008DB:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "21C77E:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000838:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "21C77F:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083A:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1CBA4A:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083A:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1CBA49:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083A:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "1CBA4D:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083A:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "2D7365:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083B:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "2D7346:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083B:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "225FC9:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "0008F4:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "22856E:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083B:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "13D981:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "000838:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "13D982:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083A:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "13D983:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083B:HTG-System-Core.esp"
+                  }
+                ]
+              },
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorPiece",
+                    "Object": "13D984:Starfield.esm"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "ArmorMod",
+                    "Object": "00083B:HTG-System-Core.esp"
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -3456,23 +3456,23 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:Quests:PlayerHoloArmorTracker",
+            "Name": "HTG:ReferenceAliasHoloArmorTracker",
             "Properties": [
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "IsHoloArmorEquipped",
-                "Object": "00082E:HTG-System-Core.esp"
+                "Name": "ForceHideSpacesuit",
+                "Object": "0B120E:Starfield.esm"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "PlayerTracker",
+                "Name": "EquipmentTracker",
                 "Object": "000836:HTG-System-Core.esp",
                 "Alias": 8
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ForceHideSpacesuit",
-                "Object": "0B120E:Starfield.esm"
+                "Name": "IsHoloArmorEquipped",
+                "Object": "00082E:HTG-System-Core.esp"
               }
             ]
           }

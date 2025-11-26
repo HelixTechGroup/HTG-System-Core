@@ -1,7 +1,11 @@
 {
   "MutagenObjectType": "ArmorModification",
   "FormKey": "000928:HTG-System-Core.esp",
+  "MajorRecordFlagsRaw": 256,
   "EditorID": "HoloArmor_Constellation_Spacesuit_Barrett",
+  "StarfieldMajorRecordFlags": [
+    "0x100"
+  ],
   "Components": [
     {
       "MutagenObjectType": "KeywordFormComponent",
@@ -27,13 +31,16 @@
     "0E8D7B:Starfield.esm",
     "00082D:HTG-System-Core.esp"
   ],
+  "MajorFlags": [
+    "0x100"
+  ],
   "Properties": [
     {
       "MutagenObjectType": "ObjectModIntProperty<Armor+Property>",
       "Property": "AddonIndex",
       "Step": 1.0,
-      "Value": 5,
-      "Value2": 6
+      "Value": 39,
+      "Value2": 40
     },
     {
       "MutagenObjectType": "ObjectModFormLinkIntProperty<Armor+Property>",

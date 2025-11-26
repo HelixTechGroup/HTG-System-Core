@@ -1,11 +1,26 @@
 {
   "FormKey": "000822:HTG-System-Core.esp",
   "EditorID": "DataslateSystemDesktop",
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Terminals:DataslateSystemDesktop",
+        "Properties": [
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Utilities",
+            "Object": "000801:HTG-System-Core.esp",
+            "Alias": 0
+          }
+        ]
+      }
+    ]
+  },
   "Name": {
     "TargetLanguage": "English",
     "Value": "System Desktop"
   },
-  "ShowBodyText": "Folder",
+  "ShowBodyText": "Document",
   "MenuButtonStyle": [
     "CanBeDesktop",
     "UseLongKioskEntry"

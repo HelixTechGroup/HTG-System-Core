@@ -1,0 +1,395 @@
+{
+  "FormKey": "000804:HTG-System-Core.esp",
+  "EditorID": "System_ModuleInformationMenu",
+  "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Terminals:SystemModuleMenu",
+        "Properties": [
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Utilities",
+            "Object": "000801:HTG-System-Core.esp",
+            "Alias": 0
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Modules",
+            "Object": "000801:HTG-System-Core.esp",
+            "Alias": 4
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "ShowModInfo",
+            "Object": "000903:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "EmptyMessage",
+            "Object": "000813:HTG-System-Core.esp"
+          }
+        ]
+      }
+    ]
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "System->Module Information"
+  },
+  "ShowBodyText": "Document",
+  "MenuButtonStyle": [
+    "UseLongKioskEntry"
+  ],
+  "Style": "Windows",
+  "INAM": {
+    "TargetLanguage": "English",
+    "Value": "Mod Info"
+  },
+  "BodyTexts": [
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "Detected Modules:\r\n<0>\r\n<1>\r\n<2>\r\n<3>\r\n<4>\r\n<5>\r\n<6>\r\n<7>\r\n<8>\r\n<9>\r\n<10>\r\n<11>\r\n<12>\r\n<13>\r\n<14>\r\n<15>\r\n<16>"
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ],
+      "UseTemplatedText": true
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "Module Information:\r\nName: <Token.Value=MName>\r\nVersion: <Token.Value=MMajVer>.<Token.Value=MMinVer>.<Token.Value=MRevVer>.<Token.Value=MPatchVer>\r\n\r\n"
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          },
+          "ComparisonValue": 1.0
+        }
+      ],
+      "UseTemplatedText": false
+    }
+  ],
+  "MenuItems": [
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<0>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 1,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<1>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 2,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<2>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 3,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<3>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 4,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<4>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 5,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<5>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 6,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<7>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 8,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<8>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 9,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<9>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 10,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<10>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "UnusedISET": 22389,
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 11,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<11>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "UnusedISET": 16397,
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 12,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<12>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 13,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<13>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "UnusedISET": 19927,
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 14,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<14>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "UnusedISET": 16391,
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 15,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "<15>"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "TemplateItem",
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 16,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "[Go Back]"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "UnusedISET": 22389,
+      "Flags": [
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 1000,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemReturnToDesktop"
+      }
+    }
+  ]
+}

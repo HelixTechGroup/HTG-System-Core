@@ -164,6 +164,10 @@ Event OnTimer(Int aiTimerID)
     EndIf
 EndEvent
 
+Event OnTimerGameTime(int aiTimerID)
+    WaitForInitialized()
+EndEvent
+
 Event OnGameplayOptionChanged(GameplayOption[] aChangedOptions)
     WaitForInitialized()
 EndEvent

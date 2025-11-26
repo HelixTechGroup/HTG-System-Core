@@ -14,14 +14,7 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:Quests:ModuleInformation",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModInfoForm",
-                "Object": "00082C:HTG-System-Core.esp"
-              }
-            ]
+            "Name": "HTG:Quests:ModuleInformation"
           }
         ]
       },
@@ -33,15 +26,7 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:SystemUtilities",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModInfoAlias",
-                "Object": "000811:HTG-System-Core.esp",
-                "Alias": 5
-              }
-            ]
+            "Name": "HTG:SystemUtilities"
           },
           {
             "Name": "htg:systemlogger"
@@ -55,22 +40,12 @@
     "Value": "System Template"
   },
   "Data": {
-    "Priority": 30,
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
   "Filter": "HTG\\",
   "Summary": "HTG System Quest Template.\r\nPlease create a new script for your quest that Extends HTG:QuestExt",
   "UnusedConditions": [],
-  "Objectives": [
-    {
-      "Flags": [],
-      "DisplayText": {
-        "TargetLanguage": "English",
-        "Value": ""
-      }
-    }
-  ],
   "Aliases": [
     {
       "MutagenObjectType": "QuestReferenceAlias",
@@ -80,7 +55,8 @@
         "ReservesLocationOrReference",
         "Optional",
         "AllowReuseInQuest",
-        "AllowReserved"
+        "AllowReserved",
+        "InitiallyDisabled"
       ],
       "ALFG": 0,
       "VoiceTypes": "Null"
@@ -89,15 +65,12 @@
       "MutagenObjectType": "QuestReferenceAlias",
       "Name": "SystemUtilities",
       "Flags": [
+        "Optional",
         "AllowReuseInQuest",
         "AllowReserved",
-        "ExternalAliasLinked"
+        "InitiallyDisabled"
       ],
       "ALFG": 0,
-      "External": {
-        "Quest": "000801:HTG-System-Core.esp",
-        "AliasID": 0
-      },
       "VoiceTypes": "Null"
     },
     {
@@ -105,15 +78,12 @@
       "ID": 3,
       "Name": "DataslateTerminal",
       "Flags": [
+        "Optional",
         "AllowReuseInQuest",
         "AllowReserved",
-        "ExternalAliasLinked"
+        "InitiallyDisabled"
       ],
       "ALFG": 0,
-      "External": {
-        "Quest": "000824:HTG-System-Core.esp",
-        "AliasID": 5
-      },
       "VoiceTypes": "Null"
     }
   ],

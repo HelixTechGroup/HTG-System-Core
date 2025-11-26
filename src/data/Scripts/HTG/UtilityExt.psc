@@ -214,7 +214,8 @@ Bool Function IsNone(ScriptObject akObject) Global
 EndFunction
 
 Function WaitForCombatEnd() Global
-    While Game.GetPlayer().GetCombatState() == 1
+    While Game.GetPlayer().GetCombatState() == 1 \
+            && !Game.AreHostileActorsNear()
         WaitExt(3.0)
     EndWhile
 EndFunction

@@ -20,6 +20,12 @@ Var[] Property _Array Hidden
     EndFunction
 EndProperty
 
+ObjectReference Property _SpawnPoint Hidden
+    ObjectReference Function Get()
+        return _internalSpawnPoint
+    EndFunction
+EndProperty
+
 Bool Property IsInitialized Hidden
     Bool Function Get()
         return _isInitialized
@@ -32,6 +38,7 @@ Bool _isInitialized
 Int _count = 0
 Int _trackedIndex = 0
 Int _maxSize = 128 Const
+ObjectReference _internalSpawnPoint
 
 List Function List(SystemModuleInformation akMod, Int aiSize = 0) Global 
     List res = _CreateList(akMod, aiSize = aiSize)
@@ -57,7 +64,7 @@ EndFunction
 ;     return res
 ; EndFunction
 
-Bool Function Initialize(Int aiSize = 0)
+Bool Function Initialize(Int aiSize = 0, ObjectReference akSpawnPoint = None)
     If _isInitialized
         return False
     EndIf
@@ -67,6 +74,10 @@ Bool Function Initialize(Int aiSize = 0)
         _trackedIndex = 0
         _count = 0
         _isInitialized = True
+
+        If !IsNone(akSpawnPoint) && akSpawnPoint != _internalSpawnPoint
+            _internalSpawnPoint = akSpawnPoint
+        EndIf
     EndTryLockGuard
 
     return True
@@ -94,7 +105,7 @@ Var Function GetVarAt(Int index)
 EndFunction
 
 Int Function Add(Var akItem)
-    If !_isInitialized || !TestType(akItem)
+    If !_isInitialized || !TestType(akItem) 
         return -1
     EndIf
 
@@ -127,7 +138,9 @@ Int Function Add(Var akItem)
     EndTryLockGuard
 
     ; Clean()
-    LogObjectGlobal(akItem as ScriptObject, "Added item with Index: " + i + " and Count: " + _count)
+    LogObjectGlobal(Self, "Added item with Index: " + i + " and Count: " + _count + \
+                            "/r/tItem: " + akItem)
+
     return i
 EndFunction
 
@@ -288,11 +301,7 @@ Int Function FindStruct(String asVarName, Var akElement)
 EndFunction
 
 Bool Function Contains(Var akItem)
-    If Find(akItem) > -1
-        return True
-    EndIf
-
-    return False
+    return Find(akItem) > -1
 EndFunction
 
 Int Function FindFirstEmpty()
@@ -400,7 +409,10 @@ Bool Function TestType(Var akItem)
     ;     return akArrayItem as Array == akItem as Array
     ; ElseIf kArrayItem as Struct
     ElseIf kArrayItem as ScriptObject && akItem as ScriptObject
-        return True
+        ScriptObject  kSO = akItem as ScriptObject
+        If kSO.CastAs(ArrayType) != None
+            return True        
+        EndIf
     EndIf
 
     return False
@@ -473,7 +485,7 @@ List Function _CreateList(SystemModuleInformation akMod, Int aiFormId = 0x000008
         List kList = CreateReference(akMod, kform) as List
         If !HTG:UtilityExt.IsNone(kList)
             kList.Enable(False)
-            kList.Initialize(aiSize)
+            kList.Initialize(aiSize, akMod)
             LogObjectGlobal(kList, kList.ToString())
             return kList
         EndIf

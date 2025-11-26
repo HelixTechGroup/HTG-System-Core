@@ -104,7 +104,6 @@ Struct VersionInfomation
     Int Patch = 115222
 EndStruct
 
-
 Struct HoloArmorMap
     Armor ArmorPiece
     ObjectMod ArmorMod
@@ -120,7 +119,21 @@ EndStruct
 Struct SystemTypeEntry
     Int FormId
     String Name
-    String FullyQualifiedName
+    String Script
+    String ModName
+EndStruct
+
+Struct SystemTypeCacheEntry
+    Int FormId
+    String Name
+    String Script
+    Int ModuleIndex
+    ObjectReference Reference
+EndStruct
+
+Struct SystemTypeScriptEntry
+    Int FormId
+    String Name
 EndStruct
 
 Struct SystemFeature
@@ -133,5 +146,12 @@ EndStruct
 
 Struct SystemFeatureRequest
     String Name
-    Bool Enabled
+    Form Sender
+EndStruct
+
+Struct EquipmentMap
+    ObjectReference OwnerRef
+    Form Equipment
+    Keyword EquipmentType
+    Bool IsRegistered
 EndStruct

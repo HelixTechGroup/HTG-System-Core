@@ -13,6 +13,31 @@
         "Name": "HTG:SystemModuleInformation",
         "Properties": [
           {
+            "MutagenObjectType": "ScriptStringProperty",
+            "Name": "FileName",
+            "Data": "HTG-System-Core"
+          },
+          {
+            "MutagenObjectType": "ScriptStringProperty",
+            "Name": "Name",
+            "Data": "HTG System Core"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SystemRegistry",
+            "Object": "000837:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptStringProperty",
+            "Name": "description",
+            "Data": ""
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "CollectionRegistry",
+            "Object": "000828:HTG-System-Core.esp"
+          },
+          {
             "MutagenObjectType": "ScriptStructProperty",
             "Name": "Version",
             "Members": [
@@ -22,26 +47,11 @@
                   {
                     "MutagenObjectType": "ScriptIntProperty",
                     "Name": "Revision",
-                    "Data": 6
+                    "Data": 8
                   }
                 ]
               }
             ]
-          },
-          {
-            "MutagenObjectType": "ScriptStringProperty",
-            "Name": "description",
-            "Data": ""
-          },
-          {
-            "MutagenObjectType": "ScriptStringProperty",
-            "Name": "FileName",
-            "Data": "HTG-System-Core"
-          },
-          {
-            "MutagenObjectType": "ScriptStringProperty",
-            "Name": "Name",
-            "Data": "HTG System Core"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -54,14 +64,34 @@
             "Object": "00081D:HTG-System-Core.esp"
           },
           {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SystemRegistry",
-            "Object": "000837:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "CollectionRegistry",
-            "Object": "000828:HTG-System-Core.esp"
+            "MutagenObjectType": "ScriptStructListProperty",
+            "Name": "LocalSystemTypeRegistry",
+            "Structs": [
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptStringProperty",
+                    "Name": "Script",
+                    "Data": "HTG:Quests:SQ_Player"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptStringProperty",
+                    "Name": "Name",
+                    "Data": "SQ_Player"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptIntProperty",
+                    "Name": "FormId",
+                    "Data": 2102
+                  },
+                  {
+                    "MutagenObjectType": "ScriptStringProperty",
+                    "Name": "ModName",
+                    "Data": "HTG-System-Core"
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -69,7 +99,7 @@
   },
   "Name": {
     "TargetLanguage": "English",
-    "Value": "Mod Information: HTG System Core"
+    "Value": "HTG System Core"
   },
   "Model": {
     "LightLayer": 1

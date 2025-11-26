@@ -2,6 +2,11 @@ Scriptname HTG:RefCollectionAliasInventoryTracker extends HTG:RefCollectionAlias
 import HTG
 import HTG:UtilityExt
 import HTG:Quests
+import HTG:Collections
+
+ObjectReferenceList Property InitializedReferences Auto Hidden
+Message Property InitializedReferenceMessage Mandatory Const Auto
+ReferenceAlias Property InitializedTextHolder Mandatory Const Auto  
 
 Bool Property DisableTracking Auto Hidden
 
@@ -11,37 +16,105 @@ Bool Property IsTrackingDisabled Hidden
     EndFunction
 EndProperty
 
+Bool Property IsTrackingInitialized Hidden
+    Bool Function Get()
+        return _isTrackingInitialized
+    EndFunction
+EndProperty
+
 FormList Property ExcludedItems Const Auto
 
 Guard _equipGuard ProtectsFunctionLogic
 Guard _unequipGuard ProtectsFunctionLogic
 Guard _addedGuard ProtectsFunctionLogic
 Guard _removedGuard ProtectsFunctionLogic
+Guard _registerTimerGuard ProtectsFunctionLogic
+Guard _unregisterTimerGuard ProtectsFunctionLogic
 Bool _equipHandled
 Bool _unequipHandled
 Bool _addHandled
 Bool _removeHandled
+Bool _isTrackingInitialized
+Bool _initializationStarted
+Bool _registrationStarted
+Bool _registerTimerStarted
+Bool _unregistrationStarted
+Bool _unregisterTimerStarted
+Int _registerTimerId = 1
+Int _unregisterTimerId = 2
+Int _registeredCount
+ObjectReferenceList _registeringReferences   
+ObjectReferenceList _initializingReferences   
+ObjectReferenceList _unregisteringReferences   
 
 CustomEvent OnAliasItemAdded
 CustomEvent OnAliasItemRemoved
 CustomEvent OnAliasItemEquipped
 CustomEvent OnAliasItemUnequipped
+CustomEvent OnAliasRegistered
+CustomEvent OnAliasUnregistered
+CustomEvent OnAliasInitialized
 
 Event OnAliasChanged(ObjectReference akObject, bool abRemove)
     Parent.OnAliasChanged(akObject, abRemove)
-    
-    Actor kActor = akObject as Actor
-    Logger.Log("OnAliasChanged:Actor: " + kActor)
+
+    Logger.Log("OnAliasChanged:Reference: " + akObject)
 
     If !abRemove
-        Logger.Log("OnAliasChanged:Registering: " + kActor)
-        _RegisterItemEvents(akObject)
+        Logger.Log("OnAliasChanged:Registering: " + akObject)
     Else
-        Logger.Log("OnAliasChanged:Unregistering: " + kActor)
-        _UnregisterItemEvents(akObject)
+        Logger.Log("OnAliasChanged:Unregistering: " + akObject)
+        _unregisteringReferences.Add(akObject)
+        StartTimer(Utilities.Timers.Defaults.Interval, _unregisterTimerId)
     EndIf
 
     Logger.LogRefCollectionAlias(Self, Self as RefCollectionAlias)
+EndEvent
+
+Event OnTimer(int aiTimerID)
+    Parent.OnTimer(aiTimerID)
+
+    If aiTimerID == _registerTimerId
+        If !IsInitialized || _registerTimerStarted || _registrationStarted
+            Logger.Log("RegisterReferencesTimer - Is Not Initialized, Initial Run or Timer is already running. Not ready to proceed.")
+
+            Float iTimerInterval = Utilities.Timers.Defaults.Interval + 0.9
+            StartTimer(iTimerInterval, _registerTimerId)
+            return
+        EndIf
+
+        Bool startMain
+        TryLockGuard _registerTimerGuard
+            _registerTimerStarted = True
+            startMain = _RegisterReferences()
+            _registerTimerStarted = False
+        EndTryLockGuard
+
+        If startMain
+            Logger.Log("RegisterReferenceTimer - Starting MainTimer.")
+            StartTimer(Utilities.Timers.Defaults.Interval, Utilities.Timers.SystemIds.MainId)
+        ElseIf _registeringReferences.Count > 0
+            StartTimer(Utilities.Timers.Defaults.Interval, _registerTimerId)
+        EndIf
+    ElseIf aiTimerID == _unregisterTimerId
+        If !IsInitialized || _unregisterTimerStarted || _unregistrationStarted
+            Logger.Log("UnregisterReferencesTimer - Is Not Initialized, Initial Run or Timer is already running. Not ready to proceed.")
+
+            Float iTimerInterval = Utilities.Timers.Defaults.Interval + 0.9
+            StartTimer(iTimerInterval, _unregisterTimerId)
+            return
+        EndIf
+
+        TryLockGuard _unregisterTimerGuard
+            _unregisterTimerStarted = True
+            _UnregisterReferences()
+            _unregisterTimerStarted = False
+        EndTryLockGuard
+
+        If _unregisteringReferences.Count > 0
+            StartTimer(Utilities.Timers.Defaults.Interval, _unregisterTimerId)
+        EndIf
+    EndIf
 EndEvent
 
 Event OnItemAdded(ObjectReference akSenderRef, Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer, int aiTransferReason)
@@ -56,6 +129,8 @@ Event OnItemAdded(ObjectReference akSenderRef, Form akBaseItem, int aiItemCount,
     Logger.Log("OnItemEquipped:Actor:" + kActor)
     Logger.Log("OnItemEquipped:Form:" + akBaseItem)
     Logger.Log("OnItemEquipped:Reference:" + akItemReference)
+
+
 
     TryLockGuard _addedGuard
         _addHandled = True
@@ -78,6 +153,10 @@ Event OnItemRemoved(ObjectReference akSenderRef, Form akBaseItem, int aiItemCoun
     EndIf
 
     Actor kActor = akSenderRef as Actor
+    If IsNone(kActor)
+        return
+    EndIf
+
     Logger.Log("OnItemEquipped:Actor:" + kActor)
     Logger.Log("OnItemEquipped:Form:" + akBaseItem)
     Logger.Log("OnItemEquipped:Reference:" + akItemReference)
@@ -98,11 +177,15 @@ Event OnItemEquipped(ObjectReference akSenderRef, Form akBaseObject, ObjectRefer
     WaitForInitialized()
 
     If DisableTracking \
-        || (!IsNone(ExcludedItems) && ExcludedItems.Find(akBaseObject) > -1); If _equipHandled
+        || (!IsNone(ExcludedItems) && ExcludedItems.Find(akBaseObject) > -1) ; If _equipHandled
         return
     EndIf
 
     Actor kActor = akSenderRef as Actor
+    If IsNone(kActor)
+        return
+    EndIf
+
     Logger.Log("OnItemEquipped:Actor:" + kActor)
     Logger.Log("OnItemEquipped:Form:" + akBaseObject)
     Logger.Log("OnItemEquipped:Reference:" + akReference)
@@ -176,6 +259,110 @@ Event HTG:ReferenceAliasInventoryTracker.OnAliasItemRemoved(HTG:ReferenceAliasIn
     WaitForInitialized()
 EndEvent
 
+Event HTG:RefCollectionAliasInventoryTracker.OnAliasRegistered(HTG:RefCollectionAliasInventoryTracker akSender, var[] akArgs)
+    WaitForInitialized()
+EndEvent
+
+Event HTG:RefCollectionAliasInventoryTracker.OnAliasUnregistered(HTG:RefCollectionAliasInventoryTracker akSender, var[] akArgs)
+    WaitForInitialized()
+EndEvent
+
+Event HTG:RefCollectionAliasInventoryTracker.OnAliasInitialized(HTG:RefCollectionAliasInventoryTracker akSender, var[] akArgs)
+    WaitForInitialized()
+EndEvent
+
+Bool Function WaitForTrackingStart()
+    WaitForInitialized()
+
+    If _isTrackingInitialized
+        return True
+    EndIf
+    
+    Int currentCycle = 0
+    Int maxCycle = 600
+    Bool maxCycleHit
+
+    ; StartTimer(_timerInterval, _initializeTimerId)
+    While !maxCycleHit && !_isTrackingInitialized
+        WaitExt(0.5)
+
+        If currentCycle < maxCycle
+            currentCycle += 1
+        Else
+            maxCycleHit = True
+        EndIf
+    EndWhile
+
+    return _isTrackingInitialized
+EndFunction
+
+Bool Function IsReferenceRegistering(ObjectReference akObject)
+    return _registeringReferences.Contains(akObject)
+EndFunction
+
+Bool Function IsReferenceUnregistering(ObjectReference akObject)
+    return _unregisteringReferences.Contains(akObject)
+EndFunction
+
+Bool Function IsReferenceInitializing(ObjectReference akObject)
+    return _initializingReferences.Contains(akObject)
+EndFunction
+
+Bool Function RegisterReference(ObjectReference akObject)
+    If Find(akObject) < 0
+        AddRef(akObject)
+        return True
+    EndIf
+
+    _registeringReferences.Add(akObject)
+    StartTimer(Utilities.Timers.Defaults.Interval, _registerTimerId)
+    
+    return IsReferenceRegistering(akObject)
+EndFunction
+
+Bool Function UnregisterReference(ObjectReference akObject)
+    If Find(akObject) < 0
+        return False
+    EndIf
+
+    RemoveRef(akObject)
+EndFunction
+
+Bool Function _CreateCollections()
+    If IsNone(_registeringReferences)
+        _registeringReferences = HTG:Collections:ObjectReferenceList.ObjectReferenceList(Utilities.ModInfo)
+    Else
+        _registeringReferences.Clear()
+    EndIf    
+
+    If IsNone(_unregisteringReferences)
+        _unregisteringReferences = HTG:Collections:ObjectReferenceList.ObjectReferenceList(Utilities.ModInfo)
+    Else
+        _unregisteringReferences.Clear()
+    EndIf    
+
+    If IsNone(_initializingReferences)
+        _initializingReferences = HTG:Collections:ObjectReferenceList.ObjectReferenceList(Utilities.ModInfo)
+    Else
+        _initializingReferences.Clear()
+    EndIf  
+
+    If IsNone(InitializedReferences)
+        InitializedReferences = HTG:Collections:ObjectReferenceList.ObjectReferenceList(Utilities.ModInfo)
+    Else
+        InitializedReferences.Clear()
+    EndIf
+
+    return (!IsNone(_registeringReferences) && _registeringReferences.IsInitialized) \
+            && (!IsNone(_unregisteringReferences) && _unregisteringReferences.IsInitialized) \
+            && (!IsNone(_initializingReferences) && _initializingReferences.IsInitialized) \
+            && (!IsNone(InitializedReferences) && InitializedReferences.IsInitialized)
+EndFunction
+
+Bool Function _Main()
+    return _InitializeReferences()
+EndFunction
+
 Function _HandleItemEquipped(Actor akActor, Form akBaseObject)
     
 EndFunction
@@ -192,11 +379,98 @@ Function _HandleItemRemoved(Actor akActor, Form akItem)
     
 EndFunction
 
+Bool Function _RegisterReferences()
+    If !IsInitialized || _registrationStarted
+        return False
+    EndIf
+    
+    WaitForCombatEnd()
+
+    _registrationStarted = True
+    Bool bResult
+    Int fI = 0
+    Int fCount = _registeringReferences.Count ; GetCount()
+    ; Var[] kReferences = _registeringReferences.GetArray()
+    Logger.Log("RegisterReferenceTimer - Found Tracked references.")
+    While fI < fCount
+        ObjectReference kObject = _registeringReferences.GetVarAt(fI) as ObjectReference ; kReferences[fI] as ObjectReference
+        Logger.Log("RegisterTimer - Checking reference: " + kObject)
+        ; If !IsReferenceRegistering(kObject)
+            Logger.Log("RegisterTimer - Adding reference: " + kObject)
+            If _RegisterReference(kObject)
+                Var[] kArgs = new Var[0]
+                kArgs.Add(kObject)
+                SendCustomEvent("OnAliasRegistered", kArgs)
+
+                _registeredCount += 1
+                _RegisterItemEvents(kObject)
+                _registeringReferences.Remove(kObject)
+                _initializingReferences.Add(kObject)
+                Logger.Log("RegisterTimer - Registered reference: " + kObject)
+            EndIf
+        ; EndIf
+        fI += 1
+    EndWhile
+
+    _registrationStarted = False
+    return True
+EndFunction
+
+Bool Function _RegisterReference(ObjectReference akObject)
+    return True
+EndFunction
+
+Bool Function _UnregisterReferences()
+    If !IsInitialized || _unregistrationStarted
+        return False
+    EndIf
+    
+    WaitForCombatEnd()
+
+    _unregistrationStarted = True
+    Bool bResult
+    Int fI = 0
+    Int fCount = _unregisteringReferences.Count ; GetCount()
+    ; Var[] kReferences = _unregisteringReferences.GetArray()
+    Logger.Log("UnregisterTimer - Found Tracked reference.")
+    While fI < fCount
+        ObjectReference kObject = _unregisteringReferences.GetVarAt(fI) as ObjectReference ; References[fI] as ObjectReference
+        Logger.Log("UnregisterTimer - Checking reference: " + kObject)
+        ; If InitializedReferences.Contains(kObject)
+            Logger.Log("UnregisterTimer - Removing reference: " + kObject)
+            If _UnregisterReference(kObject)
+                Var[] kArgs = new Var[0]
+                kArgs.Add(kObject)
+                SendCustomEvent("OnAliasUnregistered", kArgs)
+
+                _registeredCount -= 1
+                _UnregisterItemEvents(kObject)
+                InitializedReferences.Remove(kObject)
+                _unregisteringReferences.Remove(kObject)
+                _registeringReferences.Remove(kObject)
+                _initializingReferences.Remove(kObject)
+            EndIf
+        ; EndIf
+        fI += 1
+    EndWhile
+
+    _unregistrationStarted = False
+    return True
+EndFunction
+
+Bool Function _UnregisterReference(ObjectReference akObject)
+    return True
+EndFunction
+
 Function _RegisterItemEvents(ObjectReference akObject)
     Actor kActor = akObject as Actor
     AddInventoryEventFilter(None)
-    RegisterForRemoteEvent(kActor,  "OnItemEquipped")
-    RegisterForRemoteEvent(kActor, "OnItemUnequipped")
+
+    If !IsNone(kActor)
+        RegisterForRemoteEvent(kActor,  "OnItemEquipped")
+        RegisterForRemoteEvent(kActor, "OnItemUnequipped")
+    EndIf
+
     RegisterForRemoteEvent(akObject, "OnItemAdded")
     RegisterForRemoteEvent(akObject, "OnItemRemoved")
 EndFunction
@@ -204,8 +478,62 @@ EndFunction
 Function _UnregisterItemEvents(ObjectReference akObject)
     Actor kActor = akObject as Actor
     RemoveInventoryEventFilter(None)
-    UnregisterForRemoteEvent(kActor, "OnItemEquipped")
-    UnregisterForRemoteEvent(kActor, "OnItemUnequipped")
+
+    If !IsNone(kActor)
+        UnregisterForRemoteEvent(kActor, "OnItemEquipped")
+        UnregisterForRemoteEvent(kActor, "OnItemUnequipped")
+    EndIf
+
     UnregisterForRemoteEvent(akObject, "OnItemAdded")
     UnregisterForRemoteEvent(akObject, "OnItemRemoved")
+EndFunction
+
+Bool Function _InitializeReferences()
+    If !IsInitialized || _registrationStarted || _initializationStarted
+        return True
+    EndIf
+
+    _initializationStarted = True
+    Int fI = 0
+    Int fCount = _initializingReferences.Count ; GetCount()
+    ; Var[] kReferences = _initializingReferences.GetArray()
+    Logger.Log("RegisterReferenceTimer - Found Tracked references.")
+    While fI < fCount
+        ObjectReference kObject = _initializingReferences.GetVarAt(fI) as ObjectReference  ; kReferences[fI] as ObjectReference
+        Logger.Log("RegisterTimer - Checking reference: " + kObject)
+        If !InitializedReferences.Contains(kObject)
+            Logger.Log("RegisterTimer - Adding reference: " + kObject)
+            If _InitializeReference(kObject)
+                Var[] kArgs = new Var[0]
+                kArgs.Add(kObject)
+                SendCustomEvent("OnAliasInitialized", kArgs)
+
+                _initializingReferences.Remove(kObject)
+                InitializedReferences.Add(kObject)
+                InitializedTextHolder.ForceRefTo(kObject)
+                ;ShowMessage(InitializedReferenceMessage)
+                InitializedReferenceMessage.Show()
+                InitializedTextHolder.Clear()
+            EndIf
+        Else
+            _initializingReferences.Remove(kObject)
+        EndIf
+        fI += 1
+    EndWhile
+
+    If InitializedReferences.Count >= GetCount()
+        _isTrackingInitialized = True
+    EndIf
+
+    _initializationStarted = False
+    
+    If _initializingReferences.Count > 0
+        return True
+    EndIf
+
+    return False
+EndFunction
+
+Bool Function _InitializeReference(ObjectReference akObject)
+    return True
 EndFunction

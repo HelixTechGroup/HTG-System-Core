@@ -4,8 +4,10 @@ import HTG:Structs
 import HTG:UtilityExt
 import HTG:SystemFormUtility
 import HTG:SystemLogger
+import HTG:SystemReferenceUtility
 
 Form Property ModInfoForm Const Auto
+ObjectReference Property SystemUtilitesObject Mandatory Const Auto
 
 String Property Name Hidden
     String Function Get()
@@ -61,57 +63,141 @@ FormList Property LocalSystemRegistry Hidden
     EndFunction
 EndProperty
 
-; Event OnAliasStarted()
-;     SystemModuleInformation kMod
-;     If !IsFilled() 
-;         If !IsNone(ModInfoForm)
-;             kMod = CreateReference(Game.GetPlayer(), ModInfoForm, akAlias = Self) as SystemModuleInformation
-;         Else
-;             LogObjectGlobal(Self, "Unable to get SystemModuleInformation.")
-;         EndIf
-;     Else
-;         kMod = GetReference() as SystemModuleInformation
-;         ; ObjectReference[] refs = Utilities.GetReference().FindAllReferencesOfType(kMod, 5000)
-;         ; LogObjectGlobal(Self, "Utilties Refs: " + refs)
-;     EndIf
+Bool Property IsInitialized Hidden
+    Bool Function Get()
+        return _isInitialized
+    EndFunction
+EndProperty
 
-;     If !IsNone(kMod)
-;         ObjectReference kUitilRef = Utilities.GetReference()
-;         Cell kCell = kMod.GetParentCell()
-;         Logger.Log("Utilities current cell: " + kUitilRef.GetParentCell() + \
-;                     "\n\tMods current cell: " + kCell)
-;         kMod.MoveTo(kUitilRef)
-;         kCell = kMod.GetParentCell()
-;         Logger.Log("Mods new cell: " + kCell)
-;         Logger.Log("Loading Module: " + kMod + \
-;                     "\n\tName: " + kMod.Name + \
-;                     "\n\tDescription: " + kMod.Description + \
-;                     "\n\tIsCoreIntegrated: " + kMod.IsCoreIntegrated + \
-;                     "\n\tVersion: " + kMod.Version)
-;     EndIf
-; EndEvent
+Guard _initializeTimerGuard ProtectsFunctionLogic
+Guard _initializeGuard ProtectsFunctionLogic
+Bool _isInitialized
+Bool _initializeTimerStarted
+Int _initializeTimerId = 1
+Float _timerInternal = 0.05
+Int _maxTimerCycle = 600
+Int _currentTimerCycle = 0
 
-; Bool Function WaitForInitialized()
-;     If IsInitialized
-;         return True
-;     EndIf
+Guard _moduleGuard ProtectsFunctionLogic
+
+Event OnInit()
+    StartTimer(_timerInternal, _initializeTimerId)
+EndEvent
+
+Event OnTimer(Int aiTimerID)
+    If aiTimerID == _initializeTimerId
+        If _isInitialized || _initializeTimerStarted
+            LogObjectGlobal(Self, "InitializeTimer - Timer is already running. No need to proceed.")
+            return
+        EndIf
+
+        Bool bRestartTimer
+        TryLockGuard _initializeTimerGuard, _initializeGuard
+            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle    
+                WaitExt(0.15)        
+                _currentTimerCycle += 1
+                bRestartTimer = True
+            ElseIf _currentTimerCycle == _maxTimerCycle
+                LogErrorGlobal(Self, "HTG:ModuleInformation could not be Initialized")
+            EndIf
+        EndTryLockGuard
+        
+        If bRestartTimer
+            StartTimer(_timerInternal, _initializeTimerId)
+        EndIf
+    EndIf
+EndEvent
+
+Bool Function Initialize()
+    If _isInitialized
+        return True
+    EndIf
+
+    ; TODO: Change self to GetReference() and attach scripts to _systemUtilitiesObject
+    TryLockGuard _initializeGuard
+        ;ScriptObject so = Self as ScriptObject 
+        ;LogObjectGlobal(Self, "HTG:SystemUtilities:" + Self + "\n\t As ScriptObject:" + so)
+
+        _isInitialized = _CreateModule()
+    Else
+        StartTimer(0.1, _initializeTimerId)
+        ; WaitExt(0.25)
+    EndTryLockGuard
+
+    return IsFilled()
+EndFunction
+
+Bool Function WaitForInitialized()
+    If IsInitialized
+        return True
+    EndIf
     
-;     Int currentCycle = 0
-;     Int maxCycle = 150
-;     Bool maxCycleHit
+    Int currentCycle = 0
+    Int maxCycle = 150
+    Bool maxCycleHit
 
-;     ; StartTimer(_timerInterval, _initializeTimerId)
+    ; StartTimer(_timerInterval, _initializeTimerId)
 
-;     While !maxCycleHit \
-;             && (!IsInitialized)
-;         WaitExt(0.01)
+    While !maxCycleHit \
+            && (!IsInitialized)
+        WaitExt(0.01)
 
-;         If currentCycle < maxCycle
-;             currentCycle += 1
-;         Else
-;             maxCycleHit = True
-;         EndIf
-;     EndWhile
+        If currentCycle < maxCycle
+            currentCycle += 1
+        Else
+            maxCycleHit = True
+        EndIf
+    EndWhile
 
-;     return IsInitialized
-; EndFunction
+    return IsInitialized
+EndFunction
+
+Bool Function _CreateModule()
+    SystemModuleInformation kMod
+    If !IsFilled()
+        If !IsNone(ModInfoForm) 
+            ObjectReference kSpawnPoint = SystemUtilitesObject
+            If IsNone(kSpawnPoint)
+                QuestExt kQuest = GetOwningQuest() as QuestExt
+                If !IsNone(kQuest) && !IsNone(kQuest.Utilities)
+                    kSpawnPoint = kQuest.Utilities.GetReference()
+                EndIf
+            EndIf
+
+            If IsNone(kSpawnPoint)
+                LogWarnGlobal(Self, "Cound not find Module Spawnpoint")
+                return False
+            EndIf
+
+            kMod = CreateReference(kSpawnPoint, ModInfoForm, akAlias = Self) as SystemModuleInformation
+            ForceRefTo(kMod)
+        Else
+            ; LogObjectGlobal(Self, "Unable to get SystemModuleInformation.")
+            return False
+        EndIf
+    Else
+        kMod = GetReference() as SystemModuleInformation
+        ; ObjectReference[] refs = SystemUtilitesObject.FindAllReferencesOfType(kMod, 5000)
+        ; LogObjectGlobal(Self, "Utilties Refs: " + refs)
+    EndIf
+
+    If !IsNone(kMod) 
+        If !IsNone(SystemUtilitesObject)
+            ObjectReference kUitilRef = SystemUtilitesObject
+            Cell kCell = kMod.GetParentCell()
+            LogObjectGlobal(Self, "Utilities current cell: " + kUitilRef.GetParentCell() + \
+                        "\n\tMods current cell: " + kCell)
+            MoveReference(kMod, kUitilRef)
+        EndIf
+
+        Cell kCell = kMod.GetParentCell()
+        LogObjectGlobal(Self, "Mods current cell: " + kCell)
+        LogObjectGlobal(Self, "Loading Module: " + kMod + \
+                    "\n\tName: " + kMod.Name + \
+                    "\n\tDescription: " + kMod.Description + \
+                    "\n\tIsCoreIntegrated: " + kMod.IsCoreIntegrated + \
+                    "\n\tVersion: " + kMod.Version)
+    EndIf
+
+    return IsFilled()
+EndFunction

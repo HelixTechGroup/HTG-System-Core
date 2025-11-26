@@ -1,5 +1,6 @@
 Scriptname HTG:Quests:SQ_HoloArmorController extends HTG:QuestExt
 {HoloArmor System Controller}
+import HTG
 import HTG:Structs
 import HTG:Collections
 import HTG:UtilityExt
@@ -27,7 +28,7 @@ HoloArmorMap[] Property ArmorSpacesuitMappingDefaults Mandatory Const Auto
 HoloArmorMapList Property ArmorBackpackMappings Auto Hidden
 HoloArmorMapList Property ArmorHelmetMappings Auto Hidden
 HoloArmorMapList Property ArmorSpacesuitMappings Auto Hidden
-PlayerHoloArmorTracker Property PlayerTracker Mandatory Auto Const
+ReferenceAliasHoloArmorTracker Property PlayerTracker Mandatory Auto Const
 
 Guard _ArmorMappingsGuard ProtectsFunctionLogic
 Guard _playerTrackerGuard ProtectsFunctionLogic
@@ -159,7 +160,7 @@ Bool Function EquipArmorToPlayer()
     WaitForInitialized()
 
     TryLockGuard _playerTrackerGuard
-        ; PlayerHoloArmorTracker kTracker = GetAlias(2) as PlayerHoloArmorTracker
+        ; ReferenceAliasHoloArmorTracker kTracker = GetAlias(2) as ReferenceAliasHoloArmorTracker
         return PlayerTracker.EquipHoloArmor()
     EndTryLockGuard
 EndFunction
@@ -168,7 +169,7 @@ Bool Function UnequipArmorToPlayer()
     WaitForInitialized()
 
     TryLockGuard _playerTrackerGuard
-        ; PlayerHoloArmorTracker kTracker = GetAlias(2) as PlayerHoloArmorTracker
+        ; ReferenceAliasHoloArmorTracker kTracker = GetAlias(2) as ReferenceAliasHoloArmorTracker
         return PlayerTracker.UnequipHoloArmor()
     EndTryLockGuard
 EndFunction
@@ -177,7 +178,7 @@ Bool Function ChangePlayerArmorAppearance(Armor akArmor)
     WaitForInitialized()
 
     TryLockGuard _playerTrackerGuard
-        ; PlayerHoloArmorTracker kTracker = GetAlias(2) as PlayerHoloArmorTracker
+        ; ReferenceAliasHoloArmorTracker kTracker = GetAlias(2) as ReferenceAliasHoloArmorTracker
         return PlayerTracker.ChangeArmorPieceAppearance(akArmor)
     EndTryLockGuard
 EndFunction

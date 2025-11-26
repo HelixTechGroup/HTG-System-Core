@@ -28,12 +28,19 @@ Bool Property IsInitialized Hidden
     EndFunction
 EndProperty
 
+ObjectReference Property _SpawnPoint Hidden
+    ObjectReference Function Get()
+        return _internalSpawnPoint
+    EndFunction
+EndProperty
+
 Guard _arrayGuard ProtectsFunctionLogic
 KeyValuePair[] _internalArray
 Bool _isInitialized
 Int _count = 0
 Int _trackedIndex = 0
 Int _maxSize = 128 Const
+ObjectReference _internalSpawnPoint
 
 FormDictionary Function FormDictionary(SystemModuleInformation akMod, Int aiSize = 0) Global 
     FormDictionary res = _CreateDictionary(akMod, aiSize = aiSize)
@@ -56,7 +63,7 @@ EndFunction
 ;     return res
 ; EndFunction
 
-Bool Function Initialize(Int aiSize = 0)
+Bool Function Initialize(Int aiSize = 0, ObjectReference akSpawnPoint = None)
     If _isInitialized
         return False
     EndIf
@@ -66,6 +73,10 @@ Bool Function Initialize(Int aiSize = 0)
         _trackedIndex = 0
         _count = 0
         _isInitialized = True
+
+        If !IsNone(akSpawnPoint) && akSpawnPoint != _internalSpawnPoint
+            _internalSpawnPoint = akSpawnPoint
+        EndIf
     EndTryLockGuard
 
     return True
@@ -109,7 +120,9 @@ KeyValuePair Function GetAt(Int index)
 EndFunction
 
 Int Function Add(Form akKey, Form akValue, Bool overrideExisting = False)
-    If !_isInitialized || !TestKey(akKey) || !TestValue(akValue)
+    If !_isInitialized \
+        || ((akKey == None || !TestKey(akKey)) \
+        || (akValue == None || !TestValue(akValue)))
         return -1
     EndIf
 
@@ -133,7 +146,10 @@ Int Function Add(Form akKey, Form akValue, Bool overrideExisting = False)
         i = _Add(kPair)
     EndIf
 
-    LogObjectGlobal(akValue as ScriptObject, "Added item with Index: " + i + " and Count: " + _count)
+    LogObjectGlobal(Self, "Added item with Index: " + i + " and Count: " + _count + \
+                            "/r/tItem: " + akKey + \
+                            "/r/t Value: " + akValue)
+                            
     return i
 EndFunction
 
@@ -321,6 +337,7 @@ Bool Function TestValue(Form akValue)
 EndFunction
 
 Bool Function TestKey(Form akKey)
+
     return True
 EndFunction
 
@@ -390,7 +407,7 @@ FormDictionary Function _CreateDictionary(SystemModuleInformation akMod, Int aiF
         FormDictionary kList = CreateReference(akMod, kform) as FormDictionary
         If !HTG:UtilityExt.IsNone(kList)
             kList.Enable(False)
-            kList.Initialize(aiSize)
+            kList.Initialize(aiSize, akMod)
             return kList
         EndIf
     EndIf

@@ -19,3 +19,5 @@ FormList Property ModuleRegistry Mandatory Const Auto
 FormList Property SystemRegistry Mandatory Const Auto
 
 FormList Property LocalSystemRegistry Mandatory Const Auto
+
+SystemTypeEntry[] Property LocalSystemTypeRegistry Const Auto

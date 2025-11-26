@@ -58,7 +58,7 @@ ArmorSet Function GetArmorSet(Keyword akArmorType)
         kRes.Backpack = kSet.Backpack
         kRes.Helmet = kSet.Helmet
         kRes.Spacesuit = kSet.Spacesuit
-    EndIf
+    EndIf 
 
     return kRes
 EndFunction

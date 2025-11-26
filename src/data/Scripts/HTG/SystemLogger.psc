@@ -54,23 +54,23 @@ EndFunction
 
 Function LogGlobal(String asMessage) Global
     ObjectReference player = Game.GetPlayer()
-    Trace(player, "Regenesys", "System", asMessage)
+    Trace(player, "HTG", "System", asMessage)
 EndFunction
 
 Function LogObjectGlobal(ScriptObject akCallingObject, String asMessage) Global
-    Trace(akCallingObject, "Regenesys", "System", asMessage)
+    Trace(akCallingObject, "HTG", "System", asMessage)
 EndFunction
 
 Function LogRefCollectionAliasGlobal(RefCollectionAlias akAlias, String asMessage) Global
-    TraceRefCollectionAlias(akAlias, "Regenesys", "System", asMessage)
+    TraceRefCollectionAlias(akAlias, "HTG", "System", asMessage)
 EndFunction
 
 Function LogWarnGlobal(ScriptObject akCallingObject, String asMessage) Global
-    Warn(akCallingObject, "Regenesys", "System", asMessage)
+    Warn(akCallingObject, "HTG", "System", asMessage)
 EndFunction
     
 Function LogErrorGlobal(ScriptObject akCallingObject, String asMessage) Global
-    Error(akCallingObject, "Regenesys", "System", asMessage)
+    Error(akCallingObject, "HTG", "System", asMessage)
 EndFunction
 
 Function Log(String asMessage, Int aiSeverity = 0)

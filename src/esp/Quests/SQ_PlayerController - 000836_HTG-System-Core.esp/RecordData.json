@@ -66,13 +66,8 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:Quests:PlayerEquipmentTracker",
+            "Name": "HTG:ReferenceAliasEquipmentTracker",
             "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "AllowSuffocation",
-                "Object": "23AED3:Starfield.esm"
-              },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "EquipmentTextHolder",
@@ -81,13 +76,18 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "DetectedEquipmentMessage",
-                "Object": "0008CC:HTG-System-Core.esp"
+                "Name": "ExcludedItems",
+                "Object": "000843:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ExcludedItems",
-                "Object": "000843:HTG-System-Core.esp"
+                "Name": "TrackerInitializedMessage",
+                "Object": "0008E2:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "DetectedEquipmentMessage",
+                "Object": "0008CC:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -96,8 +96,8 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "TrackerInitializedMessage",
-                "Object": "0008E2:HTG-System-Core.esp"
+                "Name": "AllowSuffocation",
+                "Object": "23AED3:Starfield.esm"
               }
             ]
           }

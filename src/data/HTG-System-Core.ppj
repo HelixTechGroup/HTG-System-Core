@@ -5,12 +5,14 @@
     <Import>D:\Users\Bryan\Documents\Projects\HelixTechGroup\Gaming\CreationKit\Starfield\Source\HTG-System-Core\src\data\Scripts</Import>
   </Imports>
   <Scripts>
+    <Script>HTG:Structs</Script>
     <Script>HTG:ActivatorExt</Script>
     <Script>HTG:ActiveMagicEffectExt</Script>
     <Script>HTG:SystemArmorUtility</Script>
     <Script>HTG:SystemFloatUtility</Script>
     <Script>HTG:SystemFormUtility</Script>
     <Script>HTG:SystemIntUtility</Script>
+    <Script>HTG:SystemReferenceUtility</Script>
     <Script>HTG:KeyedObjectReference</Script>
     <Script>HTG:ObjectReferenceExt</Script>
     <Script>HTG:PerkExt</Script>
@@ -20,8 +22,8 @@
     <Script>HTG:ReferenceAliasInventoryTracker</Script>
     <Script>HTG:RefCollectionAliasInventoryTracker</Script>
     <Script>HTG:ScriptLogger</Script>
-    <Script>HTG:ScriptObjectExt</Script>
-    <Script>HTG:Structs</Script>
+    <Script>HTG:ScriptObjectExt</Script>    
+    <Script>HTG:SystemDependencyEntry</Script>
     <Script>HTG:SystemLogger</Script>
     <Script>HTG:SystemModuleInformation</Script>
     <Script>HTG:SystemUtilitiesObject</Script>
@@ -37,22 +39,27 @@
     <Script>HTG:Collections:HoloArmorSetList</Script>
 	  <Script>HTG:Collections:List</Script>
     <Script>HTG:Collections:ObjectReferenceList</Script>
+    <Script>HTG:Collections:EquipmentMapList</Script>
+    <Script>HTG:Collections:SystemDependencyEntryList</Script>
 	  <Script>HTG:DataslateTerminalActivator</Script>
     <Script>HTG:Quests:DataslateTracker</Script>
-    <Script>HTG:Quests:LoadedModules</Script>
+    <Script>HTG:Quests:ModuleTracker</Script>
     <Script>HTG:Quests:ModuleInformation</Script>
-    <Script>HTG:Quests:PlayerEquipmentTracker</Script>
-    <Script>HTG:Quests:PlayerHoloArmorTracker</Script>
+    <Script>HTG:RefCollectionAliasEquipmentTracker</Script>
+    <Script>HTG:ReferenceAliasEquipmentTracker</Script>
+    <Script>HTG:ReferenceAliasHoloArmorTracker</Script>
     <Script>HTG:SystemUtilities</Script>
     <Script>HTG:SystemGlobalVariableUtility</Script>
     <Script>HTG:Quests:SQ_DataslateController</Script>
     <Script>HTG:Quests:SQ_HoloArmorController</Script>
     <Script>HTG:Quests:SQ_PlayerController</Script>
     <Script>HTG:Quests:SQ_SystemController</Script>
+    <Script>HTG:Quests:DependencyTracker</Script>
     <Script>HTG:Quests:SQ_UnityEventController</Script>
     <Script>HTG:Quests:SQ_UnityVariant</Script>
     <Script>HTG:Terminals:DataslateSystemDesktop</Script>
     <Script>HTG:Terminals:DataslateTerminalMenu</Script>
+    <Script>HTG:Terminals:SystemModuleMenu</Script>
     <Script>Fragments:Quests:QF_MQ305_0024EF9C</Script>
     <Script>MQ401QuestScript</Script>
   </Scripts>

@@ -14,6 +14,7 @@ Keyword Property HelmetMod Mandatory Const Auto
 Keyword Property SpacesuitMod Mandatory Const Auto
 
 FormList Property ArmorTypes Auto Const Mandatory
+FormList Property ClothingTypes Mandatory Const Auto
 
 ; ReferenceAlias Property TempRef Mandatory Const Auto
 

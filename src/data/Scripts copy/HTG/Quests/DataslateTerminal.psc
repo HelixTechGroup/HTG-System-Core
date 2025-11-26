@@ -1,1 +1,0 @@
-Scriptname HTG:Quests:DataslateTerminal extends HTG:ReferenceAliasExt

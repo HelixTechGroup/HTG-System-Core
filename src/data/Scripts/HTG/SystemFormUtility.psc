@@ -1,5 +1,6 @@
 Scriptname HTG:SystemFormUtility extends ScriptObject Hidden
 import HTG:SystemLogger
+import HTG:UtilityExt
 
 Bool Function FormArraySort(Form[] akArray, Int aiStartingIndex = 0) Global
     If akArray.Length == 0
@@ -107,4 +108,16 @@ ObjectReference Function CreateReferenceFromExisting(Actor akActor, Form akForm,
 
     LogErrorGlobal(akActor, "HTG:SystemFormUtility.CreateReferenceFromExisting: Unable to create Form: " + akForm)
     return None
+EndFunction
+
+Bool Function CanCreateReference(ScriptObject akForm) Global
+    Bool kResult
+    If !IsNone(akForm) \
+        && ((!akForm is Quest) \
+        || (akForm is Alias \
+        || akForm is ObjectReference))
+        kResult = True
+    EndIf
+
+    return kResult
 EndFunction

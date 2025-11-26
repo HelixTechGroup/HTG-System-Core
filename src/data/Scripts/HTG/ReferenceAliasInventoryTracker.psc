@@ -134,6 +134,31 @@ Event HTG:ReferenceAliasInventoryTracker.OnAliasItemRemoved(HTG:ReferenceAliasIn
     WaitForInitialized()
 EndEvent
 
+; Bool Function WaitForTrackingStart()
+;     WaitForInitialized()
+
+;     If _isTrackingInitialized
+;         return True
+;     EndIf
+    
+;     Int currentCycle = 0
+;     Int maxCycle = 600
+;     Bool maxCycleHit
+
+;     ; StartTimer(_timerInterval, _initializeTimerId)
+;     While !maxCycleHit && !_isTrackingInitialized
+;         WaitExt(0.5)
+
+;         If currentCycle < maxCycle
+;             currentCycle += 1
+;         Else
+;             maxCycleHit = True
+;         EndIf
+;     EndWhile
+
+;     return _isTrackingInitialized
+; EndFunction
+
 Function _HandleItemEquipped(Form akBaseObject)
     
 EndFunction

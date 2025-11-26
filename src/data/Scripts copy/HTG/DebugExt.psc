@@ -1,1 +1,0 @@
-Scriptname HTG:DebugExt extends Debug Hidden

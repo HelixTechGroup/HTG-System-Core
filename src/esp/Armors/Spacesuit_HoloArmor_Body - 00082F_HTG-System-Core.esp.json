@@ -47,7 +47,7 @@
   "InstanceNaming": "184BC1:Starfield.esm",
   "Armatures": [
     {
-      "AddonIndex": 5,
+      "AddonIndex": 39,
       "ArmorAddon": "1E2B15:Starfield.esm"
     },
     {
@@ -55,27 +55,27 @@
       "ArmorAddon": "000915:HTG-System-Core.esp"
     },
     {
-      "AddonIndex": 5,
+      "AddonIndex": 39,
       "ArmorAddon": "313B83:Starfield.esm"
     },
     {
-      "AddonIndex": 5,
+      "AddonIndex": 40,
       "ArmorAddon": "313B87:Starfield.esm"
     },
     {
-      "AddonIndex": 5,
+      "AddonIndex": 39,
       "ArmorAddon": "313B86:Starfield.esm"
     },
     {
-      "AddonIndex": 5,
+      "AddonIndex": 39,
       "ArmorAddon": "313B85:Starfield.esm"
     },
     {
-      "AddonIndex": 5,
+      "AddonIndex": 39,
       "ArmorAddon": "313B84:Starfield.esm"
     },
     {
-      "AddonIndex": 5,
+      "AddonIndex": 39,
       "ArmorAddon": "3A8DE7:Starfield.esm"
     },
     {
@@ -615,11 +615,11 @@
       "ArmorAddon": "00090C:HTG-System-Core.esp"
     },
     {
-      "AddonIndex": 5,
+      "AddonIndex": 39,
       "ArmorAddon": "0008F0:HTG-System-Core.esp"
     },
     {
-      "AddonIndex": 6,
+      "AddonIndex": 39,
       "ArmorAddon": "24529D:Starfield.esm"
     },
     {
