@@ -31,4 +31,14 @@ Event OnQuestStarted()
     Else
         Logger.WarnEx("Could not find Player Controller")
     EndIf
+
+    kForm = k.ResolveForm(2102)
+    If !IsNone(kForm)
+        If kForm.GetFormID() == Player.GetFormID()            
+            Logger.Log("Found Player Controller: " + Utility.IntToHex(kForm.GetFormID()) + \ 
+                        "\n\t" + kForm)
+        EndIf
+    Else
+        Logger.WarnEx("Could not find Player Controller")
+    EndIf
 EndEvent

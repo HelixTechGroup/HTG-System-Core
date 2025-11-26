@@ -1,6 +1,6 @@
 {
   "FormKey": "000804:HTG-System-Core.esp",
-  "EditorID": "System_ModuleInformationMenu",
+  "EditorID": "System_ModuleMenu",
   "VirtualMachineAdapter": {
     "Scripts": [
       {
@@ -14,9 +14,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Modules",
-            "Object": "000801:HTG-System-Core.esp",
-            "Alias": 4
+            "Name": "EmptyMessage",
+            "Object": "000813:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -25,8 +24,9 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "EmptyMessage",
-            "Object": "000813:HTG-System-Core.esp"
+            "Name": "Modules",
+            "Object": "000801:HTG-System-Core.esp",
+            "Alias": 4
           }
         ]
       }
@@ -37,13 +37,11 @@
     "Value": "System->Module Information"
   },
   "ShowBodyText": "Document",
-  "MenuButtonStyle": [
-    "UseLongKioskEntry"
-  ],
-  "Style": "Windows",
+  "MenuButtonStyle": [],
+  "Style": "Kiosk",
   "INAM": {
     "TargetLanguage": "English",
-    "Value": "Mod Info"
+    "Value": "Module Information"
   },
   "BodyTexts": [
     {
@@ -66,7 +64,7 @@
     {
       "Text": {
         "TargetLanguage": "English",
-        "Value": "Module Information:\r\nName: <Token.Value=MName>\r\nVersion: <Token.Value=MMajVer>.<Token.Value=MMinVer>.<Token.Value=MRevVer>.<Token.Value=MPatchVer>\r\n\r\n"
+        "Value": "Module Information:\r\nName: <Token.Value=MName>\r\nVersion: <Token.Value=MMajVer>.<Token.Value=MMinVer>.<Token.Value=MRevVer>.<Token.Value=MPatchVer>\r\n\r\n\r\n"
       },
       "Conditions": [
         {
@@ -100,7 +98,17 @@
       "ID": 1,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -119,7 +127,17 @@
       "ID": 2,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -138,7 +156,17 @@
       "ID": 3,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -157,7 +185,17 @@
       "ID": 4,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -176,7 +214,17 @@
       "ID": 5,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -195,7 +243,17 @@
       "ID": 6,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -214,7 +272,17 @@
       "ID": 8,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -233,7 +301,17 @@
       "ID": 9,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -252,7 +330,17 @@
       "ID": 10,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -272,7 +360,17 @@
       "ID": 11,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -292,7 +390,17 @@
       "ID": 12,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -311,7 +419,17 @@
       "ID": 13,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -331,7 +449,17 @@
       "ID": 14,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -351,7 +479,17 @@
       "ID": 15,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
     },
     {
       "Text": {
@@ -370,7 +508,46 @@
       "ID": 16,
       "Target": {
         "MutagenObjectType": "TerminalMenuItemForceRedraw"
-      }
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "Show Information"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "Flags": [
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 101,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          },
+          "ComparisonValue": 1.0
+        }
+      ]
     },
     {
       "Text": {
@@ -388,8 +565,48 @@
       "UnusedISET2": "0x000000",
       "ID": 1000,
       "Target": {
-        "MutagenObjectType": "TerminalMenuItemReturnToDesktop"
-      }
+        "MutagenObjectType": "TerminalMenuItemReturnToPrevious"
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          }
+        }
+      ]
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "[Go Back]"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": ""
+      },
+      "UnusedISET": 22389,
+      "Flags": [
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 1001,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemForceRedraw"
+      },
+      "Conditions": [
+        {
+          "MutagenObjectType": "ConditionFloat",
+          "Unknown2": 16670,
+          "Data": {
+            "MutagenObjectType": "GetGlobalValueConditionData",
+            "FirstParameter": "000903:HTG-System-Core.esp"
+          },
+          "ComparisonValue": 1.0
+        }
+      ]
     }
   ]
 }

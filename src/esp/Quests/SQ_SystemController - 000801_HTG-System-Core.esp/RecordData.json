@@ -81,18 +81,23 @@
             "Properties": [
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "SystemModuleInformationKeyword",
-                "Object": "000839:HTG-System-Core.esp"
-              },
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "ModuleSpawnPoint",
                 "Object": "000812:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "SystemModuleInformationKeyword",
+                "Object": "000839:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "ModuleRegistry",
                 "Object": "000832:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "InstalledContent",
+                "Object": "2EE096:Starfield.esm"
               }
             ]
           }

@@ -1,0 +1,16 @@
+{
+  "FormKey": "000902:HTG-System-Core.esp",
+  "EditorID": "ModuleInformation_HTG-System-Core",
+  "Description": {
+    "TargetLanguage": "English",
+    "Value": "This is the core"
+  },
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "HTG System Core"
+  },
+  "Flags": [
+    "MessageBox"
+  ],
+  "BNAM": 4294967295
+}

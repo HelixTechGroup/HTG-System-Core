@@ -18,8 +18,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "UnityVariantMainQuests",
-            "Object": "000886:HTG-System-Core.esp"
+            "Name": "EndGameQuest",
+            "Object": "24EF9C:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -28,8 +28,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "EndGameQuest",
-            "Object": "24EF9C:Starfield.esm"
+            "Name": "UnityVariantMainQuests",
+            "Object": "000886:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",

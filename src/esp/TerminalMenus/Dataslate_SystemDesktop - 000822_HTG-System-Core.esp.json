@@ -1,6 +1,6 @@
 {
   "FormKey": "000822:HTG-System-Core.esp",
-  "EditorID": "DataslateSystemDesktop",
+  "EditorID": "Dataslate_SystemDesktop",
   "VirtualMachineAdapter": {
     "Scripts": [
       {
@@ -20,7 +20,7 @@
     "TargetLanguage": "English",
     "Value": "System Desktop"
   },
-  "ShowBodyText": "Document",
+  "ShowBodyText": "Folder",
   "MenuButtonStyle": [
     "CanBeDesktop",
     "UseLongKioskEntry"
@@ -31,5 +31,25 @@
     "Value": "Home"
   },
   "BodyTexts": [],
-  "MenuItems": []
+  "MenuItems": [
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "System"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": "System"
+      },
+      "Flags": [
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 1,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemSubmenu",
+        "Submenu": "000904:HTG-System-Core.esp"
+      }
+    }
+  ]
 }

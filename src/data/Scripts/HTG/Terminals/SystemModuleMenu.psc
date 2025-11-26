@@ -10,6 +10,7 @@ Message Property EmptyMessage Mandatory Const Auto
 String _luckToken = "LucAttr"
 Int _exitItemId = 1000
 Int _maxItemId = 100
+Int _modIndex = -1
 
 Event OnTerminalMenuEnter(TerminalMenu akTerminalBase, ObjectReference akTerminalRef)
     Parent.OnTerminalMenuEnter(akTerminalBase, akTerminalRef)
@@ -67,8 +68,26 @@ Event OnTerminalMenuItemRun(int auiMenuItemID, TerminalMenu akTerminalBase, Obje
         akTerminalRef.AddTextReplacementValue("MMinVer", kMod.Version.Minor)
         akTerminalRef.AddTextReplacementValue("MRevVer", kMod.Version.Revision)
         akTerminalRef.AddTextReplacementValue("MPatchVer", kMod.Version.Patch)
+
+        _modIndex = kI
         ShowModInfo.SetValueInt(1)
+    ElseIf (auiMenuItemID == 101)
+        Modules.WaitForInitialized()
+        SystemModuleInformation kMod = Modules.GetAt(_modIndex) as SystemModuleInformation
+        If IsNone(kMod)
+            Logger.WarnEx("Could not find Loaded Modules")
+            return
+        EndIf
+
+        If !IsNone(kMod.InstalledMessage)
+            akTerminalRef.AddTextReplacementData("MDesc", kMod.InstalledMessage)
+            kMod.InstalledMessage.Show()
+        EndIf
+    ElseIf auiMenuItemID == 1001
+        _modIndex = -1
+        ShowModInfo.SetValueInt(0)
     ElseIf (auiMenuItemID == _exitItemId) 
+        _modIndex = -1
         ShowModInfo.SetValueInt(0)
         akTerminalRef.ClearDynamicTerminalMenuItems()       
         return

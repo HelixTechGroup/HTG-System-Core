@@ -13,8 +13,14 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "ShowTutorial",
-            "Object": "00083E:HTG-System-Core.esp"
+            "Name": "DataslateTracker",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 10
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateLocation",
+            "Object": "0008D5:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -24,14 +30,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateLocation",
-            "Object": "0008D5:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateTracker",
-            "Object": "000824:HTG-System-Core.esp",
-            "Alias": 10
+            "Name": "ShowTutorial",
+            "Object": "00083E:HTG-System-Core.esp"
           }
         ]
       }
@@ -287,7 +287,7 @@
       "ForcedReference": "000884:HTG-System-Core.esp",
       "VoiceTypes": "Null",
       "TerminalMenus": [
-        "000804:HTG-System-Core.esp"
+        "000904:HTG-System-Core.esp"
       ]
     },
     {

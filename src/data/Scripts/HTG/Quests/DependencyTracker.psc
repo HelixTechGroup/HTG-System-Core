@@ -70,8 +70,9 @@ Event OnAliasChanged(ObjectReference akObject, bool abRemove)
             While i < kTypes.Length
                 SystemTypeEntry kEntry = kTypes[i]
                 LogObjectGlobal(Self, "Registering System Type: " + kEntry + \
-                    "\n\tName: " + kEntry.Name + \
+                    "\n\tFormName: " + kEntry.FormName + \
                     "\n\tFormId: " + kEntry.FormId + \
+                    "\n\tEditorId: " + kEntry.EditorId + \
                     "\n\tModName: " + kEntry.ModName + \
                     "\n\tScript: " + kEntry.Script)
                 RegisterEntry(kEntry)
@@ -156,16 +157,18 @@ Bool Function WaitForInitialized()
     return IsInitialized
 EndFunction
 
-Bool Function RegisterForm(String asName, \                        
+Bool Function RegisterForm(Int aiFormId, \                       
                         String asModName, \
-                        Int aiId = -1, \
-                        String akScriptNames = "", \
+                        String asFormName = "", \
+                        String asEditorId = "", \ 
+                        String asScriptName = "", \
                         Form akForm = None, \
                         Bool abCreateReference = False)
     SystemTypeEntry kEntry = new SystemTypeEntry
-    kEntry.FormId = aiId
-    kEntry.Name = asName
-    kEntry.Script = akScriptNames
+    kEntry.FormId = aiFormId
+    kEntry.FormName = asFormName
+    kEntry.EditorId = asEditorId
+    kEntry.Script = asScriptName
     kEntry.ModName = asModName
 
     Var[] kArgs = new Var[0]
@@ -179,12 +182,13 @@ Bool Function RegisterEntry(SystemTypeEntry akEntry)
     return _entries.AddEntry(akEntry) > -1
 EndFunction
 
-Form Function ResolveForm(Int aiId = -1, \
-                        String asName = "", \
+Form Function ResolveForm(Int aiFormId = -1, \                       
+                        String asFormName = "", \
+                        String asEditorId = "", \ 
                         String asScriptName = "")
     WaitForInitialized()
 
-    SystemDependencyEntry kEntry = _ResolveEntry(aiId, asName, asScriptName)
+    SystemDependencyEntry kEntry = _ResolveEntry(aiFormId, asEditorId, asScriptName)
     Var[] kArgs = new Var[0]
     kArgs.Add(kEntry)
     SendCustomEvent("OnResolve", kArgs)
@@ -192,36 +196,42 @@ Form Function ResolveForm(Int aiId = -1, \
     return kEntry.Type
 EndFunction
 
-Form Function ResolveReference(Int aiId = -1, \
-                        String asName = "", \
+Form Function ResolveReference(Int aiFormId = -1, \                       
+                        String asFormName = "", \
+                        String asEditorId = "", \ 
                         String asScriptName = "")
     WaitForInitialized()
 
-    SystemDependencyEntry kEntry = _ResolveEntry(aiId, asName, asScriptName)
+    SystemDependencyEntry kEntry = _ResolveEntry(aiFormId, asEditorId, asScriptName)
 
     If IsNone(kEntry)
         LogWarnGlobal(Self, "Unable to locate SystemTypeEntry for the following:" + \
-                                "\n\tFormID:" + aiId + \ 
-                                "\n\tFormName: " + asName)
+                                "\n\tFormID:" + aiFormId + \ 
+                                "\n\tFormName: " + asEditorId)
         return None
     EndIf
     
     return kEntry.Reference
 EndFunction
 
-Bool Function ContainsForm(Int aiId = -1, \
-                            String asName = "", \
-                            String asScriptName = "")
+Bool Function ContainsForm(Int aiFormId = -1, \                       
+                        String asFormName = "", \
+                        String asEditorId = "", \ 
+                        String asScriptName = "")
     WaitForInitialized()
 
     Bool kResult
-    If aiId > -1 \
-        && (_cache.FindStruct("FormId", aiId) \
-            || _entries.ContainsFormId(aiId))
+    If aiFormId > -1 \
+        && (_cache.FindStruct("FormId", aiFormId) \
+            || _entries.ContainsFormId(aiFormId))
         kResult = True
-    ElseIf asName != "" \
-            && (_cache.FindStruct("Name", asName) \
-                || _entries.ContainsFormName(asName))
+    ElseIf asEditorId != "" \
+            && (_cache.FindStruct("FormName", asFormName) \
+                || _entries.ContainsFormName(asFormName))
+        kResult = True
+    ElseIf asEditorId != "" \
+            && (_cache.FindStruct("EditorId", asEditorId) \
+                || _entries.ContainsEntryName(asEditorId))
         kResult = True
     ElseIf asScriptName != "" \
             && _entries.ContainsScriptName(asScriptName)
@@ -260,36 +270,72 @@ Bool Function _CreateCollections()
 
 EndFunction
 
-SystemDependencyEntry Function _ResolveEntry(Int aiId = -1, \
-                            String asName = "", \
-                            String asScriptName = "")
+SystemDependencyEntry Function _ResolveEntry(Int aiFormId, \                       
+                                                String asFormName = "", \
+                                                String asEditorId = "", \ 
+                                                String asScriptName = "")
     ; If this impacts performance switch to checking the index directly and getting the entry.
     SystemDependencyEntry kEntry
-    If aiId > -1 \
-        && (_cache.FindStruct("FormId", aiId) \
-            || _entries.ContainsFormId(aiId))
-        kEntry = _entries.GetFormIdEntry(aiId)
-    ElseIf asName != "" \
-            && (_cache.FindStruct("Name", asName) \
-                || _entries.ContainsFormName(asName))
-        kEntry = _entries.GetFormNameEntry(asName)
+    SystemTypeCacheEntry kCache = _CheckCache(aiFormId, \
+                                                asFormName, \
+                                                asEditorId, \ 
+                                                asScriptName)
+    If kCache != None
+        return _entries.GetAt(kCache.ModuleIndex)
+    EndIf
+
+    If aiFormId > -1 \
+        && _entries.ContainsFormId(aiFormId)
+        kEntry = _entries.GetFormIdEntry(aiFormId)
+    ElseIf asFormName != "" \
+            && _entries.ContainsFormName(asFormName)
+        kEntry = _entries.GetFormNameEntry(asFormName)
+    ElseIf asEditorId != "" \
+            && _entries.ContainsEntryName(asEditorId)
+        kEntry = _entries.GetFormNameEntry(asEditorId)
     ElseIf asScriptName != "" \
-            && (_cache.FindStruct("Script", asName) \
-                || _entries.ContainsFormName(asScriptName))
+            && _entries.ContainsFormName(asScriptName)
         kEntry = _entries.GetScriptNameEntry(asScriptName)
     EndIf
 
-    If !IsNone(kEntry) \
-        && _cache.FindStruct("FormId", kEntry.Id) < 0
-        SystemTypeCacheEntry kCache = new SystemTypeCacheEntry
-        kCache.FormId = kEntry.Id
-        kCache.Name = kEntry.Name
-        kCache.Script = kEntry.SystemType.Script
+    If !IsNone(kEntry)
+        kCache = new SystemTypeCacheEntry
         kCache.ModuleIndex = _entries.Find(kEntry)
-        kCache.Reference = kEntry.Reference
+        kCache.FormId = kEntry.Id
+        kCache.FormName = kEntry.Name
+        kCache.EditorId = kEntry.EditorId
+        kCache.Script = kEntry.SystemType.Script
 
         _cache.Add(kCache)
     EndIf
 
     return kEntry
+EndFunction
+
+SystemTypeCacheEntry Function _CheckCache(Int aiFormId = -1, \                       
+                            String asFormName = "", \
+                            String asEditorId = "", \ 
+                            String asScriptName = "")
+
+    Int iCache = _cache.FindStruct("FormId", aiFormId)
+    If iCache > -1
+        return _cache[iCache]
+    EndIf
+
+    iCache = _cache.FindStruct("FormName", asFormName)
+    If iCache > -1
+        return _cache[iCache]
+    EndIf
+
+    iCache = _cache.FindStruct("EditorId", asEditorId)
+    If iCache > -1
+        return _cache[iCache]
+    EndIf
+
+    iCache = _cache.FindStruct("Script", asScriptName)
+    If iCache > -1
+        return _cache[iCache]
+    EndIf
+
+    return None
 EndFunction

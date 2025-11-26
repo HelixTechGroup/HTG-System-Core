@@ -72,6 +72,15 @@ SystemDependencyEntry Function GetFormIdEntry(Int aiId)
 EndFunction
 
 SystemDependencyEntry Function GetFormNameEntry(String asName)
+    Int akIndex = FindStruct("FormName", asName)
+    If akIndex > -1
+        return GetAt(akIndex)
+    EndIf
+
+    return None
+EndFunction
+
+SystemDependencyEntry Function GetNameEntry(String asName)
     Int akIndex = FindStruct("Name", asName)
     If akIndex > -1
         return GetAt(akIndex)
@@ -128,8 +137,12 @@ Bool Function ContainsFormId(Int aiId)
     return FindStruct("Id", aiId) > -1
 EndFunction
 
-Bool Function ContainsFormName(String asName)
+Bool Function ContainsEntryName(String asName)
     return FindStruct("Name", asName) > -1
+EndFunction
+
+Bool Function ContainsFormName(String asFormName)
+    return FindStruct("FormName", asFormName) > -1
 EndFunction
 
 Bool Function ContainsForm(Form akForm)
@@ -152,8 +165,12 @@ Int Function _FindStruct(String asVarName, Var akElement)
 
     If asVarName == "FormId" ||  asVarName == "Id"
         res = kArray.FindStruct("FormId", akElement as Int)
-    ElseIf asVarName == "Name"
-        res = kArray.FindStruct("Name", akElement as String)
+    ElseIf asVarName == "FormName"
+        res = kArray.FindStruct("FormName", akElement as String)
+    ElseIf asVarName == "EditorId"
+        res = kArray.FindStruct("EditorId", akElement as String)
+    ElseIf asVarName == "Script" ||  asVarName == "ScriptName"
+        res = kArray.FindStruct("Script", akElement as String)
     EndIf
 
     kArray = None

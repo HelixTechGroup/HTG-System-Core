@@ -19,13 +19,13 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "MQ101",
-            "Object": "003448:Starfield.esm"
+            "Name": "PlayerUnityTimesEntered",
+            "Object": "219529:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SystemData",
-            "Object": "000883:HTG-System-Core.esp"
+            "Name": "City_NA_Aquilus01",
+            "Object": "07BDBF:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -35,13 +35,13 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "City_NA_Aquilus01",
-            "Object": "07BDBF:Starfield.esm"
+            "Name": "SystemData",
+            "Object": "000883:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "PlayerUnityTimesEntered",
-            "Object": "219529:Starfield.esm"
+            "Name": "MQ101",
+            "Object": "003448:Starfield.esm"
           }
         ]
       },
@@ -51,16 +51,6 @@
       {
         "Name": "HTG:SystemArmorUtility",
         "Properties": [
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Helmet",
-            "Object": "23C7C1:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DontShowInUI",
-            "Object": "374EFA:Starfield.esm"
-          },
           {
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "ClothingTypes",
@@ -73,18 +63,18 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Helmet",
+            "Object": "23C7C1:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
             "Name": "Backpack",
             "Object": "23C7BF:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "HelmetMod",
-            "Object": "3A0B3B:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Hat",
-            "Object": "0E048B:Starfield.esm"
+            "Name": "DontShowInUI",
+            "Object": "374EFA:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -93,13 +83,13 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Spacesuit",
-            "Object": "23C7C0:Starfield.esm"
+            "Name": "Hat",
+            "Object": "0E048B:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "BackpackMod",
-            "Object": "3E612E:Starfield.esm"
+            "Name": "Clothes",
+            "Object": "0E048C:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -108,8 +98,18 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Clothes",
-            "Object": "0E048C:Starfield.esm"
+            "Name": "BackpackMod",
+            "Object": "3E612E:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Spacesuit",
+            "Object": "23C7C0:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "HelmetMod",
+            "Object": "3A0B3B:Starfield.esm"
           }
         ]
       },

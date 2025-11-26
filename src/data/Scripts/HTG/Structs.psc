@@ -118,21 +118,22 @@ EndStruct
 
 Struct SystemTypeEntry
     Int FormId
-    String Name
+    String FormName
+    String EditorId
     String Script
     String ModName
 EndStruct
 
 Struct SystemTypeCacheEntry
     Int FormId
-    String Name
+    String FormName
+    String EditorId
     String Script
     Int ModuleIndex
-    ObjectReference Reference
 EndStruct
 
 Struct SystemTypeScriptEntry
-    Int FormId
+    Int Id
     String Name
 EndStruct
 

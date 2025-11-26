@@ -1,0 +1,48 @@
+{
+  "FormKey": "000904:HTG-System-Core.esp",
+  "EditorID": "System_RootMenu",
+  "Name": {
+    "TargetLanguage": "English",
+    "Value": "System"
+  },
+  "ShowBodyText": "Document",
+  "MenuButtonStyle": [
+    "CanBeDesktop",
+    "UseLongKioskEntry"
+  ],
+  "Style": "Kiosk",
+  "INAM": {
+    "TargetLanguage": "English",
+    "Value": "System"
+  },
+  "BodyTexts": [
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "Welcome to the Core Systems Menu."
+      },
+      "UseTemplatedText": false
+    }
+  ],
+  "MenuItems": [
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "System->Module Information"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": "Mod Info"
+      },
+      "Flags": [
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 1,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemSubmenu",
+        "Submenu": "000804:HTG-System-Core.esp"
+      }
+    }
+  ]
+}

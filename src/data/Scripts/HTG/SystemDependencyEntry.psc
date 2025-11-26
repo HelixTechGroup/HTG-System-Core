@@ -13,7 +13,13 @@ EndProperty
 
 String Property Name Hidden
     String Function Get()
-        return _entry.Name
+        return _entry.FormName
+    EndFunction
+EndProperty
+
+String Property EditorId Hidden
+    String Function Get()
+        return _entry.EditorId
     EndFunction
 EndProperty
 

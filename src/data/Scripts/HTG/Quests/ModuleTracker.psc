@@ -8,6 +8,7 @@ import HTG:SystemReferenceUtility
 FormList Property ModuleRegistry Mandatory Const Auto
 Keyword Property SystemModuleInformationKeyword Mandatory Const Auto
 ObjectReference Property ModuleSpawnPoint Mandatory Const Auto
+FormList property InstalledContent auto
 
 Bool Property IsInitialized Hidden
     Bool Function Get()
@@ -53,6 +54,11 @@ Event OnAliasChanged(ObjectReference akObject, bool abRemove)
             ModuleRegistry.AddForm(kMod)
         EndIf
 
+        If !IsNone(kMod.InstalledMessage) \ 
+            && InstalledContent.Find(kMod.InstalledMessage) < 0
+            InstalledContent.AddForm(kMod.InstalledMessage)
+        EndIf
+        
         ; If _cache.Find(kMod) < 0
         ;     _cache.Add(kMod)
         ; EndIf
