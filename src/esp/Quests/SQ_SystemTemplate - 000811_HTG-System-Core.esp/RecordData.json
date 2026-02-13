@@ -2,6 +2,11 @@
   "FormKey": "000811:HTG-System-Core.esp",
   "EditorID": "SQ_SystemTemplate",
   "VirtualMachineAdapter": {
+    "Scripts": [
+      {
+        "Name": "HTG:Quests:SQ_SystemTemplate"
+      }
+    ],
     "Script": {
       "Name": ""
     },
@@ -14,7 +19,14 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:Quests:ModuleInformation"
+            "Name": "HTG:Quests:ModuleInformation",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "ModInfoForm",
+                "Object": "000820:HTG-System-Core.esp"
+              }
+            ]
           }
         ]
       },
@@ -40,6 +52,10 @@
     "Value": "System Template"
   },
   "Data": {
+    "Flags": [
+      "WarnOnAliasFillFailure"
+    ],
+    "Priority": 100,
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
@@ -56,9 +72,14 @@
         "Optional",
         "AllowReuseInQuest",
         "AllowReserved",
-        "InitiallyDisabled"
+        "InitiallyDisabled",
+        "ExternalAliasLinked"
       ],
       "ALFG": 0,
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 5
+      },
       "VoiceTypes": "Null"
     },
     {
@@ -68,9 +89,14 @@
         "Optional",
         "AllowReuseInQuest",
         "AllowReserved",
-        "InitiallyDisabled"
+        "InitiallyDisabled",
+        "ExternalAliasLinked"
       ],
       "ALFG": 0,
+      "External": {
+        "Quest": "000801:HTG-System-Core.esp",
+        "AliasID": 0
+      },
       "VoiceTypes": "Null"
     },
     {
@@ -81,9 +107,14 @@
         "Optional",
         "AllowReuseInQuest",
         "AllowReserved",
-        "InitiallyDisabled"
+        "InitiallyDisabled",
+        "ExternalAliasLinked"
       ],
       "ALFG": 0,
+      "External": {
+        "Quest": "000824:HTG-System-Core.esp",
+        "AliasID": 5
+      },
       "VoiceTypes": "Null"
     }
   ],

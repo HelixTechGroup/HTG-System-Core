@@ -44,7 +44,7 @@ Event OnStageSet(int auiStageID, int auiItemID)
     Parent.OnStageSet(auiStageID, auiItemID)
 
     If auiStageID == _tutorialDataslateStageId && FloatToBool(ShowTutorial.GetValue())
-        Message.ClearHelpMessages()
+        ; Message.ClearHelpMessages()
         DataslateLocation.ShowAsHelpMessage("", 30.0, 30.0, 1)
         ; ShowMessage(DataslateLocation, asContext = DataslateTracker, abShowAsHelpMessage = True)
     EndIf

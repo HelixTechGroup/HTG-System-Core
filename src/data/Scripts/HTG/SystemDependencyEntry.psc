@@ -51,19 +51,18 @@ Form _type
 ObjectReference _reference
 Bool _canCreateReference
 
-SystemDependencyEntry Function SystemDependencyEntry(ObjectReference akOwner, \
+SystemDependencyEntry Function SystemDependencyEntry(ObjectReference akSpawnPoint, \
                                             SystemTypeEntry akEntry, \                                            
                                             Bool abCreateReference = False) Global
     Int kEntryFormId = 0x000008F9
     Form kForm = CreateForm(kEntryFormId)
 
-    SystemDependencyEntry kResult = HTG:SystemFormUtility.CreateReference(akOwner, kForm) as SystemDependencyEntry
+    SystemDependencyEntry kResult = HTG:SystemFormUtility.CreateReference(akSpawnPoint, kForm) as SystemDependencyEntry
     If IsNone(kResult)
-        LogErrorGlobal(akOwner, "Could not create HTG:SystemDependencyEntry")
+        LogErrorGlobal(akSpawnPoint, "Could not create HTG:SystemDependencyEntry")
         return None
     EndIf
-
-    akOwner.SetLinkedRef(kResult)
+    
     kResult.RegisterEntry(akEntry, abCreateReference)
 
     return kResult

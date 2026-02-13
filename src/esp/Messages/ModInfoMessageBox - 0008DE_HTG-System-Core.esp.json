@@ -3,7 +3,7 @@
   "EditorID": "ModInfoMessageBox",
   "Description": {
     "TargetLanguage": "English",
-    "Value": "<Alias.Name=ModInfoTextHolder>"
+    "Value": "<Alias.Name=ModuleInformation>"
   },
   "Name": {
     "TargetLanguage": "English",

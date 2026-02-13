@@ -32,7 +32,7 @@
       },
       "ShortText": {
         "TargetLanguage": "English",
-        "Value": "Mod Info"
+        "Value": "Module Information"
       },
       "Flags": [
         "CreatesNewWindow"
@@ -42,6 +42,25 @@
       "Target": {
         "MutagenObjectType": "TerminalMenuItemSubmenu",
         "Submenu": "000804:HTG-System-Core.esp"
+      }
+    },
+    {
+      "Text": {
+        "TargetLanguage": "English",
+        "Value": "System->Module Information"
+      },
+      "ShortText": {
+        "TargetLanguage": "English",
+        "Value": "Module Information"
+      },
+      "Flags": [
+        "CreatesNewWindow"
+      ],
+      "UnusedISET2": "0x000000",
+      "ID": 2,
+      "Target": {
+        "MutagenObjectType": "TerminalMenuItemSubmenu",
+        "Submenu": "00090E:HTG-System-Core.esp"
       }
     }
   ]

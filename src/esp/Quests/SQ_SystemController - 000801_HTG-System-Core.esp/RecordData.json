@@ -4,12 +4,23 @@
   "VirtualMachineAdapter": {
     "Scripts": [
       {
+        "Name": "HTG:Quests:SQ_DependencyController"
+      },
+      {
+        "Name": "HTG:Quests:SQ_MessageController"
+      },
+      {
         "Name": "HTG:Quests:SQ_SystemController",
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "Player",
             "Object": "000836:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "HoloArmor",
+            "Object": "000833:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -24,8 +35,20 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "HoloArmor",
-            "Object": "000833:HTG-System-Core.esp"
+            "Name": "Dependencies",
+            "Object": "000801:HTG-System-Core.esp",
+            "Alias": 17
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "UnityEvent",
+            "Object": "00081A:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "Messages",
+            "Object": "000801:HTG-System-Core.esp",
+            "Alias": 18
           }
         ]
       }
@@ -51,7 +74,7 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "SystemUtilitesObject",
+                "Name": "ModuleSpawnPoint",
                 "Object": "000812:HTG-System-Core.esp"
               }
             ]
@@ -66,23 +89,19 @@
         },
         "Scripts": [
           {
-            "Name": "HTG:Quests:DependencyTracker",
-            "Properties": [
-              {
-                "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModInfoAlias",
-                "Object": "000801:HTG-System-Core.esp",
-                "Alias": 5
-              }
-            ]
-          },
-          {
             "Name": "HTG:Quests:ModuleTracker",
             "Properties": [
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "ModuleSpawnPoint",
-                "Object": "000812:HTG-System-Core.esp"
+                "Name": "Dependencies",
+                "Object": "000801:HTG-System-Core.esp",
+                "Alias": 17
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "PrimaryModule",
+                "Object": "000801:HTG-System-Core.esp",
+                "Alias": 5
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
@@ -91,13 +110,69 @@
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "InstalledContent",
+                "Object": "2EE096:Starfield.esm"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
                 "Name": "ModuleRegistry",
                 "Object": "000832:HTG-System-Core.esp"
               },
               {
                 "MutagenObjectType": "ScriptObjectProperty",
-                "Name": "InstalledContent",
-                "Object": "2EE096:Starfield.esm"
+                "Name": "ModuleSpawnPoint",
+                "Object": "000812:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "LoadedSystemModuleInformationKeyword",
+                "Object": "000863:HTG-System-Core.esp"
+              },
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Messages",
+                "Object": "000801:HTG-System-Core.esp",
+                "Alias": 18
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000801:HTG-System-Core.esp",
+          "Alias": 17
+        },
+        "Scripts": [
+          {
+            "Name": "HTG:Quests:DependencyTracker",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Modules",
+                "Object": "000801:HTG-System-Core.esp",
+                "Alias": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Property": {
+          "Name": "",
+          "Object": "000801:HTG-System-Core.esp",
+          "Alias": 18
+        },
+        "Scripts": [
+          {
+            "Name": "HTG:Quests:MessageTracker",
+            "Properties": [
+              {
+                "MutagenObjectType": "ScriptObjectProperty",
+                "Name": "Modules",
+                "Object": "000801:HTG-System-Core.esp",
+                "Alias": 4
               }
             ]
           }
@@ -154,7 +229,6 @@
       "StartsEnabled",
       "WarnOnAliasFillFailure"
     ],
-    "Priority": 5,
     "Unused": "0x000000"
   },
   "QuestType": "00080F:HTG-System-Core.esp",
@@ -218,7 +292,7 @@
             "Conditions": [
               {
                 "MutagenObjectType": "ConditionFloat",
-                "Unknown2": 23871,
+                "Unknown2": 23869,
                 "Data": {
                   "MutagenObjectType": "HasKeywordConditionData",
                   "FirstParameter": "000839:HTG-System-Core.esp"
@@ -228,6 +302,70 @@
             ],
             "Keywords": [
               "000863:HTG-System-Core.esp"
+            ],
+            "VoiceTypes": "Null"
+          }
+        }
+      ]
+    },
+    {
+      "MutagenObjectType": "QuestCollectionAlias",
+      "Collection": [
+        {
+          "ID": 17,
+          "ALAM": 0,
+          "ReferenceAlias": {
+            "ID": 17,
+            "Name": "DependencyTracker",
+            "Flags": [
+              "Optional",
+              "AllowReuseInQuest",
+              "AllowReserved"
+            ],
+            "ALFG": 0,
+            "ReferenceCollectionAliasID": 4,
+            "Conditions": [
+              {
+                "MutagenObjectType": "ConditionFloat",
+                "Data": {
+                  "MutagenObjectType": "HasVMScriptConditionData",
+                  "FirstUnusedIntParameter": -1487234464,
+                  "FirstParameter": "HTG:Quests:ModuleInformation"
+                },
+                "ComparisonValue": 1.0
+              }
+            ],
+            "VoiceTypes": "Null"
+          }
+        }
+      ]
+    },
+    {
+      "MutagenObjectType": "QuestCollectionAlias",
+      "Collection": [
+        {
+          "ID": 18,
+          "ALAM": 0,
+          "ReferenceAlias": {
+            "ID": 18,
+            "Name": "MessageTracker",
+            "Flags": [
+              "Optional",
+              "AllowReuseInQuest",
+              "AllowReserved"
+            ],
+            "ALFG": 0,
+            "ReferenceCollectionAliasID": 4,
+            "Conditions": [
+              {
+                "MutagenObjectType": "ConditionFloat",
+                "Data": {
+                  "MutagenObjectType": "HasVMScriptConditionData",
+                  "FirstUnusedIntParameter": -1487235040,
+                  "FirstParameter": "HTG:Quests:ModuleInformation"
+                },
+                "ComparisonValue": 1.0
+              }
             ],
             "VoiceTypes": "Null"
           }
@@ -249,18 +387,6 @@
           "AliasID": 5
         }
       ],
-      "VoiceTypes": "Null"
-    },
-    {
-      "MutagenObjectType": "QuestReferenceAlias",
-      "ID": 6,
-      "Name": "ModInfoTextHolder",
-      "Flags": [
-        "Optional",
-        "AllowReuseInQuest",
-        "StoresText"
-      ],
-      "ALFG": 0,
       "VoiceTypes": "Null"
     }
   ],

@@ -8,13 +8,18 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "UnityDataQuests",
-            "Object": "000818:HTG-System-Core.esp"
+            "Name": "UnityVariantQuests",
+            "Object": "000810:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "UnityVariantQuests",
-            "Object": "000810:HTG-System-Core.esp"
+            "Name": "UnityCharGenEnabled",
+            "Object": "000909:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "UnityDataQuests",
+            "Object": "000818:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -33,8 +38,18 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "HoursPlayedPreUnity",
+            "Object": "000910:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
             "Name": "PlayerUnityTimesEntered",
             "Object": "219529:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "UnityEndMovieEnabled",
+            "Object": "000911:HTG-System-Core.esp"
           }
         ]
       }

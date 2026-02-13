@@ -277,19 +277,25 @@ Int Function Find(Var akKey)
         return -1
     EndIf
 
-    Int i = 0
-    While i < _keyArray.Length
-        If CompareType(_keyArray[i], akKey)
-            return i
-        EndIf
-        i += 1
-    EndWhile
+    TryLockGuard _arrayGuard
+        Int i = 0
+        While i < _keyArray.Length && !IsNone(_keyArray[i])
+            If CompareType(_keyArray[i], akKey)
+                return i
+            EndIf
+            i += 1
+        EndWhile
+    EndTryLockGuard
 
     return -1
 EndFunction
 
 Int Function FindStruct(String asVarName, Var akElement)
-    return _FindStruct(asVarName, akElement)
+    TryLockGuard _arrayGuard
+        return _FindStruct(asVarName, akElement)
+    EndTryLockGuard
+
+    return -1
 EndFunction
 
 Bool Function Contains(Var akKey)

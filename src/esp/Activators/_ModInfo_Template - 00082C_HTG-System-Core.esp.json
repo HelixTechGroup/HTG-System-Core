@@ -14,8 +14,8 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "CollectionRegistry",
-            "Object": "000828:HTG-System-Core.esp"
+            "Name": "SystemRegistry",
+            "Object": "000837:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -24,8 +24,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SystemRegistry",
-            "Object": "000837:HTG-System-Core.esp"
+            "Name": "CollectionRegistry",
+            "Object": "000828:HTG-System-Core.esp"
           }
         ]
       }

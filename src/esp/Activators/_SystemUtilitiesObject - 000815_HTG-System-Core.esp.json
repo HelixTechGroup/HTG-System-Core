@@ -10,42 +10,6 @@
   "VirtualMachineAdapter": {
     "Scripts": [
       {
-        "Name": "HTG:SystemUtilitiesObject",
-        "Properties": [
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DebugGlobal",
-            "Object": "0A7D31:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "PlayerUnityTimesEntered",
-            "Object": "219529:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "City_NA_Aquilus01",
-            "Object": "07BDBF:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Dependencies",
-            "Object": "000801:HTG-System-Core.esp",
-            "Alias": 4
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SystemData",
-            "Object": "000883:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "MQ101",
-            "Object": "003448:Starfield.esm"
-          }
-        ]
-      },
-      {
         "Name": "HTG:SystemGlobalVariableUtility"
       },
       {
@@ -53,13 +17,18 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "ClothingTypes",
-            "Object": "0008D9:HTG-System-Core.esp"
+            "Name": "StarbornManufacturer",
+            "Object": "35545C:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "SpacesuitMod",
-            "Object": "0E8D7B:Starfield.esm"
+            "Name": "ArmorTypes",
+            "Object": "000819:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DontShowInUI",
+            "Object": "374EFA:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -73,13 +42,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DontShowInUI",
-            "Object": "374EFA:Starfield.esm"
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "StarbornManufacturer",
-            "Object": "35545C:Starfield.esm"
+            "Name": "ClothingTypes",
+            "Object": "0008D9:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -93,8 +57,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "ArmorTypes",
-            "Object": "000819:HTG-System-Core.esp"
+            "Name": "HelmetMod",
+            "Object": "3A0B3B:Starfield.esm"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -108,8 +72,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "HelmetMod",
-            "Object": "3A0B3B:Starfield.esm"
+            "Name": "SpacesuitMod",
+            "Object": "0E8D7B:Starfield.esm"
           }
         ]
       },
@@ -124,6 +88,46 @@
       },
       {
         "Name": "HTG:SystemTimerUtility"
+      },
+      {
+        "Name": "HTG:SystemUtilitiesObject",
+        "Properties": [
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "MQ101",
+            "Object": "003448:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "HoursPlayedPreUnity",
+            "Object": "000910:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SystemData",
+            "Object": "000883:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "SystemController",
+            "Object": "000801:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "City_NA_Aquilus01",
+            "Object": "07BDBF:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DebugGlobal",
+            "Object": "0A7D31:Starfield.esm"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "PlayerUnityTimesEntered",
+            "Object": "219529:Starfield.esm"
+          }
+        ]
       }
     ]
   },

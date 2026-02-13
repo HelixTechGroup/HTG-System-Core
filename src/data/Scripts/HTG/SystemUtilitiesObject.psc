@@ -5,6 +5,7 @@ import HTG:SystemLogger
 import HTG:Structs
 import HTG:UtilityExt
 import HTG:Quests
+import Utility
 
 ; Struct Utilities
 ;     SystemIntUtility Integers
@@ -59,8 +60,10 @@ Cell Property SystemData Mandatory Const Auto
 Quest Property MQ101 Mandatory Const Auto
 Quest Property City_NA_Aquilus01 Mandatory Const Auto
 ActorValue Property PlayerUnityTimesEntered Mandatory Const Auto
-ModuleTracker Property Modules Mandatory Const Auto
-DependencyTracker Property Dependencies Mandatory Const Auto
+SQ_SystemController Property SystemController Mandatory Const Auto
+ActorValue Property HoursPlayedPreUnity Mandatory Const Auto    
+; ModuleTracker Property Modules Mandatory Const Auto
+; DependencyTracker Property Dependencies Mandatory Const Auto
 ; ObjectReference Property TempContainer Mandatory Const Auto
 
 Bool Property IsInitialized Hidden
@@ -71,21 +74,23 @@ EndProperty
 
 Bool Property IsDebugging Hidden
     Bool Function Get()
-        return DebugGlobal.GetValueInt() == 8    
+        return DebugGlobal.GetValueInt() == 8
     EndFunction
 EndProperty
 
+; Is a new game or player has just started a ng+ playthrough
 Bool Property IsNewGame Hidden
     Bool Function Get()
-        return _isNewGame 
+        return _isNewGame
     EndFunction
 EndProperty
 
+; Player has entered Unity at least once.
 Bool Property IsNewGamePlus Hidden
     Bool Function Get()
-        return _isNewGamePlus   
+        return _isNewGamePlus
     EndFunction
-EndProperty    
+EndProperty
 
 Guard _loggerGuard ProtectsFunctionLogic
 Guard _initializeTimerGuard ProtectsFunctionLogic
@@ -109,12 +114,13 @@ Int _maxTimerCycle = 600
 Int _currentTimerCycle = 0
 Bool _isNewGame
 Bool _isNewGamePlus
+Float _realMin = 0.016
 
 Event OnInit()
     ; _timerIds = new SystemTimerIds
     ; _stageIds = new SystemStageIds
     ; _menuIds = new SystemMenuIds
-    _isNewGame = True
+    ; _isNewGame = True
     _DetectNewGame()
     StartTimer(_timerInternal, _initializeTimerId)
 EndEvent
@@ -128,15 +134,17 @@ Event OnTimer(Int aiTimerID)
 
         Bool bRestartTimer
         TryLockGuard _initializeTimerGuard, _initializeGuard
-            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle    
-                WaitExt(0.15)        
+            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle
+                WaitExt(0.15)
                 _currentTimerCycle += 1
                 bRestartTimer = True
             ElseIf _currentTimerCycle == _maxTimerCycle
                 LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
             EndIf
+        Else
+            bRestartTimer = True
         EndTryLockGuard
-        
+
         If bRestartTimer
             StartTimer(_timerInternal, _initializeTimerId)
         EndIf
@@ -156,14 +164,14 @@ Bool Function Initialize()
     EndIf
 
     TryLockGuard _initializeGuard
-        ScriptObject so = Self as ScriptObject 
+        ScriptObject so = Self as ScriptObject
         LogObjectGlobal(Self, "HTG:SystemUtilities:" + Self + "\n\t As ScriptObject:" + so)
         If _SetSystemUtilities(so)
             _isInitialized = _RegisterEvents() \
                             && _CreateCollections()
         EndIf
     Else
-        StartTimer(0.1, _timerIds.InitializeId)
+        return False ; StartTimer(0.1, _timerIds.InitializeId)
     EndTryLockGuard
 
     return _isInitialized && _CheckSystemUtilites()
@@ -173,29 +181,28 @@ Bool Function WaitForInitialized()
     If _isInitialized
         return True
     EndIf
-    
+
     Int currentCycle = 0
     Int maxCycle = 600
     Bool maxCycleHit
-    While !maxCycleHit \
-            && !_CheckSystemUtilites()
+    While !Initialize() || maxCycleHit
         WaitExt(0.1)
-        ; !Initialize() && 
+        ; !Initialize() &&
         If currentCycle < maxCycle
             currentCycle += 1
         Else
             maxCycleHit = True
         EndIf
     EndWhile
-    
+
     If !_isInitialized && !_initializeTimerStarted
         StartTimer(_timerInternal, _initializeTimerId)
     EndIf
-    
+
     return _isInitialized
 EndFunction
 
-Bool Function _SetSystemUtilities(ScriptObject akScriptObject) RequiresGuard(_initializeGuard) 
+Bool Function _SetSystemUtilities(ScriptObject akScriptObject) RequiresGuard(_initializeGuard)
     If akScriptObject == None
         LogErrorGlobal(Self, "The object attached to  this Script is not a ScriptObject:" + Self)
         return False
@@ -238,10 +245,23 @@ Bool Function _SetSystemUtilities(ScriptObject akScriptObject) RequiresGuard(_in
             LogObjectGlobal(Self, "Utilities.Menus:" + _menuIds)
         EndIf
 
-        If !IsNone(Dependencies) && !Dependencies.IsInitialized
-            Dependencies.WaitForInitialized()
+        If !IsNone(SystemController) \
+            && !IsNone(SystemController.Modules) \
+            && !SystemController.Modules.IsInitialized
+            SystemController.Modules.WaitForInitialized()
         EndIf
 
+        If !IsNone(SystemController) \
+            && !IsNone(SystemController.Dependencies) \
+            && !SystemController.Dependencies.IsInitialized
+            SystemController.Dependencies.WaitForInitialized()
+        EndIf
+
+        If !IsNone(SystemController) \
+            && !IsNone(SystemController.Messages) \
+            && !SystemController.Messages.IsInitialized
+            SystemController.Messages.WaitForInitialized()
+        EndIf
         ; If IsNone(_modInfo) && ModInfoForm != None
         ;         _modInfo = HTG:SystemFormUtility.CreateReference(Self, ModInfoForm) as SystemModuleInformation
         ; EndIf
@@ -275,7 +295,7 @@ Bool Function _CheckSystemUtilites()
     ; If _stageIds == None
     ;     LogWarnGlobal(Self, "Stages is None.")
     ; EndIf
-    
+
     ; If _menuIds == None
     ;     LogWarnGlobal(Self, "Menus is None.")
     ; EndIf
@@ -285,24 +305,29 @@ Bool Function _CheckSystemUtilites()
         LogWarnGlobal(Self, "Integers is None.")
     EndIf
 
-    If IsNone(_formUtility)        
+    If IsNone(_formUtility)
         res = False
         LogWarnGlobal(Self, "Forms is None.")
     EndIf
 
-    If IsNone(_armorUtility)   
-        res = False     
+    If IsNone(_armorUtility)
+        res = False
         LogWarnGlobal(Self, "Armors is None.")
     EndIf
 
-    If !IsNone(Modules) && !Modules.IsInitialized
+    If !IsNone(SystemController.Modules) && !SystemController.Modules.IsInitialized
         res = False
         LogWarnGlobal(Self, "Modules is None.")
     EndIf
 
-    If !IsNone(Dependencies) && !Dependencies.IsInitialized
+    If !IsNone(SystemController.Dependencies) && !SystemController.Dependencies.IsInitialized
         res = False
         LogWarnGlobal(Self, "Dependencies is None.")
+    EndIf
+
+    If !IsNone(SystemController.Messages) && !SystemController.Messages.IsInitialized
+        res = False
+        LogWarnGlobal(Self, "Messages is None.")
     EndIf
 
     ; !IsNone(_logger) \
@@ -315,21 +340,33 @@ Bool Function _CheckSystemUtilites()
 EndFunction
 
 Bool Function _DetectNewGame()
-    If Game.GetPlayer().GetValue(PlayerUnityTimesEntered) > 0 
-        If City_NA_Aquilus01.IsCompleted()
-            _isNewGame = False
-        EndIf
-
+    _isNewGame = False
+    _isNewGamePlus = False
+    Float kUnityRealHours = Game.GetPlayer().GetValue(HoursPlayedPreUnity) + _realMin
+    Float kRealHours = Game.GetRealHoursPassed()
+    If Game.GetPlayer().GetValue(PlayerUnityTimesEntered) > 0
+        ; If City_NA_Aquilus01.IsCompleted()
+        ;     _isNewGame = False
+        ; EndIf
         _isNewGamePlus = True
     EndIf
 
-    If (MQ101.GetStage() > 0) \
-            && !IsDebugging
-        _isNewGame = False
-    ElseIf IsDebugging
-        ;need to find a sane way to handle debugging.
+    If kRealHours <= kUnityRealHours
+        _isNewGame = true
     EndIf
 
+    ; If (MQ101.GetStage() > 0) \
+    ;         && !IsDebugging
+    ;     _isNewGame = False
+    ; ElseIf IsDebugging
+        ;need to find a sane way to handle debugging.
+    ; EndIf
+
+    ; Wait(1.0)
+    LogObjectGlobal(Self, "Is New Game: " + _isNewGame  + \
+                        "\n\tIs NG+: " + _isNewGamePlus + \
+                        "\n\tReal Hours" + kRealHours + \
+                        "\n\tUnity Real Hours: " + kUnityRealHours)
     return _isNewGame
 EndFunction
 

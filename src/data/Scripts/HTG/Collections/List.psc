@@ -139,7 +139,7 @@ Int Function Add(Var akItem)
 
     ; Clean()
     LogObjectGlobal(Self, "Added item with Index: " + i + " and Count: " + _count + \
-                            "/r/tItem: " + akItem)
+                            "/n/tItem: " + akItem)
 
     return i
 EndFunction
@@ -255,13 +255,15 @@ Int Function Find(Var akItem)
         return -1
     EndIf
 
-    Int i = 0
-    While i < _internalArray.Length
-        If CompareItems(_internalArray[i], akItem)
-            return i
-        EndIf
-        i += 1
-    EndWhile
+    TryLockGuard _arrayGuard
+        Int i = 0
+        While i < _internalArray.Length
+            If CompareItems(_internalArray[i], akItem)
+                return i
+            EndIf
+            i += 1
+        EndWhile
+    EndTryLockGuard
 
     return -1
 EndFunction

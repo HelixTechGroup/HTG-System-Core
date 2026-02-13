@@ -221,14 +221,16 @@ Int Function Find(Form akKey)
         return -1
     EndIf
 
-    Int i = 0
-    While i < _internalArray.Length
-        KeyValuePair kPair = _internalArray[i]
-        If !IsNone(kPair) && CompareType(kPair.KeyForm, akKey)
-            return i
-        EndIf
-        i += 1
-    EndWhile
+    TryLockGuard _arrayGuard
+        Int i = 0
+        While i < _internalArray.Length
+            KeyValuePair kPair = _internalArray[i]
+            If !IsNone(kPair) && CompareType(kPair.KeyForm, akKey)
+                return i
+            EndIf
+            i += 1
+        EndWhile
+    EndTryLockGuard
 
     return -1
 EndFunction

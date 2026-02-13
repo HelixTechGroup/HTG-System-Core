@@ -128,7 +128,7 @@ EndProperty
 HTG:Quests:DependencyTracker Property Dependencies
     HTG:Quests:DependencyTracker Function Get()
         If IsFilled()
-            return (GetReference() as SystemUtilitiesObject).Dependencies
+            return (GetReference() as SystemUtilitiesObject).SystemController.Dependencies
         EndIf
 
         return None
@@ -173,6 +173,8 @@ Event OnTimer(Int aiTimerID)
             ElseIf _currentTimerCycle == _maxTimerCycle
                 LogErrorGlobal(Self, "HTG:SystemUtililities could not be Initialized")
             EndIf
+        Else
+            bRestartTimer = True
         EndTryLockGuard
         
         If bRestartTimer
@@ -207,78 +209,79 @@ Bool Function _SetSystemUtilities()
     Bool res = True
     SystemUtilitiesObject kUtils        
     kUtils = GetReference() as SystemUtilitiesObject
-    kUtils.WaitForInitialized()
 
-    If IsNone(_logger)
-        HTG:SystemLogger kLogger = (Self as ReferenceAlias) as HTG:SystemLogger
-        If IsNone(kLogger)
-            ; kLogger = (GetReference() as SystemUtilitiesObject).Logger
-            ; If IsNone(kLogger)
-                LogErrorGlobal(Self, "Unable to get System Logger.")
-            ; EndIf
+    If kUtils.IsInitialized
+        If IsNone(_logger)
+            HTG:SystemLogger kLogger = (Self as ReferenceAlias) as HTG:SystemLogger
+            If IsNone(kLogger)
+                ; kLogger = (GetReference() as SystemUtilitiesObject).Logger
+                ; If IsNone(kLogger)
+                    LogErrorGlobal(Self, "Unable to get System Logger.")
+                ; EndIf
+            EndIf
+            _logger = kLogger
         EndIf
-        _logger = kLogger
+
+        ; If IsNone(_modInfo)
+        ;     SystemModuleInformation kMod
+        ;     If ModInfoAliasId < 0
+        ;         HTG:Quests:ModuleInformation kAlias = GetOwningQuest().GetAlias(ModInfoAliasId) as HTG:Quests:ModuleInformation
+        ;         If !IsNone(kAlias) 
+        ;             If kAlias.IsFilled()
+        ;                 kMod = kAlias.GetReference() as HTG:SystemModuleInformation
+        ;                 If !IsNone(kMod)
+        ;                     _modInfo = kMod
+        ;                 EndIf
+        ;             ; Else
+        ;             ;     kAlias.RefillAlias()
+        ;             EndIf
+        ;         EndIf
+        ;     EndIf
+
+        ;     If IsNone(_modInfo)
+        ;         Int i
+        ;         Int kMaxIndex = 100
+        ;         While i <= kMaxIndex
+        ;             ReferenceAlias kRefAlias = GetOwningQuest().GetAlias(i) as ReferenceAlias
+        ;             If !IsNone(kRefAlias) \
+        ;                 && kRefAlias is HTG:Quests:ModuleInformation
+        ;                 ModInfoAliasId = i     
+        ;                 i = kMaxIndex + 1
+
+        ;                 HTG:Quests:ModuleInformation kAlias = kRefAlias as HTG:Quests:ModuleInformation
+        ;                 If kAlias.IsFilled()
+        ;                     kMod = kAlias.GetReference() as SystemModuleInformation
+        ;                     If !IsNone(kMod)
+        ;                         _modInfo = kMod                            
+        ;                     EndIf
+        ;                 EndIf
+        ;             Else
+        ;                 i += 1
+        ;             EndIf
+        ;         EndWhile
+        ;     EndIf
+        ; EndIf
+
+        If IsNone(_modInfo)
+            ; If !IsNone(ModInfoAlias) && !ModInfoAlias.IsFilled() && !IsNone(ModInfoAlias.ModInfoForm)
+            ;         _modInfo = HTG:SystemFormUtility.CreateReference(GetReference(), ModInfoAlias.ModInfoForm) as SystemModuleInformation
+            ;     ; EndIf
+            ; Else
+            If ModInfoAlias.IsFilled()
+                _modInfo = ModInfoAlias.GetReference() as SystemModuleInformation
+            EndIf
+
+            If !IsNone(_modInfo) ; && ModInfoAlias.GetReference() != _modInfo
+                ; ModInfoAlias.ForceRefTo(_modInfo)
+                Cell kCell = _modInfo.GetParentCell()
+                Logger.Log("Utilities current cell" + kUtils.GetParentCell())
+                Logger.Log("Mods current cell" + kCell)
+                MoveReference(_modInfo, kUtils)
+                ; _modInfo.MoveTo(kUtils)
+            EndIf
+        EndIf
     EndIf
-
-    ; If IsNone(_modInfo)
-    ;     SystemModuleInformation kMod
-    ;     If ModInfoAliasId < 0
-    ;         HTG:Quests:ModuleInformation kAlias = GetOwningQuest().GetAlias(ModInfoAliasId) as HTG:Quests:ModuleInformation
-    ;         If !IsNone(kAlias) 
-    ;             If kAlias.IsFilled()
-    ;                 kMod = kAlias.GetReference() as HTG:SystemModuleInformation
-    ;                 If !IsNone(kMod)
-    ;                     _modInfo = kMod
-    ;                 EndIf
-    ;             ; Else
-    ;             ;     kAlias.RefillAlias()
-    ;             EndIf
-    ;         EndIf
-    ;     EndIf
-
-    ;     If IsNone(_modInfo)
-    ;         Int i
-    ;         Int kMaxIndex = 100
-    ;         While i <= kMaxIndex
-    ;             ReferenceAlias kRefAlias = GetOwningQuest().GetAlias(i) as ReferenceAlias
-    ;             If !IsNone(kRefAlias) \
-    ;                 && kRefAlias is HTG:Quests:ModuleInformation
-    ;                 ModInfoAliasId = i     
-    ;                 i = kMaxIndex + 1
-
-    ;                 HTG:Quests:ModuleInformation kAlias = kRefAlias as HTG:Quests:ModuleInformation
-    ;                 If kAlias.IsFilled()
-    ;                     kMod = kAlias.GetReference() as SystemModuleInformation
-    ;                     If !IsNone(kMod)
-    ;                         _modInfo = kMod                            
-    ;                     EndIf
-    ;                 EndIf
-    ;             Else
-    ;                 i += 1
-    ;             EndIf
-    ;         EndWhile
-    ;     EndIf
-    ; EndIf
-
-    If IsNone(_modInfo)
-        ; If !IsNone(ModInfoAlias) && !ModInfoAlias.IsFilled() && !IsNone(ModInfoAlias.ModInfoForm)
-        ;         _modInfo = HTG:SystemFormUtility.CreateReference(GetReference(), ModInfoAlias.ModInfoForm) as SystemModuleInformation
-        ;     ; EndIf
-        ; Else
-        If ModInfoAlias.IsFilled()
-            _modInfo = ModInfoAlias.GetReference() as SystemModuleInformation
-        EndIf
-
-        If !IsNone(_modInfo) ; && ModInfoAlias.GetReference() != _modInfo
-            ; ModInfoAlias.ForceRefTo(_modInfo)
-            Cell kCell = _modInfo.GetParentCell()
-            Logger.Log("Utilities current cell" + kUtils.GetParentCell())
-            Logger.Log("Mods current cell" + kCell)
-            MoveReference(_modInfo, kUtils)
-            ; _modInfo.MoveTo(kUtils)
-        EndIf
-    EndIf
-
+    
     return !IsNone(_logger) \
             && !IsNone(_modInfo) \
             && kUtils.IsInitialized

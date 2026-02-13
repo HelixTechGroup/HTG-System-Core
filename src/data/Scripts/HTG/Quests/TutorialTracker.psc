@@ -1,0 +1,1 @@
+Scriptname HTG:Quests:TutorialTracker extends HTG:RefCollectionAliasExt

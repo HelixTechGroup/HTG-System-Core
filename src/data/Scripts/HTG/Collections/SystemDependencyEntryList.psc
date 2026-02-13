@@ -63,7 +63,7 @@ Int Function AddEntry(SystemTypeEntry akEntry, Bool abCreateReference = False)
 EndFunction
 
 SystemDependencyEntry Function GetFormIdEntry(Int aiId)
-    Int akIndex = FindStruct("Id", aiId)
+    Int akIndex = FindStruct("FormId", aiId)
     If akIndex > -1
         return GetAt(akIndex)
     EndIf
@@ -80,8 +80,8 @@ SystemDependencyEntry Function GetFormNameEntry(String asName)
     return None
 EndFunction
 
-SystemDependencyEntry Function GetNameEntry(String asName)
-    Int akIndex = FindStruct("Name", asName)
+SystemDependencyEntry Function GetFormEditorIdEntry(String asEditorId)
+    Int akIndex = FindStruct("EditorId", asEditorId)
     If akIndex > -1
         return GetAt(akIndex)
     EndIf
@@ -108,7 +108,11 @@ SystemDependencyEntry Function GetScriptNameEntry(String asScriptName)
 EndFunction
 
 Int Function FindFormIdEntry(Int aiId)
-    return FindStruct("Id", aiId)
+    return FindStruct("FormId", aiId)
+EndFunction
+
+Int Function FindFormEditorIdEntry(Int aiId)
+    return FindStruct("EditorId", aiId)
 EndFunction
 
 Int Function FindFormNameEntry(String asName)
@@ -135,6 +139,10 @@ EndFunction
 
 Bool Function ContainsFormId(Int aiId)
     return FindStruct("Id", aiId) > -1
+EndFunction
+
+Bool Function ContainsFormEditorId(String asEditorId)
+    return FindStruct("EditorId", asEditorId) > -1
 EndFunction
 
 Bool Function ContainsEntryName(String asName)
@@ -165,7 +173,7 @@ Int Function _FindStruct(String asVarName, Var akElement)
 
     If asVarName == "FormId" ||  asVarName == "Id"
         res = kArray.FindStruct("FormId", akElement as Int)
-    ElseIf asVarName == "FormName"
+    ElseIf asVarName == "FormName" || asVarName == "Name"
         res = kArray.FindStruct("FormName", akElement as String)
     ElseIf asVarName == "EditorId"
         res = kArray.FindStruct("EditorId", akElement as String)

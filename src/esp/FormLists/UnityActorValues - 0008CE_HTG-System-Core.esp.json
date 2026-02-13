@@ -5,5 +5,8 @@
     "TargetLanguage": "English",
     "Value": "ActorValues that are saved during Unity"
   },
+  "Items": [
+    "000910:HTG-System-Core.esp"
+  ],
   "AddToList": "15F47B:Starfield.esm"
 }

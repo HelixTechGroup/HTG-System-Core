@@ -1,7 +1,7 @@
 {
   "SpriggitSource": {
-    "PackageName": "0.38",
-    "Version": ""
+    "PackageName": "Spriggit.Json.Starfield",
+    "Version": "0.38"
   },
   "ModKey": "HTG-System-Core.esp",
   "GameRelease": "Starfield",

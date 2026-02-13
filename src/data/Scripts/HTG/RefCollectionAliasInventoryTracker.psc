@@ -6,6 +6,7 @@ import HTG:Collections
 
 ObjectReferenceList Property InitializedReferences Auto Hidden
 Message Property InitializedReferenceMessage Mandatory Const Auto
+Message Property InitializingReferenceMessage Mandatory Const Auto
 ReferenceAlias Property InitializedTextHolder Mandatory Const Auto  
 
 Bool Property DisableTracking Auto Hidden
@@ -62,6 +63,8 @@ Event OnAliasChanged(ObjectReference akObject, bool abRemove)
 
     If !abRemove
         Logger.Log("OnAliasChanged:Registering: " + akObject)
+        _registeringReferences.Add(akObject)
+        StartTimer(Utilities.Timers.Defaults.Interval, _registerTimerId)
     Else
         Logger.Log("OnAliasChanged:Unregistering: " + akObject)
         _unregisteringReferences.Add(akObject)
@@ -395,7 +398,7 @@ Bool Function _RegisterReferences()
     While fI < fCount
         ObjectReference kObject = _registeringReferences.GetVarAt(fI) as ObjectReference ; kReferences[fI] as ObjectReference
         Logger.Log("RegisterTimer - Checking reference: " + kObject)
-        ; If !IsReferenceRegistering(kObject)
+        If !IsNone(kObject)
             Logger.Log("RegisterTimer - Adding reference: " + kObject)
             If _RegisterReference(kObject)
                 Var[] kArgs = new Var[0]
@@ -408,7 +411,7 @@ Bool Function _RegisterReferences()
                 _initializingReferences.Add(kObject)
                 Logger.Log("RegisterTimer - Registered reference: " + kObject)
             EndIf
-        ; EndIf
+        EndIf
         fI += 1
     EndWhile
 
@@ -436,7 +439,7 @@ Bool Function _UnregisterReferences()
     While fI < fCount
         ObjectReference kObject = _unregisteringReferences.GetVarAt(fI) as ObjectReference ; References[fI] as ObjectReference
         Logger.Log("UnregisterTimer - Checking reference: " + kObject)
-        ; If InitializedReferences.Contains(kObject)
+        If !IsNone(kObject)
             Logger.Log("UnregisterTimer - Removing reference: " + kObject)
             If _UnregisterReference(kObject)
                 Var[] kArgs = new Var[0]
@@ -450,7 +453,7 @@ Bool Function _UnregisterReferences()
                 _registeringReferences.Remove(kObject)
                 _initializingReferences.Remove(kObject)
             EndIf
-        ; EndIf
+        EndIf
         fI += 1
     EndWhile
 
@@ -496,12 +499,17 @@ Bool Function _InitializeReferences()
     _initializationStarted = True
     Int fI = 0
     Int fCount = _initializingReferences.Count ; GetCount()
-    ; Var[] kReferences = _initializingReferences.GetArray()
+    Var[] kReferences = _initializingReferences.GetArray()
     Logger.Log("RegisterReferenceTimer - Found Tracked references.")
+    Message.ClearHelpMessages()
+    InitializingReferenceMessage.ShowAsHelpMessage("followerInit", 30.0, 30.0, fCount)
+
     While fI < fCount
-        ObjectReference kObject = _initializingReferences.GetVarAt(fI) as ObjectReference  ; kReferences[fI] as ObjectReference
+        ObjectReference kObject = kReferences[fI] as ObjectReference  ; kReferences[fI] as ObjectReference
+        InitializedTextHolder.ForceRefTo(kObject)
         Logger.Log("RegisterTimer - Checking reference: " + kObject)
-        If !InitializedReferences.Contains(kObject)
+
+        If !IsNone(kObject) && !InitializedReferences.Contains(kObject)
             Logger.Log("RegisterTimer - Adding reference: " + kObject)
             If _InitializeReference(kObject)
                 Var[] kArgs = new Var[0]
@@ -523,12 +531,18 @@ Bool Function _InitializeReferences()
 
     If InitializedReferences.Count >= GetCount()
         _isTrackingInitialized = True
+        InitializedTextHolder.Clear()
+        InitializingReferenceMessage.UnshowAsHelpMessage()
+        Message.ResetHelpMessage("followerInit")
     EndIf
 
     _initializationStarted = False
     
     If _initializingReferences.Count > 0
         return True
+    Else
+        Message.ClearHelpMessages()
+        ; Message.ResetHelpMessage(asEvent)
     EndIf
 
     return False

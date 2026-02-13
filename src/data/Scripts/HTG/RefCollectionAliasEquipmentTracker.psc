@@ -34,7 +34,7 @@ Event OnAliasChanged(ObjectReference akObject, bool abRemove)
     If !IsNone(kActor) \
         && !IsNone(IncludeRace) \
         && kActor.GetRace() != IncludeRace
-        RemoveRef(akObject)
+        ; RemoveRef(akObject)
         return
     EndIf
 
@@ -141,25 +141,25 @@ Bool Function _RegisterReference(ObjectReference akObject)
             Keyword kArmorType = kArmorUtil.GetArmorType(kArmor)
             If !kActor.IsEquipped(kArmor)
                 Logger.Log("RegisterFollowerTimer - New Equipment found of type:" + kArmorType)
-                If kArmorType == kArmorUtil.Hat
-                    bHatFound = True
-                    Logger.Log("RegisterFollowerTimer - Registering Hat.")
-                    If kActor.WornHasKeyword(kArmorUtil.Hat)
-                        kActor.UnequipItemSlot(kArmorUtil.HeadSlot) ; Hat 
-                        iCheckCount += 1
-                    ElseIf kActor.GetItemCount(kArmor) > 0
-                        bFound = True
-                    EndIf      
-                ElseIf kArmorType == kArmorUtil.Clothes
-                    bClothesFound = True
-                    Logger.Log("RegisterFollowerTimer - Registering Clothes.")
-                    If kActor.WornHasKeyword(kArmorUtil.Clothes)
-                        kActor.UnequipItemSlot(kArmorUtil.ClothesSlot) ; Clothes
-                        iCheckCount += 1
-                    ElseIf kActor.GetItemCount(kArmor) > 0
-                        bFound = True
-                    EndIf      
-                ElseIf kArmorType == kArmorUtil.Helmet
+                ; If kArmorType == kArmorUtil.Hat
+                ;     bHatFound = True
+                ;     Logger.Log("RegisterFollowerTimer - Registering Hat.")
+                ;     If kActor.WornHasKeyword(kArmorUtil.Hat)
+                ;         kActor.UnequipItemSlot(kArmorUtil.HeadSlot) ; Hat 
+                ;         iCheckCount += 1
+                ;     ElseIf kActor.GetItemCount(kArmor) > 0
+                ;         bFound = True
+                ;     EndIf      
+                ; ElseIf kArmorType == kArmorUtil.Clothes
+                ;     bClothesFound = True
+                ;     Logger.Log("RegisterFollowerTimer - Registering Clothes.")
+                ;     If kActor.WornHasKeyword(kArmorUtil.Clothes)
+                ;         kActor.UnequipItemSlot(kArmorUtil.ClothesSlot) ; Clothes
+                ;         iCheckCount += 1
+                ;     ElseIf kActor.GetItemCount(kArmor) > 0
+                ;         bFound = True
+                ;     EndIf      
+                If kArmorType == kArmorUtil.Helmet
                     bHelmetFound = True
                     Logger.Log("RegisterFollowerTimer - Registering Helmet.")
                     If kActor.WornHasKeyword(kArmorUtil.Helmet)
@@ -300,7 +300,7 @@ Bool Function _InitializeReference(ObjectReference akObject)
                 EquipmentMap kMap = armr[i]
                 If !kMap.IsRegistered ; && _detectedEquipment.Contains(kMap)
                     If kActor.IsEquipped(kMap.Equipment)
-                        Debug.Notification("Init Found " + kMap.Equipment + " for " + kMap.OwnerRef)
+                        Debug.Notification("Init Found " + kMap.Equipment.GetFormEditorID() + " for " + kMap.OwnerRef.GetBaseObject().GetFormEditorID())
                         _detectedEquipment.Remove(kMap)
                         kMap.IsRegistered = True
                         _RegisterActorEquipmentMap(kMap)
@@ -318,8 +318,8 @@ Bool Function _InitializeReference(ObjectReference akObject)
             ;  EndTryLockGuard
             ; EndIf
 
-            Debug.Notification("Found " + iFoundCount + "/" + iCheckCount + " equipment for " + kActor)
-            Logger.Log("Found " + iFoundCount + "/" + iCheckCount + " equipment for " + kActor as String)
+            Debug.Notification("Found " + iFoundCount + "/" + iCheckCount + " equipment for " + kActor.GetFormEditorID())
+            Logger.Log("Found " + iFoundCount + "/" + iCheckCount + " equipment for " + kActor.GetFormEditorID())
             If iCheckCount == 0 \
                 || (iFoundCount > 0 \
                     && iFoundCount >= iCheckCount)

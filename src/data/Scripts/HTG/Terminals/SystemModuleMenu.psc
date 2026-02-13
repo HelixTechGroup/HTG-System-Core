@@ -6,6 +6,7 @@ import HTG:UtilityExt
 ModuleTracker Property Modules Mandatory Const Auto
 GlobalVariable Property ShowModInfo Mandatory Const Auto
 Message Property EmptyMessage Mandatory Const Auto
+ReferenceAlias Property CurrentModule Mandatory Const Auto
 
 String _luckToken = "LucAttr"
 Int _exitItemId = 1000
@@ -63,14 +64,15 @@ Event OnTerminalMenuItemRun(int auiMenuItemID, TerminalMenu akTerminalBase, Obje
                     "\n\tDescription: " + kMod.Description + \
                     "\n\tIsCoreIntegrated: " + kMod.IsCoreIntegrated + \
                     "\n\tVersion: " + kMod.Version)
-        akTerminalRef.AddTextReplacementData("MName", kMod.GetBaseObject())
-        akTerminalRef.AddTextReplacementValue("MMajVer", kMod.Version.Major)
-        akTerminalRef.AddTextReplacementValue("MMinVer", kMod.Version.Minor)
-        akTerminalRef.AddTextReplacementValue("MRevVer", kMod.Version.Revision)
-        akTerminalRef.AddTextReplacementValue("MPatchVer", kMod.Version.Patch)
+        ; akTerminalRef.AddTextReplacementData("MMod", kMod.GetBaseObject())
+        ; akTerminalRef.AddTextReplacementValue("MMajVer", kMod.Version.Major)
+        ; akTerminalRef.AddTextReplacementValue("MMinVer", kMod.Version.Minor)
+        ; akTerminalRef.AddTextReplacementValue("MRevVer", kMod.Version.Revision)
+        ; akTerminalRef.AddTextReplacementValue("MPatchVer", kMod.Version.Patch)
 
         _modIndex = kI
         ShowModInfo.SetValueInt(1)
+        CurrentModule.ForceRefTo(kMod)
     ElseIf (auiMenuItemID == 101)
         Modules.WaitForInitialized()
         SystemModuleInformation kMod = Modules.GetAt(_modIndex) as SystemModuleInformation

@@ -509,7 +509,7 @@ EndFunction
 Bool Function _Init()
     _equipmentTracker = EquipmentTracker as ReferenceAliasEquipmentTracker
     return Parent._Init() \
-            && (!IsNone(_equipmentTracker) && _equipmentTracker.WaitForInitialized())
+            && (!IsNone(_equipmentTracker) && _equipmentTracker.IsInitialized)
 EndFunction
 
 ObjectReference Function _GetHoloArmorPiece(Keyword akArmorType, ObjectMod akMod = None)

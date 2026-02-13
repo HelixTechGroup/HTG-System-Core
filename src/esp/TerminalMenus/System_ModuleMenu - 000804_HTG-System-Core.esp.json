@@ -8,14 +8,15 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Utilities",
-            "Object": "000801:HTG-System-Core.esp",
-            "Alias": 0
+            "Name": "currentModule",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 16
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "EmptyMessage",
-            "Object": "000813:HTG-System-Core.esp"
+            "Name": "Modules",
+            "Object": "000801:HTG-System-Core.esp",
+            "Alias": 4
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -24,9 +25,14 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "Modules",
+            "Name": "Utilities",
             "Object": "000801:HTG-System-Core.esp",
-            "Alias": 4
+            "Alias": 0
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "EmptyMessage",
+            "Object": "000813:HTG-System-Core.esp"
           }
         ]
       }
@@ -64,7 +70,7 @@
     {
       "Text": {
         "TargetLanguage": "English",
-        "Value": "Module Information:\r\nName: <Token.Value=MName>\r\nVersion: <Token.Value=MMajVer>.<Token.Value=MMinVer>.<Token.Value=MRevVer>.<Token.Value=MPatchVer>\r\n\r\n\r\n"
+        "Value": "Name: <Alias.Name=CurrentModuleInfo>\r\nDescription: <Alias.Description=CurrentModuleInfo>\r\nVersion: <Alias.Version.Major=CurrentModuleInfo>\r\nFileName: <Alias.FileName=CurrentModuleInfo>\r\n\r\n"
       },
       "Conditions": [
         {

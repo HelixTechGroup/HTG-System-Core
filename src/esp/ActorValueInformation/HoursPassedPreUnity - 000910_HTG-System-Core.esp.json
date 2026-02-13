@@ -1,0 +1,10 @@
+{
+  "FormKey": "000910:HTG-System-Core.esp",
+  "EditorID": "HoursPassedPreUnity",
+  "ContextNotes": "Stores the real hours played when player enters Unity",
+  "DefaultValue": 0.0,
+  "Flags": [
+    "DefaultToZero"
+  ],
+  "Type": "Variable"
+}

@@ -243,20 +243,19 @@ Function WaitExt(Float afInterval) Global
     EndWhile
 EndFunction
 
-Function ShowMessage(Message akMessage, \
+Int Function ShowMessage(Message akMessage, \
+                    Bool abIsHelpMessage = False, \
+                    Bool abIsMessageBox = False, \   
+                    String asEventName = "", \  
+                    Float afDuration = 30.0, \
+                    Float afInterval = 30.0, \
+                    Int aiMaxTimes = 1, \
+                    Int aiPriority = 0, \                                               
                     String asContext = "", \
-                    ObjectReference[] akTextHolder = None, \
+                    Float[] afArgs = None, \
                     ReferenceAlias[] akTextHolderAlias = None, \
-                    Bool abShowAsHelpMessage = false, \
-                    Float afArg1 = 0.0, \
-                    Float afArg2 = 0.0, \
-                    Float afArg3 = 0.0, \
-                    Float afArg4 = 0.0, \
-                    Float afArg5 = 0.0, \
-                    Float afArg6 = 0.0, \
-                    Float afArg7 = 0.0, \
-                    Float afArg8 = 0.0, \
-                     Float afArg9 = 0.0) Global
+                    ObjectReference[] akTextHolder = None) Global
+    Int iResult = -1                    
     Int i = 0
     Bool bUseAlias = (akTextHolder != None && akTextHolder.Length > 0) \
                     && (akTextHolderAlias != None && akTextHolderAlias.Length > 0)
@@ -268,20 +267,37 @@ Function ShowMessage(Message akMessage, \
         EndWhile
     EndIf
 
-    If abShowAsHelpMessage
-        float HelpMessageDuration = 3.0
-        float HelpMessageInterval = 3.0
-        int HelpMessageMaxTimes = 1
-        int HelpMessagePriority = 0
+    If abIsHelpMessage
         Message.ClearHelpMessages()
-        akMessage.ShowAsHelpMessage("DataslateLocationHelpMsg", \
-                                    HelpMessageDuration, \
-                                    HelpMessageInterval, \
-                                    HelpMessageMaxTimes, \
-                                    "", \
-                                    HelpMessagePriority)
-    Else 
-        akMessage.Show(afArg1, afArg2, afArg3, afArg4, afArg5, afArg6, afArg7, afArg8, afArg9)
+        akMessage.ShowAsHelpMessage(asEventName, \
+                                    afDuration, \
+                                    afInterval, \
+                                    aiMaxTimes, \
+                                    asContext, \
+                                    aiPriority)
+    ElseIf afArgs != None
+        If afArgs.Length < 8
+            Int iAmount = 8 - afArgs.Length
+            afArgs.Add(0.0, iAmount)
+        EndIf
+
+        iResult = ShowMessageWithArgs(akMessage, \
+                                        afArgs[0], \
+                                        afArgs[1], \
+                                        afArgs[2], \
+                                        afArgs[3], \
+                                        afArgs[4], \
+                                        afArgs[5], \
+                                        afArgs[6], \
+                                        afArgs[7], \
+                                        afArgs[8], \
+                                        abIsHelpMessage)
+    Else
+        If abIsMessageBox
+            iResult = akMessage.Show()    
+        Else 
+            akMessage.Show()
+        EndIf
     EndIf
 
     If bUseAlias
@@ -291,4 +307,28 @@ Function ShowMessage(Message akMessage, \
             kAlias.Clear()
         EndWhile
     EndIf
+
+    return iResult
+EndFunction
+
+Int Function ShowMessageWithArgs(Message akMessage, \
+                                    Float afArg1 = 0.0, \
+                                    Float afArg2 = 0.0, \
+                                    Float afArg3 = 0.0, \
+                                    Float afArg4 = 0.0, \
+                                    Float afArg5 = 0.0, \
+                                    FLoat afArg6 = 0.0, \
+                                    Float afArg7 = 0.0, \
+                                    Float afArg8 = 0.0, \
+                                    Float afArg9 = 0.0, \
+                                    Bool abIsMessageBox = False) Global
+    Int iResult = -1
+
+    If abIsMessageBox
+        iResult = akMessage.Show(afArg1, afArg2, afArg3, afArg4, afArg5, afArg6, afArg7, afArg8, afArg9)    
+    Else 
+        akMessage.Show(afArg1, afArg2, afArg3, afArg4, afArg5, afArg6, afArg7, afArg8, afArg9)
+    EndIf
+
+    return iResult
 EndFunction

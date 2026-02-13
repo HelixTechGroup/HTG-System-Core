@@ -6,6 +6,15 @@
   </Imports>
   <Scripts>
     <Script>HTG:Structs</Script>
+    <Script>HTG:ReferenceAliasBase</Script>
+    <Script>HTG:ActivatorBase</Script>
+    <Script>HTG:ActiveMagicEffectBase</Script>
+    <Script>HTG:ObjectReferenceBase</Script>
+    <Script>HTG:PerkBase</Script>
+    <Script>HTG:QuestBase</Script>
+    <Script>HTG:RefCollectionAliasBase</Script>
+    <Script>HTG:ScriptObjectBase</Script>
+    <Script>HTG:TerminalMenuBase</Script>
     <Script>HTG:ActivatorExt</Script>
     <Script>HTG:ActiveMagicEffectExt</Script>
     <Script>HTG:SystemArmorUtility</Script>
@@ -41,6 +50,7 @@
     <Script>HTG:Collections:ObjectReferenceList</Script>
     <Script>HTG:Collections:EquipmentMapList</Script>
     <Script>HTG:Collections:SystemDependencyEntryList</Script>
+    <Script>HTG:SystemMessageQueueEntry</Script>
 	  <Script>HTG:DataslateTerminalActivator</Script>
     <Script>HTG:Quests:DataslateTracker</Script>
     <Script>HTG:Quests:ModuleTracker</Script>
@@ -54,12 +64,21 @@
     <Script>HTG:Quests:SQ_HoloArmorController</Script>
     <Script>HTG:Quests:SQ_PlayerController</Script>
     <Script>HTG:Quests:SQ_SystemController</Script>
+    <Script>HTG:Quests:SQ_SystemTemplate</Script>
     <Script>HTG:Quests:DependencyTracker</Script>
+    <Script>HTG:Quests:MessageTracker</Script>
+    <Script>HTG:Quests:TutorialTracker</Script>
+    <Script>HTG:Quests:SQ_DependencyController</Script>
+    <Script>HTG:Quests:SQ_MessageController</Script>
+    <Script>HTG:Quests:SQ_TutorialController</Script>
     <Script>HTG:Quests:SQ_UnityEventController</Script>
     <Script>HTG:Quests:SQ_UnityVariant</Script>
+    <Script>HTG:Quests:SQ_UnityMainVariant</Script>
+    <Script>HTG:Quests:SQ_UnityData</Script>
     <Script>HTG:Terminals:DataslateSystemDesktop</Script>
     <Script>HTG:Terminals:DataslateTerminalMenu</Script>
     <Script>HTG:Terminals:SystemModuleMenu</Script>
+    <Script>HTG:Terminals:SystemMessageMenu</Script>
     <Script>Fragments:Quests:QF_MQ305_0024EF9C</Script>
     <Script>MQ401QuestScript</Script>
   </Scripts>

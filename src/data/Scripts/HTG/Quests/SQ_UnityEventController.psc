@@ -3,6 +3,7 @@ Scriptname HTG:Quests:SQ_UnityEventController extends HTG:QuestExt
 import HTG
 import HTG:Collections
 import HTG:UtilityExt
+import HTG:SystemGlobalVariableUtility
 
 ActorValue Property PlayerUnityTimesEntered Mandatory Const Auto
 Mq305Script Property EndGameQuest Mandatory Const Auto
@@ -13,6 +14,7 @@ FormList Property UnityVariantMainQuests Mandatory Const Auto
 FormList Property UnityVariantQuests Mandatory Const Auto
 ;Contains Quests that save or alter game data pre unity
 FormList Property UnityDataQuests Mandatory Const Auto
+ActorValue Property HoursPlayedPreUnity Mandatory Const Auto
 
 SQ_UnityVariant[] Property ActiveUnityVariants Hidden
     SQ_UnityVariant[] Function Get()
@@ -26,7 +28,8 @@ Quest Property ActiveMainVariantQuest Hidden
     EndFunction
 EndProperty
 
-; GameplayOption Property UnityCharGenEnabled Auto Const Mandatory
+GlobalVariable Property UnityCharGenEnabled Auto Const Mandatory
+GlobalVariable Property UnityEndMovieEnabled Auto Const Mandatory
 
 Int _enterUnityStageId = 2000
 Int _unityFaceGenCompleteStageId = 120
@@ -35,6 +38,14 @@ Int _unityLoadDataStageId = 5001
 FormListExt _completeMainVariantList
 SQ_UnityVariant[] _activeVariants
 Quest _activeMainQuest
+
+Event OnQuestStarted()
+    Parent.OnQuestStarted()
+
+    ; If Utilities.IsDebugging
+    ;     UnityEndMovieEnabled.SetValueInt(0)
+    ; EndIf
+EndEvent
 
 Event Quest.OnQuestInit(Quest akSender)
     WaitForInitialized()
@@ -53,10 +64,10 @@ Event Quest.OnQuestInit(Quest akSender)
         _StartRandomMainQuest()
         _StartVariants()
 
-        Bool kStartCharGen = True
-        If Game.IsPluginInstalled("HTG-Regenesys-Unity")
-            kStartCharGen = Game.GetGameSettingBool("RegenesysUnityRegenesysUnity_EnableCharGen")
-        EndIf
+        Bool kStartCharGen = GlobalToBool(UnityCharGenEnabled)
+        ; If Game.IsPluginInstalled("HTG-Regenesys-Unity")
+        ;     kStartCharGen = Game.GetGameSettingBool("RegenesysUnityRegenesysUnity_EnableCharGen")
+        ; EndIf
 
         If kStartCharGen
             ; Start CharGen; the fragment calls CheckChargenMenu()
@@ -77,10 +88,43 @@ Event Quest.OnStageSet(Quest akSender, int auiStageID, int auiItemID)
             kDataQuest.SetStage(_unitySaveDataStageId)
             i += 1
         EndWhile 
-
-        EndGameQuest.EnterUnity()
+        
+        ; EndGameQuest.EnterUnity()
+        EnterUnity()
     EndIf
 EndEvent
+
+Function EnterUnity()
+	Actor PlayerREF = Game.GetPlayer()
+
+	Game.FadeOutGame(true, false, 0.0, 1.0, true)
+	Utility.Wait(1.0) ; give the fade a second to process
+	
+	;Wait until this scene completes before moving on
+	While EndGameQuest.MQ305_002_Unity_05.IsPlaying()
+		Utility.Wait(0.50)
+	EndWhile
+
+	Int myUnityTimesEntered = PlayerREF.GetValueInt(PlayerUnityTimesEntered) + 1
+	PlayerREF.SetValue(PlayerUnityTimesEntered, myUnityTimesEntered)
+	EndGameQuest.SavePlayerKnowledge()
+
+    If UnityEndMovieEnabled.GetValueInt() >= 1
+        ;Play the Unity movie.
+	    EndGameQuest.WwiseEvent_QST_PlayerEntersUnityA.Play(PlayerREF) ;play audio
+	    Game.PlayBinkNoWait("EndingVision.bk2", abMuteAudio=False, abMuteMusic=False, aPlayDuringLoadingScreen=True)
+    Else
+        Game.FadeOutGame(False, False, 0.0, 1.0)
+    EndIf
+
+	Utility.Wait(0.1)
+
+	Float kHoursPlayed = Game.GetRealHoursPassed()
+    Game.GetPlayer().SetValue(HoursPlayedPreUnity, kHoursPlayed)
+
+	;Trigger the reset and restart of the game
+	Game.CreateStarbornGame()
+EndFunction
 
 Bool Function _CreateCollections()
     If IsNone(_completeMainVariantList)

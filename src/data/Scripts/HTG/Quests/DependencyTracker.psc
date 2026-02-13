@@ -11,17 +11,15 @@ import HTG:SystemLogger
 ;     EndFunction
 ; EndProperty
 
-ModuleInformation Property ModInfoAlias Mandatory Const Auto
+; ModuleInformation Property ModInfoAlias Mandatory Const Auto
 
-ModuleTracker Property Modules Hidden
-    HTG:Quests:ModuleTracker Function Get()
-        If IsFilled()
-            return (Self as RefCollectionAlias) as ModuleTracker
-        EndIf
+ModuleTracker Property Modules Mandatory Const Auto
 
-        return None
-    EndFunction    
-EndProperty
+; ModuleTracker Property Modules Hidden
+;     HTG:Quests:ModuleTracker Function Get()
+;         return _tracker
+;     EndFunction
+; EndProperty
 
 Bool Property IsInitialized Hidden
     Bool Function Get()
@@ -39,6 +37,7 @@ Int _maxTimerCycle = 600
 Int _currentTimerCycle = 0
 SystemDependencyEntryList _entries
 SystemTypeCacheEntry[] _cache
+; ModuleTracker _tracker
 
 CustomEvent OnResolve
 CustomEvent OnRegister
@@ -47,11 +46,13 @@ Event OnInit()
     RegisterForCustomEvent(Self, "OnResolve")
     RegisterForCustomEvent(Self, "OnRegister")
 
+    ; RegisterForRemoteEvent(Modules, "OnAliasChanged")
+
     StartTimer(_timerInternal, _initializeTimerId)
 EndEvent
 
 Event OnAliasChanged(ObjectReference akObject, bool abRemove)
-    WaitForInitialized()
+    _WaitForInitialized()
     ; Parent.OnAliasChanged(akObject, abRemove)
 
     If !abRemove
@@ -93,15 +94,17 @@ Event OnTimer(Int aiTimerID)
 
         Bool bRestartTimer
         TryLockGuard _initializeTimerGuard, _initializeGuard
-            If !Initialize() && _currentTimerCycle < _maxTimerCycle    
-                WaitExt(0.15)        
+            If !Initialize() && _currentTimerCycle < _maxTimerCycle
+                WaitExt(0.15)
                 _currentTimerCycle += 1
                 bRestartTimer = True
             ElseIf _currentTimerCycle == _maxTimerCycle
                 LogErrorGlobal(Self, "HTG:Quests:DependencyTracker could not be Initialized")
             EndIf
+        Else
+            bRestartTimer = True
         EndTryLockGuard
-        
+
         If bRestartTimer
             StartTimer(_timerInternal, _initializeTimerId)
         EndIf
@@ -116,6 +119,12 @@ Event HTG:Quests:DependencyTracker.OnResolve(HTG:Quests:DependencyTracker akSend
     WaitForInitialized()
 EndEvent
 
+Event RefCollectionAlias.OnAliasChanged(RefCollectionAlias akSender, ObjectReference akObject, bool abRemove)
+    If akSender == Modules
+        AddRef(akObject)
+    EndIf
+EndEvent
+
 Bool Function Initialize()
     If _isInitialized
         return True
@@ -124,43 +133,42 @@ Bool Function Initialize()
     TryLockGuard _initializeGuard
         _isInitialized = _InitializeObject()
     Else
-        StartTimer(0.1, _initializeTimerId)
-        WaitExt(0.333)
+        ; StartTimer(0.1, _initializeTimerId)
+        ; WaitExt(0.333)
+        return False
     EndTryLockGuard
 
     return _isInitialized
 EndFunction
 
 Bool Function WaitForInitialized()
-    If IsInitialized
+    If IsInitialized && Modules.IsInitialized
         return True
     EndIf
-    
-    Int currentCycle = 0
-    Int maxCycle = 600
-    Bool maxCycleHit
 
-    ; StartTimer(_timerInterval, _initializeTimerId)
-
-    While !maxCycleHit \
-            && ((!IsNone(Modules) && !Modules.IsInitialized) \
-                || !IsInitialized)
-        WaitExt(0.05)
-
-        If currentCycle < maxCycle
-            currentCycle += 1
+    While GetCount() < Modules.ModuleRegistry.GetSize()
+        WaitExt(0.1)
+        RefillAlias()
+        
+        If GetCount() >= Modules.ModuleRegistry.GetSize() ;_currentRefreshTimerCycle == _maxRefreshTimerCycle
+            ; _Refresh()
+            LogGlobal("Finished Refresh of Loaded Modules.")
+            LogGlobal("ModuleRegistry Count: " + Modules.ModuleRegistry.GetSize() + \
+                        "\n\tDependencyTracker Count: " + GetCount())
         Else
-            maxCycleHit = True
+            LogGlobal("ModuleRegistry Count: " + Modules.ModuleRegistry.GetSize() + \
+                        "\n\tDependencyTracker Count: " + GetCount())
         EndIf
     EndWhile
 
-    return IsInitialized
+    return _WaitForInitialized() \
+            && Modules.WaitForInitialized()
 EndFunction
 
-Bool Function RegisterForm(Int aiFormId, \                       
+Bool Function RegisterForm(Int aiFormId, \
                         String asModName, \
                         String asFormName = "", \
-                        String asEditorId = "", \ 
+                        String asEditorId = "", \
                         String asScriptName = "", \
                         Form akForm = None, \
                         Bool abCreateReference = False)
@@ -182,13 +190,22 @@ Bool Function RegisterEntry(SystemTypeEntry akEntry)
     return _entries.AddEntry(akEntry) > -1
 EndFunction
 
-Form Function ResolveForm(Int aiFormId = -1, \                       
+Form Function ResolveForm(Int aiFormId = -1, \
                         String asFormName = "", \
-                        String asEditorId = "", \ 
+                        String asEditorId = "", \
                         String asScriptName = "")
     WaitForInitialized()
 
-    SystemDependencyEntry kEntry = _ResolveEntry(aiFormId, asEditorId, asScriptName)
+    SystemDependencyEntry kEntry = _ResolveEntry(aiFormId, asFormName, asEditorId, asScriptName)
+    
+    If IsNone(kEntry)
+        LogWarnGlobal(Self, "Coulnd not resolve form: " +\
+                            "\n\tFormId" + aiFormId +\
+                            "\n\tForm Name: " + asFormName +\
+                            "\n\tForm EditorId: " + asEditorId)
+        return None
+    EndIf
+
     Var[] kArgs = new Var[0]
     kArgs.Add(kEntry)
     SendCustomEvent("OnResolve", kArgs)
@@ -196,27 +213,28 @@ Form Function ResolveForm(Int aiFormId = -1, \
     return kEntry.Type
 EndFunction
 
-Form Function ResolveReference(Int aiFormId = -1, \                       
+Form Function ResolveReference(Int aiFormId = -1, \
                         String asFormName = "", \
-                        String asEditorId = "", \ 
+                        String asEditorId = "", \
                         String asScriptName = "")
     WaitForInitialized()
 
-    SystemDependencyEntry kEntry = _ResolveEntry(aiFormId, asEditorId, asScriptName)
+    SystemDependencyEntry kEntry = _ResolveEntry(aiFormId, asFormName, asEditorId, asScriptName)
 
     If IsNone(kEntry)
-        LogWarnGlobal(Self, "Unable to locate SystemTypeEntry for the following:" + \
-                                "\n\tFormID:" + aiFormId + \ 
-                                "\n\tFormName: " + asEditorId)
+        LogWarnGlobal(Self, "Coulnd not resolve form: " +\
+                            "\n\tFormId" + aiFormId +\
+                            "\n\tForm Name: " + asFormName +\
+                            "\n\tForm EditorId: " + asEditorId)
         return None
     EndIf
-    
+
     return kEntry.Reference
 EndFunction
 
-Bool Function ContainsForm(Int aiFormId = -1, \                       
+Bool Function ContainsForm(Int aiFormId = -1, \
                         String asFormName = "", \
-                        String asEditorId = "", \ 
+                        String asEditorId = "", \
                         String asScriptName = "")
     WaitForInitialized()
 
@@ -243,22 +261,29 @@ EndFunction
 
 Bool Function ContainsEntry(SystemDependencyEntry akEntry)
     WaitForInitialized()
-    
+
     return _entries.Contains(akEntry)
 EndFunction
 
+; Function RegisterTracker(ModuleTracker akTracker)
+;     If !IsNone(_tracker)
+;         return
+;     EndIf
+
+;     _tracker = akTracker
+; EndFunction
+
 Bool Function _InitializeObject()
-    return _CreateCollections() \   
-            && (!IsNone(Modules) && Modules.WaitForInitialized())
+    return _CreateCollections()
 EndFunction
 
 Bool Function _CreateCollections()
-    If !IsNone(ModInfoAlias) && !ModInfoAlias.IsFilled()
+    If IsNone(Modules) || IsNone(Modules.PrimaryModule)
         return False
     EndIf
 
     If _entries == None
-        SystemModuleInformation kMod = ModInfoAlias.GetReference() as SystemModuleInformation
+        SystemModuleInformation kMod = Modules.PrimaryModule.GetReference() as SystemModuleInformation
         _entries = HTG:Collections:SystemDependencyEntryList.SystemDependencyEntryList(kMod)
     EndIf
 
@@ -267,18 +292,17 @@ Bool Function _CreateCollections()
     EndIf
 
     return (!IsNone(_entries) && _entries.IsInitialized)
-
 EndFunction
 
-SystemDependencyEntry Function _ResolveEntry(Int aiFormId, \                       
+SystemDependencyEntry Function _ResolveEntry(Int aiFormId, \
                                                 String asFormName = "", \
-                                                String asEditorId = "", \ 
+                                                String asEditorId = "", \
                                                 String asScriptName = "")
     ; If this impacts performance switch to checking the index directly and getting the entry.
     SystemDependencyEntry kEntry
     SystemTypeCacheEntry kCache = _CheckCache(aiFormId, \
                                                 asFormName, \
-                                                asEditorId, \ 
+                                                asEditorId, \
                                                 asScriptName)
     If kCache != None
         return _entries.GetAt(kCache.ModuleIndex)
@@ -291,8 +315,8 @@ SystemDependencyEntry Function _ResolveEntry(Int aiFormId, \
             && _entries.ContainsFormName(asFormName)
         kEntry = _entries.GetFormNameEntry(asFormName)
     ElseIf asEditorId != "" \
-            && _entries.ContainsEntryName(asEditorId)
-        kEntry = _entries.GetFormNameEntry(asEditorId)
+            && _entries.ContainsFormEditorId(asEditorId)
+        kEntry = _entries.GetFormEditorIdEntry(asEditorId)
     ElseIf asScriptName != "" \
             && _entries.ContainsFormName(asScriptName)
         kEntry = _entries.GetScriptNameEntry(asScriptName)
@@ -312,30 +336,46 @@ SystemDependencyEntry Function _ResolveEntry(Int aiFormId, \
     return kEntry
 EndFunction
 
-SystemTypeCacheEntry Function _CheckCache(Int aiFormId = -1, \                       
-                            String asFormName = "", \
-                            String asEditorId = "", \ 
-                            String asScriptName = "")
+SystemTypeCacheEntry Function _CheckCache(Int aiFormId = -1, \
+                                            String asFormName = "", \
+                                            String asEditorId = "", \
+                                            String asScriptName = "")
 
     Int iCache = _cache.FindStruct("FormId", aiFormId)
-    If iCache > -1
-        return _cache[iCache]
+    If iCache < 0
+        iCache = _cache.FindStruct("FormName", asFormName)
+        If iCache < 0
+            iCache = _cache.FindStruct("EditorId", asEditorId)
+            If iCache < 0
+                iCache = _cache.FindStruct("Script", asScriptName)
+                If iCache < 0
+                    return None
+                EndIf
+            EndIf
+        EndIf
     EndIf
 
-    iCache = _cache.FindStruct("FormName", asFormName)
-    If iCache > -1
-        return _cache[iCache]
-    EndIf
+    SystemTypeCacheEntry kEntry = _cache[iCache]
+    LogObjectGlobal(Self, "Found cached entry: " + kEntry)
+    return kEntry
+EndFunction
 
-    iCache = _cache.FindStruct("EditorId", asEditorId)
-    If iCache > -1
-        return _cache[iCache]
-    EndIf
+Bool Function _WaitForInitialized()
+    Int currentCycle = 0
+    Int maxCycle = 600
+    Bool maxCycleHit
 
-    iCache = _cache.FindStruct("Script", asScriptName)
-    If iCache > -1
-        return _cache[iCache]
-    EndIf
+    ; StartTimer(_timerInterval, _initializeTimerId)
 
-    return None
+    While !maxCycleHit
+        WaitExt(0.1)
+        If !Initialize() \ 
+            && currentCycle < maxCycle
+            currentCycle += 1
+        Else
+            maxCycleHit = True
+        EndIf
+    EndWhile
+
+    return IsInitialized
 EndFunction

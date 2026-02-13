@@ -13,14 +13,8 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateTracker",
-            "Object": "000824:HTG-System-Core.esp",
-            "Alias": 10
-          },
-          {
-            "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "DataslateLocation",
-            "Object": "0008D5:HTG-System-Core.esp"
+            "Name": "ShowTutorial",
+            "Object": "00083E:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
@@ -30,8 +24,14 @@
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "ShowTutorial",
-            "Object": "00083E:HTG-System-Core.esp"
+            "Name": "DataslateLocation",
+            "Object": "0008D5:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptObjectProperty",
+            "Name": "DataslateTracker",
+            "Object": "000824:HTG-System-Core.esp",
+            "Alias": 10
           }
         ]
       }
@@ -133,7 +133,7 @@
       "StartGameEnabled",
       "StartsEnabled"
     ],
-    "Priority": 20,
+    "Priority": 10,
     "Unused": "0x000000"
   },
   "QuestType": "0475F8:Starfield.esm",
@@ -246,8 +246,10 @@
       "ID": 14,
       "Name": "ModuleInformation",
       "Flags": [
+        "ReservesLocationOrReference",
         "Optional",
         "AllowReuseInQuest",
+        "StoresText",
         "AllowReserved",
         "ExternalAliasLinked"
       ],
@@ -281,14 +283,12 @@
       "Flags": [
         "ReservesLocationOrReference",
         "AllowReuseInQuest",
-        "AllowReserved"
+        "AllowReserved",
+        "UsesStoredText"
       ],
       "ALFG": 0,
       "ForcedReference": "000884:HTG-System-Core.esp",
-      "VoiceTypes": "Null",
-      "TerminalMenus": [
-        "000904:HTG-System-Core.esp"
-      ]
+      "VoiceTypes": "Null"
     },
     {
       "MutagenObjectType": "QuestReferenceAlias",
@@ -311,6 +311,18 @@
         "Create": "In",
         "Level": "4"
       },
+      "VoiceTypes": "Null"
+    },
+    {
+      "MutagenObjectType": "QuestReferenceAlias",
+      "ID": 16,
+      "Name": "CurrentModuleInfo",
+      "Flags": [
+        "Optional",
+        "AllowReuseInQuest",
+        "AllowReserved"
+      ],
+      "ALFG": 0,
       "VoiceTypes": "Null"
     }
   ],

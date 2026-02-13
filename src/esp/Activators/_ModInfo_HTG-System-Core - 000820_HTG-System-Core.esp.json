@@ -14,8 +14,8 @@
         "Properties": [
           {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "InstalledMessage",
-            "Object": "000902:HTG-System-Core.esp"
+            "Name": "CollectionRegistry",
+            "Object": "000828:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptStringProperty",
@@ -23,9 +23,79 @@
             "Data": "HTG System Core"
           },
           {
+            "MutagenObjectType": "ScriptStructListProperty",
+            "Name": "LocalSystemMessageRegistery",
+            "Structs": [
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptStringProperty",
+                    "Name": "EditorId",
+                    "Data": "ModInfoMessageBox"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptBoolProperty",
+                    "Name": "AlwaysShow",
+                    "Data": true
+                  },
+                  {
+                    "MutagenObjectType": "ScriptBoolProperty",
+                    "Name": "IsMessageBox",
+                    "Data": true
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "Entry",
+                    "Object": "0008DE:HTG-System-Core.esp"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "MutagenObjectType": "ScriptStringProperty",
+            "Name": "description",
+            "Data": ""
+          },
+          {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "ModuleRegistry",
-            "Object": "000832:HTG-System-Core.esp"
+            "Name": "InstalledMessage",
+            "Object": "000902:HTG-System-Core.esp"
+          },
+          {
+            "MutagenObjectType": "ScriptStructListProperty",
+            "Name": "LocalSystemTypeRegistry",
+            "Structs": [
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptStringProperty",
+                    "Name": "ModName",
+                    "Data": "HTG-System-Core"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptStringProperty",
+                    "Name": "Script",
+                    "Data": "HTG:Quests:SQ_Player"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptIntProperty",
+                    "Name": "FormId",
+                    "Data": 2102
+                  },
+                  {
+                    "MutagenObjectType": "ScriptStringProperty",
+                    "Name": "EditorId",
+                    "Data": "SQ_PlayerController"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptStringProperty",
+                    "Name": "FormName",
+                    "Data": "SQ_PlayerController"
+                  }
+                ]
+              }
+            ]
           },
           {
             "MutagenObjectType": "ScriptStructProperty",
@@ -44,44 +114,9 @@
             ]
           },
           {
-            "MutagenObjectType": "ScriptStructListProperty",
-            "Name": "LocalSystemTypeRegistry",
-            "Structs": [
-              {
-                "Members": [
-                  {
-                    "MutagenObjectType": "ScriptStringProperty",
-                    "Name": "EditorId",
-                    "Data": "SQ_PlayerController"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptStringProperty",
-                    "Name": "ModName",
-                    "Data": "HTG-System-Core"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptStringProperty",
-                    "Name": "Script",
-                    "Data": "HTG:Quests:SQ_Player"
-                  },
-                  {
-                    "MutagenObjectType": "ScriptIntProperty",
-                    "Name": "FormId",
-                    "Data": 2102
-                  },
-                  {
-                    "MutagenObjectType": "ScriptStringProperty",
-                    "Name": "FormName",
-                    "Data": "SQ_PlayerController"
-                  }
-                ]
-              }
-            ]
-          },
-          {
             "MutagenObjectType": "ScriptObjectProperty",
-            "Name": "CollectionRegistry",
-            "Object": "000828:HTG-System-Core.esp"
+            "Name": "ModuleRegistry",
+            "Object": "000832:HTG-System-Core.esp"
           },
           {
             "MutagenObjectType": "ScriptStringProperty",
@@ -89,14 +124,29 @@
             "Data": "HTG-System-Core"
           },
           {
+            "MutagenObjectType": "ScriptStructListProperty",
+            "Name": "LocalSystemMessageAliasRegistry",
+            "Structs": [
+              {
+                "Members": [
+                  {
+                    "MutagenObjectType": "ScriptIntProperty",
+                    "Name": "MessageEntryIndex"
+                  },
+                  {
+                    "MutagenObjectType": "ScriptObjectProperty",
+                    "Name": "Entry",
+                    "Object": "000801:HTG-System-Core.esp",
+                    "Alias": 5
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "MutagenObjectType": "ScriptObjectProperty",
             "Name": "SystemRegistry",
             "Object": "000837:HTG-System-Core.esp"
-          },
-          {
-            "MutagenObjectType": "ScriptStringProperty",
-            "Name": "description",
-            "Data": ""
           },
           {
             "MutagenObjectType": "ScriptObjectProperty",

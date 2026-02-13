@@ -7,7 +7,7 @@ import HTG:SystemLogger
 import HTG:SystemReferenceUtility
 
 Form Property ModInfoForm Const Auto
-ObjectReference Property SystemUtilitesObject Mandatory Const Auto
+ObjectReference Property ModuleSpawnPoint Const Auto
 
 String Property Name Hidden
     String Function Get()
@@ -93,16 +93,21 @@ Event OnTimer(Int aiTimerID)
 
         Bool bRestartTimer
         TryLockGuard _initializeTimerGuard, _initializeGuard
-            If !Initialize() &&  _currentTimerCycle < _maxTimerCycle    
-                WaitExt(0.15)        
+            If !Initialize() \
+                && _currentTimerCycle < _maxTimerCycle    
+                WaitExt(0.01)        
                 _currentTimerCycle += 1
                 bRestartTimer = True
             ElseIf _currentTimerCycle == _maxTimerCycle
-                LogErrorGlobal(Self, "HTG:ModuleInformation could not be Initialized")
+                _currentTimerCycle = 0
+                ; bRestartTimer = True
             EndIf
+        Else
+            ; LogWarnGlobal(Self, "HTG:ModuleInformation could not be Initialized due to Guarding issue.")
+            bRestartTimer = True
         EndTryLockGuard
-        
-        If bRestartTimer
+
+        If bRestartTimer && !_isInitialized
             StartTimer(_timerInternal, _initializeTimerId)
         EndIf
     EndIf
@@ -120,8 +125,9 @@ Bool Function Initialize()
 
         _isInitialized = _CreateModule()
     Else
-        StartTimer(0.1, _initializeTimerId)
+        ; StartTimer(0.333, _initializeTimerId)
         ; WaitExt(0.25)
+        return False
     EndTryLockGuard
 
     return IsFilled()
@@ -138,11 +144,9 @@ Bool Function WaitForInitialized()
 
     ; StartTimer(_timerInterval, _initializeTimerId)
 
-    While !maxCycleHit \
-            && (!IsInitialized)
-        WaitExt(0.01)
-
-        If currentCycle < maxCycle
+    While !maxCycleHit
+        WaitExt(0.5)
+        If !Initialize() && currentCycle <= maxCycle
             currentCycle += 1
         Else
             maxCycleHit = True
@@ -156,11 +160,14 @@ Bool Function _CreateModule()
     SystemModuleInformation kMod
     If !IsFilled()
         If !IsNone(ModInfoForm) 
-            ObjectReference kSpawnPoint = SystemUtilitesObject
+            ObjectReference kSpawnPoint = ModuleSpawnPoint
             If IsNone(kSpawnPoint)
                 QuestExt kQuest = GetOwningQuest() as QuestExt
                 If !IsNone(kQuest) && !IsNone(kQuest.Utilities)
                     kSpawnPoint = kQuest.Utilities.GetReference()
+                Else 
+                    Quest kQuest2 = GetOwningQuest()
+                    LogWarnGlobal(Self, "Owning Quest does not extend HTG:QuestExt: " + kQuest2)
                 EndIf
             EndIf
 
@@ -177,13 +184,13 @@ Bool Function _CreateModule()
         EndIf
     Else
         kMod = GetReference() as SystemModuleInformation
-        ; ObjectReference[] refs = SystemUtilitesObject.FindAllReferencesOfType(kMod, 5000)
+        ; ObjectReference[] refs = ModuleSpawnPoint.FindAllReferencesOfType(kMod, 5000)
         ; LogObjectGlobal(Self, "Utilties Refs: " + refs)
     EndIf
 
     If !IsNone(kMod) 
-        If !IsNone(SystemUtilitesObject)
-            ObjectReference kUitilRef = SystemUtilitesObject
+        If !IsNone(ModuleSpawnPoint)
+            ObjectReference kUitilRef = ModuleSpawnPoint
             Cell kCell = kMod.GetParentCell()
             LogObjectGlobal(Self, "Utilities current cell: " + kUitilRef.GetParentCell() + \
                         "\n\tMods current cell: " + kCell)
@@ -197,6 +204,10 @@ Bool Function _CreateModule()
                     "\n\tDescription: " + kMod.Description + \
                     "\n\tIsCoreIntegrated: " + kMod.IsCoreIntegrated + \
                     "\n\tVersion: " + kMod.Version)
+
+        If kMod.IsCoreIntegrated
+            kMod.SetLinkedRef(Game.GetPlayer())
+        EndIf
     EndIf
 
     return IsFilled()

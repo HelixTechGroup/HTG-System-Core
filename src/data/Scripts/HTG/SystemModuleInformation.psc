@@ -22,4 +22,8 @@ FormList Property LocalSystemRegistry Mandatory Const Auto
 
 SystemTypeEntry[] Property LocalSystemTypeRegistry Const Auto
 
+SystemMessageEntry[] Property LocalSystemMessageRegistery Const Auto
+
+SystemMessageAliasEntry[] Property LocalSystemMessageAliasRegistry Const Auto
+
 Message Property InstalledMessage Const Auto
